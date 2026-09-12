@@ -158,8 +158,25 @@
 - **PlanillaPublica** muestra también el nombre real de la agencia.
 - Pendiente: si el dueño quiere nombres reales distintos, se editan directo en Firestore (`agencias`).
 
+## 2026-09-12 - Módulo de Planillas (carga de créditos/débitos)
+
+- **`/agencia/:agenciaId`** ahora es el **módulo Planillas funcional**: búsqueda en vivo de clientes de esa agencia (filtra en memoria con `normalizar`, sin índices compuestos) y lista con botón "Abrir planilla".
+- **`/agencia/:agenciaId/clientes/:clienteId`** = **Ficha del cliente** de trabajo:
+  - Saldo actual (solo confirmados) con contador animado + chips de créditos/débitos.
+  - **Sumar / Restar** (botones grandes ➕/➖, monto $, descripción, fecha). Se guarda como **movimiento_pendiente**.
+  - **Pendientes por confirmar:** lista tipo; el que lo cargó (o el creador) puede **editar** (el formulario se convierte en "Corregir") o **borrar** (confirmación). Los ajenos solo lectura.
+  - **Confirmados:** lista inmutable. Estado vacío claro.
+- Flujo completo: empleado carga → pendiente → admin confirma/rechaza en `/admin/confirmaciones` → confirmado queda inmutable y aparece en la planilla pública.
+- **Consultas Firestore sin índices compuestos:** `leerMovimientosConfirmados`, `listarPendientes`, `listarPendientesPorCliente` ya NO combinan `where` con `orderBy` en campos distintos (se ordena en memoria). Evita la creación manual de índices compuestos.
+
+### Pendientes (importante)
+- **Reglas de seguridad de Firestore** siguen en modo prueba (test mode). Conviene formalizarlas (solo autenticados escriben; público solo lee `clientes`, `agencias`, `movimientos_confirmados`) — típico de Etapa 3.
+- Botón "Editar" de planilla pública → vista de planilla no editable (solo lectura) para el cliente; eso ya está (PlanillaPublica).
+
 ### Próximos pasos
-- Módulo de Planillas (carga de créditos/débitos) para llenar las Confirmaciones.
+- Probar el flujo completo (crear empleado, cargar, confirmar).
+- Alta de clientes desde el panel (por ahora hay clientes demo).
+- Reglas de Firestore + cierre de la demo.
 
 ## 2026-09-12 - Panel de administración completo (usuarios + confirmaciones)
 

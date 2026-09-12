@@ -4,6 +4,7 @@ import Login from './pages/Login'
 import PlanillaPublica from './pages/PlanillaPublica'
 import ElegirAgencia from './pages/ElegirAgencia'
 import Agencia from './pages/Agencia'
+import FichaCliente from './pages/FichaCliente'
 import Admin from './pages/admin/Admin'
 import Usuarios from './pages/admin/Usuarios'
 import Confirmaciones from './pages/admin/Confirmaciones'
@@ -31,6 +32,14 @@ function App() {
             element={
               <RutaProtegida>
                 <Agencia />
+              </RutaProtegida>
+            }
+          />
+          <Route
+            path="/agencia/:agenciaId/clientes/:clienteId"
+            element={
+              <RutaProtegida>
+                <FichaCliente />
               </RutaProtegida>
             }
           />

@@ -37,3 +37,9 @@ export async function listarClientes(): Promise<Cliente[]> {
   const snap = await getDocs(collection(db, 'clientes'))
   return snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<Cliente, 'id'>) }))
 }
+
+export async function listarClientesPorAgencia(agenciaId: string): Promise<Cliente[]> {
+  const q = query(collection(db, 'clientes'), where('agenciaId', '==', agenciaId))
+  const snap = await getDocs(q)
+  return snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<Cliente, 'id'>) }))
+}

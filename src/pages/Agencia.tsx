@@ -1,14 +1,20 @@
-import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useEffect, useMemo, useState } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../context/auth'
 import { leerAgencia } from '../services/movimientosService'
+import { listarClientesPorAgencia } from '../services/clientesService'
+import { normalizar } from '../utils/normalizar'
+import type { Cliente } from '../types'
 
 type Carga = { estado: 'cargando' } | { estado: 'error' } | { estado: 'ok'; numero: number; nombre: string }
 
 function Agencia() {
   const { agenciaId } = useParams()
   const { perfil, logout } = useAuth()
+  const navigate = useNavigate()
   const [carga, setCarga] = useState<Carga>({ estado: 'cargando' })
+  const [clientes, setClientes] = useState<Cliente[] | null>(null)
+  const [termino, setTermino] = useState('')
 
   useEffect(() => {
     let activo = true
@@ -25,13 +31,33 @@ function Agencia() {
     }
   }, [agenciaId])
 
+  useEffect(() => {
+    let activo = true
+    if (!agenciaId) return
+    listarClientesPorAgencia(agenciaId)
+      .then((c) => {
+        if (activo) setClientes(c)
+      })
+      .catch(() => {
+        if (activo) setClientes([])
+      })
+    return () => {
+      activo = false
+    }
+  }, [agenciaId])
+
   const permitido =
     perfil &&
     (perfil.rol === 'admin' || (perfil.rol === 'empleado' && perfil.agenciaId === agenciaId))
 
-  if (carga.estado === 'error') {
-    return <NoEncontrada />
-  }
+  const filtrados = useMemo(() => {
+    if (clientes === null) return null
+    const t = normalizar(termino)
+    if (t.length === 0) return clientes
+    return clientes.filter((c) => `${normalizar(c.apellido)} ${normalizar(c.nombre)}`.includes(t))
+  }, [clientes, termino])
+
+  if (carga.estado === 'error') return <NoEncontrada />
 
   if (!permitido) {
     return (
@@ -48,89 +74,137 @@ function Agencia() {
     )
   }
 
-  return (
-    <div className="relative flex min-h-svh flex-col overflow-hidden">
-      <div className="bg-dots pointer-events-none absolute inset-0 opacity-60" />
-      <div className="pointer-events-none absolute -top-24 -left-24 h-80 w-80 rounded-full bg-brand-200/40 blur-3xl animate-float-slow" />
-      <div className="pointer-events-none absolute -right-24 top-1/3 h-72 w-72 rounded-full bg-amber-200/50 blur-3xl animate-float" />
+  const entrarFicha = (clienteId: string) => navigate(`/agencia/${agenciaId}/clientes/${clienteId}`)
 
-      <header className="relative z-10 flex items-center justify-between px-5 py-5 sm:px-10">
+  return (
+    <div className="relative flex min-h-svh flex-col">
+      <div className="pointer-events-none absolute -top-32 -left-32 h-80 w-80 rounded-full bg-emerald-100/50 blur-3xl animate-float-slow" />
+      <div className="pointer-events-none absolute -right-24 top-1/3 h-72 w-72 rounded-full bg-amber-100/60 blur-3xl animate-float" />
+
+      <header className="relative z-10 flex flex-wrap items-center justify-between gap-3 border-b border-stone-200/70 bg-white/70 px-5 py-4 backdrop-blur sm:px-10">
         <div className="flex items-center gap-2.5">
-          <div className="grid h-10 w-10 place-items-center rounded-xl bg-brand-600 text-lg font-extrabold text-white shadow-lg shadow-brand-600/30 rotate-3">
+          <div className="grid h-10 w-10 place-items-center rounded-xl bg-coal-950 text-lg font-extrabold text-white shadow-lg rotate-3">
             FQ
           </div>
           <div className="leading-tight">
-            <p className="text-base font-extrabold text-stone-900">Fichas de Quiniela</p>
+            <p className="text-base font-extrabold text-stone-900">
+              Agencia {agenciaId} {carga.estado === 'ok' && `· ${carga.nombre}`}
+            </p>
             <p className="text-sm font-semibold text-stone-500">
-              Agencia {agenciaId} {carga.estado === 'ok' ? `· ${carga.nombre}` : ''}
+              {perfil?.rol === 'admin' ? 'Administración · visto por el dueño' : 'Tu agencia de trabajo'}
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-3">
-          <span className="hidden rounded-full bg-brand-50 px-4 py-2 text-sm font-bold text-brand-700 sm:inline">
+        <div className="flex flex-wrap items-center gap-2">
+          {perfil?.rol === 'admin' && (
+            <Link
+              to="/admin"
+              className="rounded-xl border border-stone-300 bg-white px-4 py-2 text-sm font-bold text-stone-700 transition hover:border-stone-400"
+            >
+              🛠️ Panel admin
+            </Link>
+          )}
+          <span className="hidden rounded-full bg-amber-100 px-4 py-2 text-sm font-bold text-amber-800 sm:inline">
             {perfil?.rol === 'admin' ? '👑' : '🧾'} {perfil?.nombre}
           </span>
           <button
             type="button"
             onClick={() => void logout()}
-            className="rounded-xl border border-stone-300 bg-white/70 px-4 py-2 text-sm font-bold text-stone-700 shadow-sm transition hover:border-brand-300 hover:text-brand-600"
+            className="rounded-xl border border-stone-300 bg-white px-4 py-2 text-sm font-bold text-stone-700 transition hover:border-rose-300 hover:text-rose-600"
           >
             Salir
           </button>
         </div>
       </header>
 
-      <main className="relative z-10 flex flex-1 flex-col items-center justify-center gap-8 px-4 pb-16 text-center">
-        {carga.estado === 'cargando' ? (
-          <div className="skeleton h-24 w-full max-w-xl rounded-3xl" />
-        ) : (
-          <div className="max-w-xl animate-fade-up">
-            <p className="mb-2 inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-4 py-1.5 text-sm font-bold tracking-wide text-brand-700 uppercase">
-              {perfil?.rol === 'admin' ? 'Administración' : 'Tu agencia'}
-            </p>
-            <h1 className="text-3xl font-extrabold text-stone-900 sm:text-4xl">
-              Agencia <span className="text-brand-600">{agenciaId}</span>
-            </h1>
-            {carga.estado === 'ok' && (
-              <p className="mt-1 text-lg font-semibold text-stone-600">{carga.nombre}</p>
-            )}
-            <p className="mx-auto mt-4 max-w-lg text-lg text-stone-600">
-              Acá vas a gestionar las planillas de los clientes de esta agencia.
-            </p>
-          </div>
-        )}
-
-        <div className="grid w-full max-w-xl grid-cols-1 gap-4 sm:grid-cols-2 animate-fade-up" style={{ animationDelay: '120ms' }}>
-          <div className="rounded-3xl border-2 border-dashed border-stone-300 bg-white/70 p-6 text-left backdrop-blur">
-            <span className="text-3xl">📋</span>
-            <p className="mt-3 text-lg font-extrabold text-stone-800">Planillas de clientes</p>
-            <p className="mt-1 text-base text-stone-500">
-              Buscar clientes, sumar o restar créditos y débitos. Próximamente.
-            </p>
-          </div>
-          {perfil?.rol === 'admin' && (
-            <Link
-              to="/admin"
-              className="group rounded-3xl border-2 border-stone-200 bg-white p-6 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-stone-300 hover:shadow-md"
-            >
-              <span className="text-3xl">🛠️</span>
-              <p className="mt-3 text-lg font-extrabold text-stone-800">Panel de administración</p>
-              <p className="mt-1 text-base text-stone-500">
-                Crear usuarios y confirmar movimientos.
-              </p>
-              <span className="mt-3 inline-flex items-center gap-1 text-sm font-bold text-stone-600 transition group-hover:text-stone-900">
-                Abrir panel
-                <svg className="h-4 w-4 transition group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
-              </span>
-            </Link>
-          )}
+      <main className="relative z-10 mx-auto w-full max-w-3xl flex-1 px-5 py-8 sm:px-10">
+        <div className="text-center animate-fade-up">
+          <p className="mb-2 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-sm font-bold tracking-wide text-emerald-700 uppercase">
+            Planillas de la agencia
+          </p>
+          <h1 className="text-3xl font-extrabold text-stone-900">
+            ¿A qué cliente le llevás la cuenta?
+          </h1>
+          <p className="mx-auto mt-2 max-w-md text-lg text-stone-600">
+            Buscá por apellido y nombre para abrir su planilla.
+          </p>
         </div>
 
-        <Link to="/" className="text-base font-semibold text-stone-500 hover:text-brand-600">
-          ← Ver el sitio público
-        </Link>
+        <div className="relative mt-6 animate-fade-up" style={{ animationDelay: '90ms' }}>
+          <svg
+            className="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-stone-400"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M17 10.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z" />
+          </svg>
+          <input
+            autoComplete="off"
+            value={termino}
+            onChange={(e) => setTermino(e.target.value)}
+            placeholder="Ej: pérez juan…"
+            className="w-full rounded-2xl border border-stone-300 bg-white py-4 pr-4 pl-12 text-lg shadow-xl shadow-stone-900/5 outline-none transition focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100"
+          />
+        </div>
+
+        {filtrados === null ? (
+          <div className="mt-5 space-y-3">
+            {[0, 1, 2].map((i) => (
+              <div key={i} className="skeleton h-16 rounded-2xl" />
+            ))}
+          </div>
+        ) : filtrados.length === 0 ? (
+          <div className="mt-5 flex flex-col items-center gap-3 rounded-3xl border-2 border-dashed border-stone-300 bg-white px-6 py-12 text-center animate-fade-up">
+            <span className="text-5xl">🗂️</span>
+            <p className="text-lg font-extrabold text-stone-800">
+              {termino ? 'Nadie con ese nombre' : 'Todavía no hay clientes'}
+            </p>
+            <p className="max-w-sm text-base text-stone-500">
+              {termino
+                ? 'Probá con otra búsqueda. Los clientes se cargan desde la base de datos.'
+                : 'Cuando el dueño cargue clientes en esta agencia, van a aparecer acá.'}
+            </p>
+          </div>
+        ) : (
+          <>
+            <p className="mt-5 text-center text-sm font-bold text-stone-500">
+              {filtrados.length} {filtrados.length === 1 ? 'cliente' : 'clientes'} en la agencia {agenciaId}
+            </p>
+            <ul className="mt-3 space-y-2 animate-fade-up">
+              {filtrados.map((c, i) => (
+                <li key={c.id}>
+                  <button
+                    type="button"
+                    onClick={() => entrarFicha(c.id)}
+                    className="group flex w-full items-center justify-between gap-3 rounded-2xl bg-white p-4 text-left shadow-sm ring-1 ring-stone-100 transition hover:-translate-y-0.5 hover:shadow-md animate-fade-up"
+                    style={{ animationDelay: `${Math.min(i * 35, 350)}ms` }}
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="grid h-11 w-11 place-items-center rounded-full bg-gradient-to-br from-emerald-500 to-emerald-700 text-base font-extrabold text-white uppercase">
+                        {c.apellido[0]}
+                        {c.nombre[0]}
+                      </span>
+                      <div className="leading-tight">
+                        <p className="text-lg font-extrabold text-stone-800 group-hover:text-emerald-700">
+                          {c.apellido} <span className="font-semibold text-stone-500">{c.nombre}</span>
+                        </p>
+                        <p className="text-sm font-semibold text-stone-500">Planilla de créditos y débitos</p>
+                      </div>
+                    </div>
+                    <span className="flex items-center gap-1.5 rounded-full bg-emerald-50 px-4 py-2 text-sm font-bold text-emerald-700 transition group-hover:bg-emerald-600 group-hover:text-white">
+                      Abrir planilla
+                      <svg className="h-4 w-4 transition group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                      </svg>
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
       </main>
     </div>
   )

@@ -74,7 +74,17 @@
 - `usuarios`, `agencias`, `clientes`, `movimientos_pendientes`, `movimientos_confirmados`.
 - Crear primero `agencias` (178 y 362) y el usuario admin desde el panel en desarrollo.
 
-### Próximos pasos
-- Completar claves de Firebase y probar login.
+## 2026-09-12 - Firebase conectado y datos iniciales cargados
+
+### Qué se hizo
+- Claves del proyecto Firebase `fichas-quiniela` cargadas en `.env` (no se sube a git).
+- Script de seed (temporal, eliminado) inició sesión como admin y creó:
+  - `usuarios/{uid}` → rol **admin**, agenciaId null, activo true.
+  - `agencias/178` y `agencias/362`.
+- **Dato clave:** la contraseña del admin tiene coma al final: `Sami1364,` (así quedó creada).
+- UID del admin: `MpaKX9gxADfpRgrk3rKjeYqolLX2`.
+
+### Pendientes
+- Verificar que las reglas de Firestore permiten lectura al "vista pública" y restringen escritura (se definirá formalmente en la Etapa 3).
 - Wireframes de las pantallas.
 - Etapa 2: metodología.

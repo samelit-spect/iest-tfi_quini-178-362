@@ -100,7 +100,24 @@
 - **Netlify:** cada `git push` a `main` dispara el deploy.
 - **Comandos útiles:** `npm run dev` (desarrollo local) · `npm run build` · `npm run lint`.
 
+## 2026-09-12 - Vista pública (planilla del cliente) construida
+
+### Qué se hizo
+- Diseño de la **vista pública** (sin registro) en `Home` y `PlanillaPublica`:
+  - `Home`: hero con marca, buscador **predictivo** por apellido y nombre (sugerencias en vivo, animado, insensible a mayúsculas y acentos vía campo `busqueda` normalizado) y botón "Iniciar sesión".
+  - `PlanillaPublica` (`/planilla/:clienteId`): cabecera con datos del cliente + agencia, saldo actual con **contador animado**, resumen de créditos/débitos, lista de movimientos confirmados con animaciones escalonadas y total al pie.
+- Sistema de diseño ampliado en `index.css`: paleta brand rojo + crema, fuente Nunito, animaciones `fade-up/fade-in/scale-in/float/shimmer` y utilidad `.bg-dots`. Respeta `prefers-reduced-motion`.
+- Servicios nuevos:
+  - `clientesService.ts`: `buscarClientes()` (normaliza minúsculas + sin acentos) y `leerCliente()`.
+  - `movimientosService.ts`: `leerMovimientosConfirmados()` y `leerAgencia()`.
+  - `utils/normalizar.ts`, `utils/format.ts` (pesos y fechas en es-AR), `hooks/useCountUp.ts`.
+- **Datos demo** cargados en Firestore para probar la vista (script temporal, luego borrado):
+  - Clientes: Pérez Juan (178), González María (178), Pérez Ana (362), Díaz Roberto (362) — incluye homónimos para probar la búsqueda.
+  - Movimientos confirmados variados en `movimientos_confirmados`.
+- **Nota:** los datos demo son de prueba; se pueden dejar como ejemplo o borrarse cuando haya datos reales.
+- **Verificado:** `npm run lint` y `npm run build` OK.
+
 ### Próximos pasos
-- Vista pública (planilla del cliente).
-- Login real y panel de administración.
-- Wireframes y Etapa 2.
+- Login real (AuthContext) y redirección por rol.
+- Panel de administración (usuarios, confirmaciones).
+- Obtener la URL de Netlify y registrarla aquí.

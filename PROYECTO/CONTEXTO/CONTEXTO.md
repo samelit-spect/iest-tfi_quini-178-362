@@ -107,9 +107,15 @@
 - Eliminado `public/_redirects` (la regla ahora vive en `netlify.toml`, evita duplicados).
 - Al estar en el repo, Netlify toma esta configuración automáticamente en cada push (no depende del panel).
 
-### Verificación post-deploy
-- Esperar que termine el build y forzar recarga (Ctrl+Shift+R).
-- Chequear que las Variables de entorno `VITE_FIREBASE_*` sigan cargadas en el panel de Netlify.
+## 2026-09-12 - Requisito de accesibilidad: público de edad avanzada
+
+- La mayoría de las personas que usan/venden/ven el sistema son **mayores**.
+- Regla de diseño para TODO el sistema: tipografía grande y legible, alto contraste, botones y objetivos táctiles amplios, navegación simple y clara; evitar depender del hover o de detalles pequeños.
+- Aplicar en vista pública y en las futuras vistas internas (empleado/admin).
+- Queda registrado también en `PLAN.md` y en la Etapa 1 (RNF-04).
+
+### Verificación
+- Sitio Netlify funcionando tras el fix: **https://gleeful-beignet-736b8f.netlify.app/**.
 
 ### Cómo conectar en futuras sesiones
 - **VS Code:** abrir la carpeta `Seminario proyecto 2`. Todo queda sincronizado vía panel Source Control (commit + push).

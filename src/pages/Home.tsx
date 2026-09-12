@@ -60,13 +60,13 @@ function Home() {
             FQ
           </div>
           <div className="leading-tight">
-            <p className="text-sm font-extrabold text-stone-900">Fichas de Quiniela</p>
-            <p className="text-xs font-semibold text-stone-400">Agencias 178 · 362</p>
+            <p className="text-base font-extrabold text-stone-900">Fichas de Quiniela</p>
+            <p className="text-sm font-semibold text-stone-500">Agencias 178 · 362</p>
           </div>
         </div>
         <Link
           to="/login"
-          className="rounded-xl border border-stone-300 bg-white/70 px-4 py-2 text-sm font-bold text-stone-700 shadow-sm backdrop-blur transition hover:-translate-y-0.5 hover:border-brand-300 hover:text-brand-600 hover:shadow-md"
+          className="rounded-xl border border-stone-300 bg-white/70 px-5 py-2.5 text-base font-bold text-stone-700 shadow-sm backdrop-blur transition hover:-translate-y-0.5 hover:border-brand-300 hover:text-brand-600 hover:shadow-md"
         >
           Iniciar sesión
         </Link>
@@ -74,7 +74,7 @@ function Home() {
 
       <main className="relative z-10 flex flex-1 flex-col items-center justify-center gap-8 px-4 pb-16 text-center">
         <div className="max-w-2xl animate-fade-up">
-          <p className="mb-3 inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-3 py-1 text-xs font-bold tracking-wide text-brand-700 uppercase">
+          <p className="mb-3 inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-4 py-1.5 text-sm font-bold tracking-wide text-brand-700 uppercase">
             <span className="h-1.5 w-1.5 rounded-full bg-brand-500 animate-pulse" />
             Consulta tu planilla en línea
           </p>
@@ -82,7 +82,7 @@ function Home() {
             Tus créditos y débitos,
             <span className="text-brand-600"> al día</span>
           </h1>
-          <p className="mx-auto mt-4 max-w-md text-base text-stone-500">
+          <p className="mx-auto mt-4 max-w-md text-lg leading-relaxed text-stone-600">
             Buscá por apellido y nombre sin registrarte. Solo lectura: tus
             movimientos confirmados por la agencia, siempre disponibles.
           </p>
@@ -115,7 +115,7 @@ function Home() {
                 if (normalizar(termino).length >= 2) setSugerencias([])
               }}
               placeholder="Apellido y nombre de un cliente…"
-              className="w-full rounded-2xl border border-stone-200 bg-white py-4 pr-16 pl-12 text-base shadow-xl shadow-stone-900/5 outline-none transition focus:scale-[1.01] focus:border-brand-400 focus:ring-4 focus:ring-brand-100"
+              className="w-full rounded-2xl border border-stone-300 bg-white py-4 pr-16 pl-12 text-lg shadow-xl shadow-stone-900/5 outline-none transition focus:scale-[1.01] focus:border-brand-400 focus:ring-4 focus:ring-brand-100"
             />
             {cargando && (
               <div className="absolute top-1/2 right-4 h-5 w-5 -translate-y-1/2 animate-spin rounded-full border-2 border-brand-200 border-t-brand-600" />
@@ -123,7 +123,7 @@ function Home() {
           </div>
 
           {filtro.length >= 2 && (sugerencias === null || cargando) && !cargando && (
-            <div className="mt-2 rounded-xl bg-white p-4 text-sm text-stone-500 shadow-lg">
+            <div className="mt-2 rounded-xl bg-white p-4 text-base text-stone-600 shadow-lg">
               Escribí para ver resultados…
             </div>
           )}
@@ -134,10 +134,10 @@ function Home() {
                 <div className="flex items-center gap-3 px-5 py-4 text-left">
                   <span className="text-2xl">🧾</span>
                   <div>
-                    <p className="text-sm font-bold text-stone-700">
+                    <p className="text-base font-bold text-stone-700">
                       No encontramos "{filtro}"
                     </p>
-                    <p className="text-xs text-stone-400">
+                    <p className="text-sm text-stone-500">
                       Verificá que el nombre esté bien escrito.
                     </p>
                   </div>
@@ -149,20 +149,20 @@ function Home() {
                       <button
                         type="button"
                         onClick={() => entrar(c.id)}
-                        className="group flex w-full items-center justify-between gap-3 px-5 py-3 text-left transition hover:bg-brand-50"
+                        className="group flex w-full items-center justify-between gap-3 px-5 py-3.5 text-left transition hover:bg-brand-50"
                         style={{ animationDelay: `${i * 40}ms` }}
                       >
                         <div className="flex items-center gap-3">
-                          <span className="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-sm font-extrabold text-white uppercase">
+                          <span className="grid h-11 w-11 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-base font-extrabold text-white uppercase">
                             {c.nombre[0]}
                             {c.apellido[0]}
                           </span>
                           <div className="leading-tight">
-                            <p className="text-sm font-bold text-stone-800 group-hover:text-brand-700">
+                            <p className="text-base font-bold text-stone-800 group-hover:text-brand-700">
                               {c.apellido}{' '}
-                              <span className="font-semibold text-stone-500">{c.nombre}</span>
+                              <span className="font-semibold text-stone-600">{c.nombre}</span>
                             </p>
-                            <p className="text-xs font-semibold text-stone-400">
+                            <p className="text-sm font-semibold text-stone-500">
                               Agencia {c.agenciaId}
                             </p>
                           </div>
@@ -189,7 +189,7 @@ function Home() {
           )}
         </div>
 
-        <div className="flex flex-wrap items-center justify-center gap-2 text-xs font-semibold text-stone-400 animate-fade-up" style={{ animationDelay: '240ms' }}>
+        <div className="flex flex-wrap items-center justify-center gap-2 text-sm font-semibold text-stone-500 animate-fade-up" style={{ animationDelay: '240ms' }}>
           {['✔ Sin registrarte', '✔ Historial completo', '✔ Saldo al día'].map((t) => (
             <span
               key={t}

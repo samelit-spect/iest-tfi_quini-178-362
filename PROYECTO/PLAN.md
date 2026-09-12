@@ -26,6 +26,7 @@ Digitalizar las fichas en papel de las agencias de quiniela: el empleado carga c
 8. Al confirmar, el movimiento **se mueve de la estructura de "pendientes" a la de "confirmados"** en Firestore y queda **inmutable para siempre** (nadie lo modifica ni elimina).
 9. **Corrección de errores:** si un movimiento confirmado está mal (p. ej. se puso 2000 y eran 1800), NO se toca el original: el empleado carga un **nuevo movimiento** con descripción tipo *"Corrección: ..."* que pasa por el mismo flujo de confirmación.
 10. **Vista pública del cliente:** buscar por apellido y nombre, sin distinguir mayúsculas/minúsculas, solo lectura.
+11. **Accesibilidad:** la mayoría de los usuarios son personas mayores → textos grandes y legibles, alto contraste, controles y botones amplios, navegación simple (aplica a todo el sistema).
 
 ## 4. Recorrido del usuario (flujo navegable)
 
@@ -72,7 +73,7 @@ Los movimientos confirmados se pueden recuperar por cliente para mostrar el hist
 
 - **Frontend:** React + TypeScript + Vite + Tailwind CSS (web responsive).
 - **Backend:** Firebase Auth (login) + Firestore (datos).
-- **Despliegue:** Firebase Hosting (gratuito).
+- **Despliegue:** Netlify (build `npm run build`, publish `dist`, reglas SPA en `netlify.toml`). URL: https://gleeful-beignet-736b8f.netlify.app/
 - Compatible con la Etapa 3 (diseño) que vendrá.
 
 ## 7. Funciones adicionales (pendientes de definir)
@@ -82,15 +83,15 @@ Los movimientos confirmados se pueden recuperar por cliente para mostrar el hist
 ## 8. Estado del entorno (2026-09-12)
 
 - App React + Vite + TS creada en la **raíz** del repo. Tailwind v4, React Router y Firebase instalados.
-- `src/types/index.ts` con los tipos de dominio.
-- `src/services/firebase.ts` listo; `.env` vacío → **hay que completar las claves del proyecto Firebase**.
-- Git inicializado (main) con primer commit.
-- Pendientes: crear proyecto Firebase (+ Auth email y Firestore), crear colecciones y conectar GitHub.
+- `src/types/index.ts` con los tipos de dominio; `src/services/firebase.ts` con claves en `.env`.
+- Firebase activo (project `fichas-quiniela`, Auth email + Firestore) y repositorio en GitHub (`samelit-spect/fichas-quiniela`).
+- **Desplegado en Netlify** (public view funcionando; fix de deploy con `netlify.toml`).
+- **Vista pública construida:** búsqueda predictiva + planilla animada del cliente (con datos demo de prueba en Firestore: Pérez Juan, González María, Pérez Ana, Díaz Roberto). El sito ya funcionando en Netlify.
+- Lint (`oxlint`) y build OK.
 
 ## 9. Próximos pasos
 
-- [ ] Completar claves de Firebase en `.env` y crear colecciones en Firestore.
-- [ ] Conectar repo GitHub (remote origin + push).
-- [ ] Wireframes de las pantallas (Etapa 1).
+- [ ] Login real (AuthContext) y redirección por rol.
+- [ ] Panel de administración (usuarios, confirmaciones de movimientos).
 - [ ] Etapa 2: metodología de desarrollo.
 - [ ] Definir funciones adicionales del proyecto.

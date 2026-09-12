@@ -101,7 +101,7 @@ Desarrollar un sistema web que digitalice las fichas de clientes de las agencias
 | RNF-01 | El sistema debe ser responsive (funcionar en celular, tablet y escritorio). |
 | RNF-02 | La planilla del cliente y el registro de movimientos deben cargar en menos de 3 segundos. |
 | RNF-03 | El acceso debe ser seguro: autenticación y reglas de seguridad por rol en Firebase. |
-| RNF-04 | La interfaz debe seguir buenas prácticas de UX/UI (navegación clara y accesible). |
+| RNF-04 | La interfaz debe seguir buenas prácticas de UX/UI orientadas a personas mayores: tipografía grande y legible, alto contraste, controles amplios y navegación clara. |
 | RNF-05 | El código debe ser mantenible (TypeScript, componentes reutilizables y documentación). |
 | RNF-06 | El sistema debe poder desplegarse de forma gratuita (Firebase Hosting). |
 

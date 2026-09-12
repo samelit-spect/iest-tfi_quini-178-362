@@ -153,3 +153,15 @@
 - Login real (AuthContext) y redirección por rol.
 - Panel de administración (usuarios, confirmaciones).
 - Obtener la URL de Netlify y registrarla aquí.
+
+## 2026-09-12 - Panel de administración completo (usuarios + confirmaciones)
+
+- **`/admin`** (solo rol admin; rutas `/admin/usuarios` y `/admin/confirmaciones`). Accesos: desde ElegirAgencia y desde la vista de agencia.
+- **Usuarios:** lista todos los usuarios, crea nuevos (nombre, correo, contraseña, rol, agencia), edita (nombre/rol/agencia) y habilita/deshabilita (no deja auto-deshabilitarse).
+  - **Creación de cuenta sin cambiar la sesión del admin:** se usa la REST API de Firebase Auth (`accounts:signUp` con la API key) en vez de `createUserWithEmailAndPassword`. Devuelve el `localId` (uid) y luego se crea el doc en `usuarios/{uid}` (activo: true).
+  - Errores mapeados a español (correo repetido, contraseña corta, etc.).
+- **Confirmaciones:** lista pendientes de ambas agencias (con cliente y nº de agencia), **Confirmar** (transacción: copia a `movimientos_confirmados` con estado confirmado + confirmadoPor/El y borra el pendiente → inmutable) y **Rechazar** (marca `estado: 'rechazado'` en el mismo doc).
+- **ElegirAgencia rediseñada:** cards grandes (178 en verde esmeralda, 362 en celeste — colores propios, sin "todo rojo"), badge de admin y botón grande al Panel de administración.
+- **Decisiones visuales:** el rojo queda solo como acento de marca / acciones destructivas (Deshabilitar, Rechazar, Salir). Paleta de administración neutral (blanco/crema/negro) con verdes y celestes por agencia.
+- **Verificado:** lint y build OK. Pendiente de probar en Netlify y crear el primer empleado desde el panel.
+- Agregado `.campo` en `index.css` (inputs grandes).

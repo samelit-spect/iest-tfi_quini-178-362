@@ -32,3 +32,8 @@ export async function leerCliente(id: string): Promise<Cliente | null> {
   if (!snap.exists()) return null
   return { id: snap.id, ...(snap.data() as Omit<Cliente, 'id'>) }
 }
+
+export async function listarClientes(): Promise<Cliente[]> {
+  const snap = await getDocs(collection(db, 'clientes'))
+  return snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<Cliente, 'id'>) }))
+}

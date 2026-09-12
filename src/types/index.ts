@@ -40,4 +40,6 @@ export interface Movimiento {
   estado: EstadoMovimiento
   confirmadoPor?: string
   confirmadoEl?: string
+  rechazadoPor?: string
+  rechazadoEl?: string
 }

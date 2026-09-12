@@ -111,13 +111,22 @@ function Agencia() {
             </p>
           </div>
           {perfil?.rol === 'admin' && (
-            <div className="rounded-3xl border-2 border-dashed border-stone-300 bg-white/70 p-6 text-left backdrop-blur">
-              <span className="text-3xl">✅</span>
-              <p className="mt-3 text-lg font-extrabold text-stone-800">Confirmaciones</p>
+            <Link
+              to="/admin"
+              className="group rounded-3xl border-2 border-stone-200 bg-white p-6 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-stone-300 hover:shadow-md"
+            >
+              <span className="text-3xl">🛠️</span>
+              <p className="mt-3 text-lg font-extrabold text-stone-800">Panel de administración</p>
               <p className="mt-1 text-base text-stone-500">
-                Confirmar o rechazar los movimientos pendientes. Próximamente.
+                Crear usuarios y confirmar movimientos.
               </p>
-            </div>
+              <span className="mt-3 inline-flex items-center gap-1 text-sm font-bold text-stone-600 transition group-hover:text-stone-900">
+                Abrir panel
+                <svg className="h-4 w-4 transition group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </span>
+            </Link>
           )}
         </div>
 

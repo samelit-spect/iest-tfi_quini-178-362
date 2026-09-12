@@ -1,9 +1,12 @@
-import { BrowserRouter, Route, Routes, Link } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes, Link } from 'react-router-dom'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import PlanillaPublica from './pages/PlanillaPublica'
 import ElegirAgencia from './pages/ElegirAgencia'
 import Agencia from './pages/Agencia'
+import Admin from './pages/admin/Admin'
+import Usuarios from './pages/admin/Usuarios'
+import Confirmaciones from './pages/admin/Confirmaciones'
 import { AuthProvider } from './context/authContext'
 import { RutaProtegida } from './components/RutaProtegida'
 
@@ -31,6 +34,18 @@ function App() {
               </RutaProtegida>
             }
           />
+          <Route
+            path="/admin"
+            element={
+              <RutaProtegida>
+                <Admin />
+              </RutaProtegida>
+            }
+          >
+            <Route index element={<Navigate to="/admin/usuarios" replace />} />
+            <Route path="usuarios" element={<Usuarios />} />
+            <Route path="confirmaciones" element={<Confirmaciones />} />
+          </Route>
           <Route
             path="*"
             element={

@@ -93,7 +93,23 @@
 - Añadido `public/_redirects` (SPA: cualquier ruta → `/index.html`) para que `/login`, `/planilla/...`, etc. no den 404.
 - Netlify queda configurado para **build automático en cada push** (ver cambios en tiempo real).
 - Variables de entorno en Netlify: las mismas 6 claves `VITE_FIREBASE_*` del `.env`.
-- URL del sitio en Netlify: _(pendiente de registrar)_
+- URL del sitio en Netlify: **https://gleeful-beignet-736b8f.netlify.app/**
+
+## 2026-09-12 - Fix: Netlify servía la fuente en vez del build
+
+### Problema
+- El sitio cargaba el `index.html` fuente (referenciaba `/src/main.tsx`) → error `Failed to load module script ... MIME application/octet-stream` (el `.tsx` no se sirve como JS).
+
+### Solución
+- Agregado `netlify.toml` al repo con:
+  - `[build] command = "npm run build"`, `publish = "dist"`.
+  - `[[redirects]]` `/* → /index.html 200` (SPA).
+- Eliminado `public/_redirects` (la regla ahora vive en `netlify.toml`, evita duplicados).
+- Al estar en el repo, Netlify toma esta configuración automáticamente en cada push (no depende del panel).
+
+### Verificación post-deploy
+- Esperar que termine el build y forzar recarga (Ctrl+Shift+R).
+- Chequear que las Variables de entorno `VITE_FIREBASE_*` sigan cargadas en el panel de Netlify.
 
 ### Cómo conectar en futuras sesiones
 - **VS Code:** abrir la carpeta `Seminario proyecto 2`. Todo queda sincronizado vía panel Source Control (commit + push).

@@ -10,8 +10,6 @@ function Agencia() {
   const { perfil, logout } = useAuth()
   const [carga, setCarga] = useState<Carga>({ estado: 'cargando' })
 
-  const numero = Number(agenciaId)
-
   useEffect(() => {
     let activo = true
     if (!agenciaId) return
@@ -31,7 +29,7 @@ function Agencia() {
     perfil &&
     (perfil.rol === 'admin' || (perfil.rol === 'empleado' && perfil.agenciaId === agenciaId))
 
-  if (numero !== 178 && numero !== 362) {
+  if (carga.estado === 'error') {
     return <NoEncontrada />
   }
 

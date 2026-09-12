@@ -111,7 +111,9 @@ function Contenido({
               </span>
               <div>
                 <p className="text-sm font-bold tracking-widest text-white/80 uppercase">
-                  {agencia ? `Agencia ${agencia.numero}` : `Agencia ${cliente.agenciaId}`}
+                  {agencia
+                    ? `Agencia ${agencia.numero} · ${agencia.nombre}`
+                    : `Agencia ${cliente.agenciaId}`}
                 </p>
                 <h1 className="mt-0.5 text-3xl font-extrabold sm:text-4xl">
                   {cliente.apellido} {cliente.nombre}

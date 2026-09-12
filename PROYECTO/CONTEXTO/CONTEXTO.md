@@ -149,10 +149,17 @@
 - **Nota:** los datos demo son de prueba; se pueden dejar como ejemplo o borrarse cuando haya datos reales.
 - **Verificado:** `npm run lint` y `npm run build` OK.
 
+## 2026-09-12 - Agencias desde Firestore (sin datos hardcodeados)
+
+- Verificado en la base: `agencias/178` y `agencias/362` ya existen con `numero` + `nombre` ("Agencia 178" / "Agencia 362").
+- **ElegirAgencia** ahora carga las agencias con `listarAgencias()` (nombre real desde la base; colores por nº: 178 verde, 362 celeste; fallback gris). Ya no están los nombres inventados hardcodeados.
+- **Agencia** ya no valida "178/362" hardcodeado: decide según `leerAgencia()` (si no existe → página no encontrada). Rutas por id del doc (`/agencia/:agenciaId` = id del doc).
+- **Usuarios** asigna la agencia con la lista real de `agencias` de la base (ya era así).
+- **PlanillaPublica** muestra también el nombre real de la agencia.
+- Pendiente: si el dueño quiere nombres reales distintos, se editan directo en Firestore (`agencias`).
+
 ### Próximos pasos
-- Login real (AuthContext) y redirección por rol.
-- Panel de administración (usuarios, confirmaciones).
-- Obtener la URL de Netlify y registrarla aquí.
+- Módulo de Planillas (carga de créditos/débitos) para llenar las Confirmaciones.
 
 ## 2026-09-12 - Panel de administración completo (usuarios + confirmaciones)
 

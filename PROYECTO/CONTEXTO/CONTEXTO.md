@@ -114,8 +114,18 @@
 - Aplicar en vista pública y en las futuras vistas internas (empleado/admin).
 - Queda registrado también en `PLAN.md` y en la Etapa 1 (RNF-04).
 
-### Verificación
-- Sitio Netlify funcionando tras el fix: **https://gleeful-beignet-736b8f.netlify.app/**.
+## 2026-09-12 - Login real (AuthContext) + redirección por rol
+
+- **AuthContext** (`src/context/auth.ts` + `src/context/authContext.tsx`):
+  - `onAuthStateChanged` restaura la sesión y lee el perfil desde `usuarios/{uid}`.
+  - `login(email, password)` (signInWithEmailAndPassword) devuelve el perfil; `logout()`.
+  - Expone `estado` (cargando/logueado/anonimo), `perfil`, `inicioPorRol`.
+- **RutaProtegida** (`src/components/RutaProtegida.tsx`): redirige a `/login` si no hay sesión; bloquea cuentas deshabilitadas, sin agencia asignada (empleado) o sin perfil.
+- **Login** funcional con errores claros en español (credenciales inválidas, cuenta deshabilitada, demasiados intentos, red, etc.), validación de perfil activo + agencia → redirige por rol: admin → `/elegir-agencia`, empleado → `/agencia/:agenciaId`.
+- **ElegirAgencia** (solo admin): cards de la Agencia 178 y 362 → `/agencia/:id`.
+- **Agencia** (empleado/admin): shell protegido con nombre/número de agencia, boton Salir y módulos "Planillas de clientes" y "Confirmaciones" anunciados como próximos.
+- Home: si hay sesión, el botón cambia a "Entrar al panel" (según rol).
+- **Verificado:** lint y build OK. Empleados aún no creados en Firestore (el admin es `perezsami008@gmail.com`).
 
 ### Cómo conectar en futuras sesiones
 - **VS Code:** abrir la carpeta `Seminario proyecto 2`. Todo queda sincronizado vía panel Source Control (commit + push).

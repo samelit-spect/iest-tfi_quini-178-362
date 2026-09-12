@@ -3,8 +3,10 @@ import { Link, useNavigate } from 'react-router-dom'
 import type { Cliente } from '../types'
 import { buscarClientes } from '../services/clientesService'
 import { normalizar } from '../utils/normalizar'
+import { useAuth } from '../context/auth'
 
 function Home() {
+  const { estado, inicioPorRol } = useAuth()
   const [termino, setTermino] = useState('')
   const [sugerencias, setSugerencias] = useState<Cliente[] | null>(null)
   const [cargando, setCargando] = useState(false)
@@ -64,12 +66,21 @@ function Home() {
             <p className="text-sm font-semibold text-stone-500">Agencias 178 · 362</p>
           </div>
         </div>
-        <Link
-          to="/login"
-          className="rounded-xl border border-stone-300 bg-white/70 px-5 py-2.5 text-base font-bold text-stone-700 shadow-sm backdrop-blur transition hover:-translate-y-0.5 hover:border-brand-300 hover:text-brand-600 hover:shadow-md"
-        >
-          Iniciar sesión
-        </Link>
+        {estado === 'logueado' && inicioPorRol ? (
+          <Link
+            to={inicioPorRol}
+            className="rounded-xl bg-brand-600 px-5 py-2.5 text-base font-bold text-white shadow-lg shadow-brand-600/30 transition hover:-translate-y-0.5 hover:bg-brand-700"
+          >
+            Entrar al panel
+          </Link>
+        ) : (
+          <Link
+            to="/login"
+            className="rounded-xl border border-stone-300 bg-white/70 px-5 py-2.5 text-base font-bold text-stone-700 shadow-sm backdrop-blur transition hover:-translate-y-0.5 hover:border-brand-300 hover:text-brand-600 hover:shadow-md"
+          >
+            Iniciar sesión
+          </Link>
+        )}
       </header>
 
       <main className="relative z-10 flex flex-1 flex-col items-center justify-center gap-8 px-4 pb-16 text-center">

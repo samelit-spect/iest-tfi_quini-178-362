@@ -84,7 +84,23 @@
 - **Dato clave:** la contraseña del admin tiene coma al final: `Sami1364,` (así quedó creada).
 - UID del admin: `MpaKX9gxADfpRgrk3rKjeYqolLX2`.
 
-### Pendientes
-- Verificar que las reglas de Firestore permiten lectura al "vista pública" y restringen escritura (se definirá formalmente en la Etapa 3).
-- Wireframes de las pantallas.
-- Etapa 2: metodología.
+## 2026-09-12 - Repositorio GitHub + despliegue en Netlify
+
+### Qué se hizo
+- Repositorio creado en GitHub: `samelit-spect/fichas-quiniela` (https://github.com/samelit-spect/fichas-quiniela.git).
+- Repo local conectado al remote `origin` (branch `main`) y push inicial realizado.
+- Netlify importado desde GitHub: Base directory vacío (código en la raíz), build `npm run build`, publish `dist`.
+- Añadido `public/_redirects` (SPA: cualquier ruta → `/index.html`) para que `/login`, `/planilla/...`, etc. no den 404.
+- Netlify queda configurado para **build automático en cada push** (ver cambios en tiempo real).
+- Variables de entorno en Netlify: las mismas 6 claves `VITE_FIREBASE_*` del `.env`.
+- URL del sitio en Netlify: _(pendiente de registrar)_
+
+### Cómo conectar en futuras sesiones
+- **VS Code:** abrir la carpeta `Seminario proyecto 2`. Todo queda sincronizado vía panel Source Control (commit + push).
+- **Netlify:** cada `git push` a `main` dispara el deploy.
+- **Comandos útiles:** `npm run dev` (desarrollo local) · `npm run build` · `npm run lint`.
+
+### Próximos pasos
+- Vista pública (planilla del cliente).
+- Login real y panel de administración.
+- Wireframes y Etapa 2.

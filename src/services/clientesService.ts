@@ -1,4 +1,5 @@
 import {
+  addDoc,
   collection,
   doc,
   getDoc,
@@ -6,6 +7,7 @@ import {
   limit,
   orderBy,
   query,
+  updateDoc,
   where,
 } from 'firebase/firestore'
 import { db } from './firebase'
@@ -42,4 +44,26 @@ export async function listarClientesPorAgencia(agenciaId: string): Promise<Clien
   const q = query(collection(db, 'clientes'), where('agenciaId', '==', agenciaId))
   const snap = await getDocs(q)
   return snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<Cliente, 'id'>) }))
+}
+
+export async function crearCliente(datos: { apellido: string; nombre: string; agenciaId: string }) {
+  await addDoc(collection(db, 'clientes'), {
+    apellido: datos.apellido,
+    nombre: datos.nombre,
+    agenciaId: datos.agenciaId,
+    busqueda: normalizar(`${datos.apellido} ${datos.nombre}`),
+    creadoEl: new Date().toISOString(),
+  })
+}
+
+export async function actualizarCliente(
+  id: string,
+  datos: { apellido: string; nombre: string; agenciaId: string },
+) {
+  await updateDoc(doc(db, 'clientes', id), {
+    apellido: datos.apellido,
+    nombre: datos.nombre,
+    agenciaId: datos.agenciaId,
+    busqueda: normalizar(`${datos.apellido} ${datos.nombre}`),
+  })
 }

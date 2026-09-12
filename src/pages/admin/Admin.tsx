@@ -3,6 +3,7 @@ import { useAuth } from '../../context/auth'
 
 const TABS = [
   { to: '/admin/usuarios', label: 'Usuarios', icon: '👥' },
+  { to: '/admin/clientes', label: 'Clientes', icon: '🧾' },
   { to: '/admin/confirmaciones', label: 'Confirmaciones', icon: '✅' },
 ]
 
@@ -46,7 +47,7 @@ function Admin() {
         </div>
       </header>
 
-      <nav className="relative z-10 flex max-w-xl gap-2 px-5 pt-5 sm:px-10">
+      <nav className="relative z-10 flex max-w-2xl gap-2 px-5 pt-5 sm:px-10">
         {TABS.map((t) => {
           const activo = pathname.startsWith(t.to)
           return (

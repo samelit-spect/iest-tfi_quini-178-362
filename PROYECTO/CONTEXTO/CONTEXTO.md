@@ -173,9 +173,14 @@
 - **Reglas de seguridad de Firestore** siguen en modo prueba (test mode). Conviene formalizarlas (solo autenticados escriben; público solo lee `clientes`, `agencias`, `movimientos_confirmados`) — típico de Etapa 3.
 - Botón "Editar" de planilla pública → vista de planilla no editable (solo lectura) para el cliente; eso ya está (PlanillaPublica).
 
+## 2026-09-12 - Alta de clientes desde el panel
+
+- Nuevo tab **Clientes** en `/admin/clientes` (entre Usuarios y Confirmaciones): lista de todos los clientes con filtro por agencia y búsqueda en vivo.
+- **Alta/edición de clientes** en modal: apellido, nombre y agencia. Al guardar se recalcula el campo `busqueda` normalizado (apellido + nombre) para el buscador público.
+- Servicios nuevos: `crearCliente` y `actualizarCliente` en `src/services/clientesService.ts`; campo `busqueda?` agregado al tipo `Cliente`.
+
 ### Próximos pasos
 - Probar el flujo completo (crear empleado, cargar, confirmar).
-- Alta de clientes desde el panel (por ahora hay clientes demo).
 - Reglas de Firestore + cierre de la demo.
 
 ## 2026-09-12 - Panel de administración completo (usuarios + confirmaciones)

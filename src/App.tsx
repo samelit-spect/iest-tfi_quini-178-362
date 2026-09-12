@@ -7,6 +7,7 @@ import Agencia from './pages/Agencia'
 import FichaCliente from './pages/FichaCliente'
 import Admin from './pages/admin/Admin'
 import Usuarios from './pages/admin/Usuarios'
+import Clientes from './pages/admin/Clientes'
 import Confirmaciones from './pages/admin/Confirmaciones'
 import { AuthProvider } from './context/authContext'
 import { RutaProtegida } from './components/RutaProtegida'
@@ -53,6 +54,7 @@ function App() {
           >
             <Route index element={<Navigate to="/admin/usuarios" replace />} />
             <Route path="usuarios" element={<Usuarios />} />
+            <Route path="clientes" element={<Clientes />} />
             <Route path="confirmaciones" element={<Confirmaciones />} />
           </Route>
           <Route

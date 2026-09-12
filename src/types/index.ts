@@ -25,6 +25,7 @@ export interface Cliente {
   nombre: string
   agenciaId: string
   creadoEl: string
+  busqueda?: string
 }
 
 export interface Movimiento {

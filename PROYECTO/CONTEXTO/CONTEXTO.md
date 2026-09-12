@@ -44,7 +44,37 @@
 - Creado `PROYECTO/PLAN.md` con el recorrido navegable, roles, reglas de negocio, modelo de datos preliminar (colecciones Firestore) y próximos pasos.
 - `ETAPA-1-IDEA.md` actualizada y `ETAPA-1-IDEA.docx` regenerado: se agregó la sección "Recorrido del usuario", se actualizaron RF-02/03/05/08/09 y se añadió RF-11 (corrección).
 
+## 2026-09-12 - Puesta a punto del entorno
+
+### Qué se hizo
+- Proyecto **React + TypeScript + Vite** creado en la **raíz** del repo (código en la raíz, `PROYECTO/` = documentación).
+- Instalados: Tailwind CSS v4 (+ plugin en `vite.config.ts`), React Router DOM y Firebase.
+- Tema base en `index.css` (paleta brand roja "quiniela" + crema), fuente Nunito.
+- Páginas base: `Home` (con buscador público de planilla y botón iniciar sesión) y `Login` (placeholder sin lógica).
+- `src/types/index.ts`: tipos de dominio (Agencia, Usuario, Cliente, Movimiento).
+- `src/services/firebase.ts`: configuración de Firebase leyendo variables de entorno.
+- `.env.example` creado; `.env` copiado (vacío, ignorado por git). **Faltan las claves reales.**
+- Git inicializado (`-b main`) + primer commit. NOTA: Git ignora `.env` (no se sube).
+- **Verificado:** `npm run build` y `npm run lint` OK. `npm run dev` para desarrollo.
+
+### Pendiente: Firebase
+1. Crear proyecto en https://console.firebase.google.com (ej. nombre "fichas-quiniela").
+2. Agregar app **Web** y copiar las 6 claves en `.env` (hay un `.env.example` de referencia).
+3. Activar **Authentication** → sign-in "Correo electrónico/contraseña" (y Google si se quiere).
+4. Crear base de datos **Firestore** (modo producción; región cerca de Argentina, ej. `southamerica-east1`).
+
+### Pendiente: GitHub
+1. Crear repo en https://github.com/new (ej. nombre "fichas-quiniela", público/privado).
+2. Conectar el repo local ya inicializado:
+   `git remote add origin https://github.com/USUARIO/fichas-quiniela.git`
+   `git branch -M main`
+   `git push -u origin main`
+
+### Pendiente: Firestore (colecciones)
+- `usuarios`, `agencias`, `clientes`, `movimientos_pendientes`, `movimientos_confirmados`.
+- Crear primero `agencias` (178 y 362) y el usuario admin desde el panel en desarrollo.
+
 ### Próximos pasos
-- [ ] Wireframes de las pantallas.
-- [ ] Etapa 2: metodología.
-- [ ] Definir funciones adicionales del proyecto.
+- Completar claves de Firebase y probar login.
+- Wireframes de las pantallas.
+- Etapa 2: metodología.

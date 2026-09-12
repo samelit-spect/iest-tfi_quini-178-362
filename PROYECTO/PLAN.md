@@ -79,8 +79,18 @@ Los movimientos confirmados se pueden recuperar por cliente para mostrar el hist
 
 - El usuario mencionó que la gestión de planillas es "una de las funciones" del proyecto: quedan por definir otras funciones en próximas sesiones.
 
-## 8. Próximos pasos
+## 8. Estado del entorno (2026-09-12)
 
+- App React + Vite + TS creada en la **raíz** del repo. Tailwind v4, React Router y Firebase instalados.
+- `src/types/index.ts` con los tipos de dominio.
+- `src/services/firebase.ts` listo; `.env` vacío → **hay que completar las claves del proyecto Firebase**.
+- Git inicializado (main) con primer commit.
+- Pendientes: crear proyecto Firebase (+ Auth email y Firestore), crear colecciones y conectar GitHub.
+
+## 9. Próximos pasos
+
+- [ ] Completar claves de Firebase en `.env` y crear colecciones en Firestore.
+- [ ] Conectar repo GitHub (remote origin + push).
 - [ ] Wireframes de las pantallas (Etapa 1).
 - [ ] Etapa 2: metodología de desarrollo.
 - [ ] Definir funciones adicionales del proyecto.

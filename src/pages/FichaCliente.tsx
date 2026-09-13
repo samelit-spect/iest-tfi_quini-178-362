@@ -152,7 +152,7 @@ function FichaCliente() {
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-3xl px-5 sm:px-10">
+      <main className="mx-auto w-full max-w-7xl px-5 sm:px-10">
         <Link
           to={`/agencia/${agenciaId}`}
           className="mt-6 inline-flex items-center gap-1.5 rounded-full border border-stone-300 bg-white px-4 py-2 text-sm font-bold text-stone-700 transition hover:border-stone-400"
@@ -192,44 +192,46 @@ function FichaCliente() {
           </span>
         </div>
 
-        <FormMovimiento
-          key={editando ? editando.id : 'nuevo'}
-          movimiento={editando}
-          clienteId={clienteId}
-          agenciaId={agenciaId}
-          perfilUid={perfil?.uid ?? ''}
-          perfilNombre={perfil?.nombre ?? ''}
-          onCancelar={() => setEditando(null)}
-          onCambio={recargar}
-        />
-
-        {perfil?.rol === 'admin' ? (
-          <TablaPlanillaAdmin
-            key={clienteId}
-            confirmados={confirmados}
-            pendientes={pendientes}
+        <div className="mt-8 grid items-start gap-6 lg:grid-cols-2">
+          <FormMovimiento
+            key={editando ? editando.id : 'nuevo'}
+            movimiento={editando}
+            clienteId={clienteId}
+            agenciaId={agenciaId}
             perfilUid={perfil?.uid ?? ''}
             perfilNombre={perfil?.nombre ?? ''}
-            onEditar={(m) => {
-              setEditando(m)
-              window.scrollTo({ top: 0, behavior: 'smooth' })
-            }}
+            onCancelar={() => setEditando(null)}
             onCambio={recargar}
           />
-        ) : (
-          <>
-            <ListaPendientes
+
+          {perfil?.rol === 'admin' ? (
+            <TablaPlanillaAdmin
+              key={clienteId}
+              confirmados={confirmados}
               pendientes={pendientes}
               perfilUid={perfil?.uid ?? ''}
+              perfilNombre={perfil?.nombre ?? ''}
               onEditar={(m) => {
                 setEditando(m)
                 window.scrollTo({ top: 0, behavior: 'smooth' })
               }}
               onCambio={recargar}
             />
-            <ListaConfirmados confirmados={confirmados} />
-          </>
-        )}
+          ) : (
+            <div>
+              <ListaPendientes
+                pendientes={pendientes}
+                perfilUid={perfil?.uid ?? ''}
+                onEditar={(m) => {
+                  setEditando(m)
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
+                }}
+                onCambio={recargar}
+              />
+              <ListaConfirmados confirmados={confirmados} />
+            </div>
+          )}
+        </div>
       </main>
     </div>
   )

@@ -38,7 +38,11 @@ export interface Movimiento {
   fecha: string
   creadoPor: string
   creadoPorNombre: string
+  creadoEl: string
   estado: EstadoMovimiento
+  editadoPor?: string
+  editadoPorNombre?: string
+  editadoEl?: string
   confirmadoPor?: string
   confirmadoPorNombre?: string
   confirmadoEl?: string

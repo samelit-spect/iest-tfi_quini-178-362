@@ -105,7 +105,7 @@ Los movimientos confirmados se pueden recuperar por cliente para mostrar el hist
 - [ ] Implementar dashboard del admin (saldos, pendientes, movimientos del día).
 - [ ] Implementar tirillas (cierre de turno del agenciero).
 - [ ] Implementar exportación a Excel/PDF.
-- [ ] Completar auditoría (quién/cuándo en cada movimiento y tirilla).
+- [x] Auditoría de movimientos (quién/cuándo cargó, editó, confirmó y rechazó). Las tirillas llevarán la misma traza cuando se construyan.
 - [ ] Reglas de seguridad de Firestore por rol (hoy siguen en modo prueba).
 - [ ] Probar el flujo completo en Netlify con empleados creados desde el panel.
 - [ ] Etapa 2: metodología de desarrollo.

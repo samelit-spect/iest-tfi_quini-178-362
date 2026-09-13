@@ -12,7 +12,7 @@ import {
   listarPendientesPorCliente,
   rechazarMovimiento,
 } from '../services/movimientosService'
-import { formatoFecha, formatoPesos } from '../utils/format'
+import { formatoFecha, formatoFechaHora, formatoPesos } from '../utils/format'
 import NavAdmin from '../components/NavAdmin'
 import { useCountUp } from '../hooks/useCountUp'
 import type { Cliente, Movimiento, TipoMovimiento } from '../types'
@@ -285,7 +285,10 @@ function FormMovimiento({
         fecha: new Date(`${fecha}T12:00:00`).toISOString(),
       }
       if (movimiento) {
-        await actualizarMovimientoPendiente(movimiento.id, datos)
+        await actualizarMovimientoPendiente(movimiento.id, datos, {
+          uid: perfilUid,
+          nombre: perfilNombre || 'Personal',
+        })
         setMensaje('Movimiento pendiente actualizado.')
         onCancelar()
       } else {
@@ -511,6 +514,7 @@ function ListaPendientes({
                         <p className="truncate text-base font-bold text-stone-800">{m.descripcion}</p>
                         <p className="text-xs font-semibold text-stone-500">
                           {mio ? 'Vos lo cargaste' : `Lo cargó ${m.creadoPorNombre}`}
+                          {m.editadoPorNombre ? ` · Editado por ${m.editadoPorNombre}` : ''}
                         </p>
                       </div>
                     </div>
@@ -555,6 +559,26 @@ function ListaPendientes({
 }
 
 const DIAS_POR_VISTA = 5
+
+function pieAuditoria(m: Movimiento): string {
+  const partes = [
+    m.estado === 'pendiente'
+      ? 'Pendiente'
+      : m.estado === 'rechazado'
+        ? 'Rechazado'
+        : 'Confirmado',
+    m.creadoEl
+      ? `Cargó ${m.creadoPorNombre} · ${formatoFechaHora(m.creadoEl)}`
+      : `Cargó ${m.creadoPorNombre}`,
+  ]
+  if (m.editadoEl && m.editadoPorNombre)
+    partes.push(`Editó ${m.editadoPorNombre} · ${formatoFechaHora(m.editadoEl)}`)
+  if (m.confirmadoEl && m.confirmadoPorNombre)
+    partes.push(`Confirmó ${m.confirmadoPorNombre} · ${formatoFechaHora(m.confirmadoEl)}`)
+  if (m.rechazadoEl && m.rechazadoPorNombre)
+    partes.push(`Rechazó ${m.rechazadoPorNombre} · ${formatoFechaHora(m.rechazadoEl)}`)
+  return partes.join(' · ')
+}
 
 type FilaPlanilla = {
   fecha: string
@@ -791,9 +815,7 @@ function TablaPlanillaAdmin({
                                         {m.descripcion}
                                       </p>
                                       <p className="text-xs font-semibold text-stone-500">
-                                        {esPendiente
-                                          ? `Pendiente · lo cargó ${m.creadoPorNombre}`
-                                          : `Confirmado${m.confirmadoPorNombre ? ` por ${m.confirmadoPorNombre}` : ''}`}
+                                        {pieAuditoria(m)}
                                       </p>
                                     </div>
                                   </div>
@@ -934,9 +956,7 @@ function ListaConfirmados({ confirmados }: { confirmados: Movimiento[] }) {
           <li key={m.id} className="flex items-center justify-between gap-3 border-b border-stone-100 px-5 py-4 last:border-0">
             <div className="min-w-0">
               <p className="truncate text-base font-bold text-stone-800">{m.descripcion}</p>
-              <p className="text-sm font-semibold text-stone-500">
-                {formatoFecha(m.fecha)} · Confirmado
-              </p>
+              <p className="text-sm font-semibold text-stone-500">{pieAuditoria(m)}</p>
             </div>
             <p
               className={`shrink-0 text-lg font-extrabold tabular-nums ${m.tipo === 'credito' ? 'text-emerald-600' : 'text-stone-800'}`}

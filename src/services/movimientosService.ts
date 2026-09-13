@@ -101,8 +101,17 @@ export async function crearMovimientoPendiente(datos: {
 export async function actualizarMovimientoPendiente(
   id: string,
   cambios: Partial<Pick<Movimiento, 'tipo' | 'monto' | 'descripcion' | 'fecha'>>,
+  editor?: { uid: string; nombre: string },
 ) {
-  await updateDoc(doc(db, 'movimientos_pendientes', id), cambios)
+  const aGuardar = editor
+    ? {
+        ...cambios,
+        editadoPor: editor.uid,
+        editadoPorNombre: editor.nombre,
+        editadoEl: new Date().toISOString(),
+      }
+    : cambios
+  await updateDoc(doc(db, 'movimientos_pendientes', id), aGuardar)
 }
 
 export async function eliminarMovimientoPendiente(id: string) {

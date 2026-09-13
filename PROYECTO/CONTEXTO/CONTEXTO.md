@@ -229,3 +229,19 @@
 
 ### Próximos pasos
 Tirillas (cierre de turno) → exportación → auditoría → reglas de Firestore → prueba con empleados → Etapa 2.
+
+## 2026-09-13 - Auditoría de movimientos (RF-13)
+
+### Qué se hizo
+- **Tipo `Movimiento`** completado: `creadoEl` (ya se guardaba), `editadoPor`, `editadoPorNombre`, `editadoEl`.
+- **`actualizarMovimientoPendiente`** ahora recibe el editor (uid + nombre) y guarda quién y cuándo editó el pendiente.
+- **UI con traza completa (`pieAuditoria`)** en: fila expandida de la planilla del admin y lista de confirmados. Ej: *"Confirmado · Cargó Juan 13/09 10:30 · Editó María 13/09 11:00 · Confirmó Sami 13/09 18:00"*. La lista de pendientes del empleado muestra "Lo cargó X · Editado por Y".
+- Helper nuevo `formatoFechaHora()` en `src/utils/format.ts` (fecha + hora es-AR).
+- **Verificado:** lint y build OK.
+
+### Cobertura
+- Carga: creadoPor/creadoPorNombre/creadoEl ✓ · Edición: editadoPor* ✓ · Confirmación: confirmadoPor* ✓ · Rechazo: rechazadoPor* ✓. Al ser los datos copiados al confirmar, la traza queda inmutable en `movimientos_confirmados`.
+- Movimientos viejos sin los campos no rompen (fallback en el pie).
+
+### Próximos pasos
+Tirillas → exportación → reglas de Firestore → prueba con empleados → Etapa 2.

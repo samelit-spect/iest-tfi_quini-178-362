@@ -216,3 +216,16 @@
 
 ### Próximos pasos según plan
 1. Implementar el dashboard del admin. 2. Implementar tirillas. 3. Exportación. 4. Auditoría. 5. Reglas de Firestore por rol. 6. Probar flujo completo con empleados. 7. Etapa 2 (metodología).
+
+## 2026-09-13 - Dashboard del administrador (RF-10)
+
+### Qué se hizo
+- Nuevo tab **Inicio (📊)** en la navegación del admin (`NavAdmin`), primero del menú.
+- **`/admin/dashboard`** (nueva `src/pages/admin/Dashboard.tsx`): el panel ahora abre ahí (antes en Usuarios).
+  - Por cada agencia (admin) o la propia (empleado): tarjeta con **clientes**, **pendientes sin confirmar** (cantidad + monto neto) y **movimientos de hoy** (créditos/debitos) y **saldo neto total**; botón "Abrir planillas".
+  - Empleado: solo ve su agencia; admin: las dos agencias.
+- Nuevos helpers en `movimientosService`: `listarPendientesPorAgencia()` y `leerMovimientosConfirmadosPorAgencia()` (filtran por `agenciaId` sin índices compuestos).
+- **Verificado:** lint y build OK.
+
+### Próximos pasos
+Tirillas (cierre de turno) → exportación → auditoría → reglas de Firestore → prueba con empleados → Etapa 2.

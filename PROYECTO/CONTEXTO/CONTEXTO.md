@@ -265,3 +265,19 @@ Tirillas → exportación → reglas de Firestore → prueba con empleados → E
 
 ### Próximos pasos
 Exportación → reglas de Firestore → prueba con empleados → Etapa 2.
+
+## 2026-09-13 - Exportación a Excel/PDF de planillas y tirillas (RF-14)
+
+### Qué se hizo (sin dependencias nuevas)
+- **`src/utils/exportar.ts`:** `descargarCSV` (UTF-8 con BOM, separador `;` para Excel en es-AR, comillas escapadas), `exportarPlanillaCSV` (Fecha | Tipo | Descripción | Importe | Estado; excluye `rechazado`) y `exportarTirillaCSV` (total de ventas, premios, caja, diferencia anterior, cada "otro", comisión del agenciero y diferencia final).
+- **Ficha del cliente:** botones **📥 Excel** y **🖨️ PDF** junto a los totales de créditos/débitos; el Excel descarga la planilla (confirmados + pendientes) a `.csv`. El PDF usa `window.print()` con CSS de impresión.
+- **Tirillas:** botones **📥 Excel** y **🖨️ PDF** junto al selector fecha/turno (Excel = tirilla del día; PDF imprime las 3 columnas).
+- **CSS de impresión** (`index.css`): clase `no-print` oculta al imprimir headers sticky, formularios, selector, botones e historial (aplicada en FichaCliente y Tirillas) + `@page { margin: 14mm }`.
+- **Verificado:** lint y build OK.
+
+### Ajustes pendientes para la próxima sesión (revisar con el usuario)
+- La impresión de la planilla muestra las filas resumidas por día; faltaría expandir el detalle al imprimir.
+- Fórmula de la diferencia de la tirilla a validar con el dueño.
+
+### Próximos pasos
+Reglas de Firestore → prueba con empleados → Etapa 2.

@@ -136,3 +136,15 @@ body {
   );
   background-size: 400px 100%;
 }
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  @page {
+    margin: 14mm;
+  }
+  body {
+    background: #fff !important;
+  }
+}

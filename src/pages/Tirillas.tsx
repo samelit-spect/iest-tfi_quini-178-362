@@ -14,6 +14,7 @@ import {
   leerUltimaTirilla,
 } from '../services/tirillasService'
 import { formatoPesos } from '../utils/format'
+import { exportarTirillaCSV } from '../utils/exportar'
 import NavAdmin from '../components/NavAdmin'
 import type { ConceptoOtro, Movimiento, TurnoTirilla } from '../types'
 
@@ -178,7 +179,7 @@ function Tirillas() {
 
   return (
     <div className="min-h-svh pb-16">
-      <header className="sticky top-0 z-40 flex flex-wrap items-center justify-between gap-3 border-b border-stone-200/70 bg-white/80 px-5 py-3 backdrop-blur sm:px-10">
+      <header className="no-print sticky top-0 z-40 flex flex-wrap items-center justify-between gap-3 border-b border-stone-200/70 bg-white/80 px-5 py-3 backdrop-blur sm:px-10">
         <div className="flex items-center gap-2.5">
           <div className="grid h-10 w-10 place-items-center rounded-xl bg-coal-950 text-lg font-extrabold text-white shadow-lg rotate-3">
             FQ
@@ -205,7 +206,7 @@ function Tirillas() {
       </header>
 
       <main className="mx-auto w-full max-w-7xl px-5 sm:px-10">
-        <div className="mt-6 flex flex-wrap items-center gap-3">
+        <div className="no-print mt-6 flex flex-wrap items-end gap-3">
           <div>
             <label className="mb-1 block text-xs font-bold uppercase tracking-wide text-stone-500">
               Fecha
@@ -230,6 +231,46 @@ function Tirillas() {
               <option value="manana">Mañana (apertura)</option>
               <option value="tarde">Tarde (cierre)</option>
             </select>
+          </div>
+          <div className="ml-auto flex gap-2 pb-1">
+            <button
+              type="button"
+              onClick={() =>
+                exportarTirillaCSV(
+                  `tirilla-agencia-${agencia?.numero ?? agenciaId}-${fecha}-${turno}.csv`,
+                  {
+                    id: tirillaId ?? '',
+                    agenciaId: agenciaId ?? '',
+                    fecha,
+                    turno,
+                    ventas: Number(ventas) || 0,
+                    premios: Number(premios) || 0,
+                    caja: Number(caja) || 0,
+                    diferenciaAnterior: Number(diferenciaAnterior) || 0,
+                    otros,
+                    comisionPorcentaje,
+                    comision: comisionCalc,
+                    diferencia: diferenciaCalc,
+                    creadoPor: '',
+                    creadoPorNombre: '',
+                    creadoEl: '',
+                  },
+                  otros,
+                )
+              }
+              className="rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-2.5 text-sm font-bold text-emerald-700 transition hover:bg-emerald-100"
+              title="Descargar la tirilla en formato Excel (.csv)"
+            >
+              📥 Excel
+            </button>
+            <button
+              type="button"
+              onClick={() => window.print()}
+              className="rounded-xl border border-stone-300 bg-white px-4 py-2.5 text-sm font-bold text-stone-700 transition hover:border-stone-400"
+              title="Imprimir o guardar como PDF"
+            >
+              🖨️ PDF
+            </button>
           </div>
           {historial.length > 0 && (
             <span className="ml-auto rounded-full bg-stone-100 px-3 py-1 text-xs font-bold text-stone-500">
@@ -517,7 +558,7 @@ function Tirillas() {
 
         {/* ———————————————————————————————— HISTORIAL ————————————————————————————————————— */}
         {historial.length > 0 && (
-          <section className="mt-10 animate-fade-up">
+          <section className="no-print mt-10 animate-fade-up">
             <h2 className="text-lg font-extrabold text-stone-900">Historial de tirillas</h2>
             <ul className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {historial.map((h, i) => (

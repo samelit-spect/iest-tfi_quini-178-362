@@ -13,6 +13,7 @@ import {
   rechazarMovimiento,
 } from '../services/movimientosService'
 import { formatoFecha, formatoFechaHora, formatoPesos } from '../utils/format'
+import { exportarPlanillaCSV } from '../utils/exportar'
 import NavAdmin from '../components/NavAdmin'
 import { useCountUp } from '../hooks/useCountUp'
 import type { Cliente, Movimiento, TipoMovimiento } from '../types'
@@ -123,7 +124,7 @@ function FichaCliente() {
 
   return (
     <div className="min-h-svh pb-16">
-      <header className="sticky top-0 z-40 flex flex-wrap items-center justify-between gap-3 border-b border-stone-200/70 bg-white/80 px-5 py-3 backdrop-blur sm:px-10">
+      <header className="no-print sticky top-0 z-40 flex flex-wrap items-center justify-between gap-3 border-b border-stone-200/70 bg-white/80 px-5 py-3 backdrop-blur sm:px-10">
         <div className="flex items-center gap-2.5">
           <div className="grid h-10 w-10 place-items-center rounded-xl bg-coal-950 text-lg font-extrabold text-white shadow-lg rotate-3">
             FQ
@@ -188,16 +189,42 @@ function FichaCliente() {
           </div>
         </div>
 
-        <div className="mt-5 flex flex-wrap gap-2 text-sm font-bold">
-          <span className="rounded-full bg-emerald-100 px-3 py-1 text-emerald-700">
-            Créditos {formatoPesos.format(totalCredito)}
-          </span>
-          <span className="rounded-full bg-amber-100 px-3 py-1 text-amber-700">
-            Débitos {formatoPesos.format(totalDebito)}
-          </span>
+        <div className="mt-5 flex flex-wrap items-center justify-between gap-3 text-sm font-bold">
+          <div className="flex flex-wrap gap-2">
+            <span className="rounded-full bg-emerald-100 px-3 py-1 text-emerald-700">
+              Créditos {formatoPesos.format(totalCredito)}
+            </span>
+            <span className="rounded-full bg-amber-100 px-3 py-1 text-amber-700">
+              Débitos {formatoPesos.format(totalDebito)}
+            </span>
+          </div>
+          <div className="flex flex-wrap gap-2 no-print">
+            <button
+              type="button"
+              onClick={() =>
+                exportarPlanillaCSV(
+                  `planilla-${carga.cliente.apellido}-${carga.cliente.nombre}.csv`,
+                  [...confirmados, ...pendientes],
+                )
+              }
+              className="rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-2 text-emerald-700 transition hover:bg-emerald-100"
+              title="Descargar la planilla en formato Excel (.csv)"
+            >
+              📥 Excel
+            </button>
+            <button
+              type="button"
+              onClick={() => window.print()}
+              className="rounded-xl border border-stone-300 bg-white px-4 py-2 text-stone-700 transition hover:border-stone-400"
+              title="Imprimir o guardar como PDF"
+            >
+              🖨️ PDF
+            </button>
+          </div>
         </div>
 
         <div className="mt-8 grid items-start gap-6 lg:grid-cols-2">
+          <div className="no-print">
           <FormMovimiento
             key={editando ? editando.id : 'nuevo'}
             movimiento={editando}
@@ -208,6 +235,7 @@ function FichaCliente() {
             onCancelar={() => setEditando(null)}
             onCambio={recargar}
           />
+        </div>
 
           {perfil?.rol === 'admin' ? (
             <TablaPlanillaAdmin

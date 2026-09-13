@@ -30,15 +30,30 @@ export async function leerMovimientosConfirmados(clienteId: string): Promise<Mov
 export async function leerAgencia(id: string) {
   const snap = await getDoc(doc(db, 'agencias', id))
   if (!snap.exists()) return null
-  return { id: snap.id, ...(snap.data() as { numero: number; nombre: string }) }
+  const d = snap.data() as { numero: number; nombre: string; comisionPorcentaje?: number }
+  return {
+    id: snap.id,
+    numero: d.numero,
+    nombre: d.nombre,
+    comisionPorcentaje: d.comisionPorcentaje ?? 8,
+  }
 }
 
 export async function listarAgencias() {
   const snap = await getDocs(collection(db, 'agencias'))
-  return snap.docs.map((d) => ({
-    id: d.id,
-    ...(d.data() as { numero: number; nombre: string }),
-  }))
+  return snap.docs.map((d) => {
+    const data = d.data() as { numero: number; nombre: string; comisionPorcentaje?: number }
+    return {
+      id: d.id,
+      numero: data.numero,
+      nombre: data.nombre,
+      comisionPorcentaje: data.comisionPorcentaje ?? 8,
+    }
+  })
+}
+
+export async function actualizarComisionPorcentaje(agenciaId: string, comisionPorcentaje: number) {
+  await updateDoc(doc(db, 'agencias', agenciaId), { comisionPorcentaje })
 }
 
 export async function listarPendientes(): Promise<Movimiento[]> {

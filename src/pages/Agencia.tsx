@@ -127,6 +127,18 @@ function Agencia() {
           </p>
         </div>
 
+        <div className="mt-5 inline-flex w-full items-center justify-center gap-1 rounded-2xl border border-stone-200 bg-white p-1 shadow-sm sm:w-auto sm:bg-transparent sm:border-transparent sm:shadow-none">
+          <span className="flex-1 rounded-xl bg-coal-950 px-5 py-2.5 text-center text-base font-bold text-white sm:flex-none">
+            📋 Planillas
+          </span>
+          <Link
+            to={`/agencia/${agenciaId}/tirillas`}
+            className="flex-1 rounded-xl px-5 py-2.5 text-center text-base font-bold text-stone-600 transition hover:bg-stone-100 sm:flex-none"
+          >
+            🧾 Tirillas
+          </Link>
+        </div>
+
         <div className="relative mt-6 animate-fade-up" style={{ animationDelay: '90ms' }}>
           <svg
             className="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-stone-400"

@@ -245,3 +245,23 @@ Tirillas (cierre de turno) → exportación → auditoría → reglas de Firesto
 
 ### Próximos pasos
 Tirillas → exportación → reglas de Firestore → prueba con empleados → Etapa 2.
+
+## 2026-09-13 - Tirillas: cierre de turno del agenciero (RF-12)
+
+### Decisiones de negocio (validadas con el usuario)
+- **Vista en 3 columnas** (pc): **① clientes del día** · **② conceptos del cierre** · **③ cierre con totales**.
+- **Total de ventas:** se ingresa a mano (el agenciero escribe el monto total vendido).
+- **Comisión del agenciero: % por agencia** (campo `comisionPorcentaje` en `agencias`, default 8, editable solo por el admin desde la misma vista).
+- **Guardado: una tirilla por agencia + fecha + turno** (mañana/tarde). Si existe, se actualiza (no se duplica).
+
+### Qué se hizo
+- **Tipos:** `Tirilla`, `ConceptoOtro`, `TurnoTirilla`; `Agencia.comisionPorcentaje?`.
+- **`src/services/tirillasService.ts`:** `leerTirilla`, `guardarTirilla` (upsert con auditoría creado/editado), `listarTirillas`, `leerUltimaTirilla`. `leerAgencia/listarAgencias` ahora devuelven `comisionPorcentaje` (default 8) y hay `actualizarComisionPorcentaje`.
+- **`src/pages/Tirillas.tsx`** (ruta `/agencia/:agenciaId/tirillas`):
+  - Selector fecha + turno. Col 1: movimientos confirmados del día (créditos verdes / débitos oscuros, nombre del cliente) con totales. Col 2: premios, caja, diferencia del día anterior (arrastrada) y "otros" dinámicos (concepto + importe, varios). Col 3: total de ventas, % comisión, comisión calculada y **diferencia** (ventas − premios − caja + dif. anterior − comisión − otros) y botón guardar. Debajo: historial de tirillas de la agencia.
+  - Fórmula provisional a validar con el dueño en pantalla.
+- **Vista de agencia:** pestañas centradas **📋 Planillas | 🧾 Tirillas**.
+- **Verificado:** lint y build OK.
+
+### Próximos pasos
+Exportación → reglas de Firestore → prueba con empleados → Etapa 2.

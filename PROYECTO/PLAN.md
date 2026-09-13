@@ -103,7 +103,8 @@ Los movimientos confirmados se pueden recuperar por cliente para mostrar el hist
 - [x] Panel de administración (usuarios, planillas, confirmaciones).
 - [x] Definir funciones adicionales del proyecto (tirillas, dashboard, auditoría, exportación).
 - [ ] Implementar dashboard del admin (saldos, pendientes, movimientos del día).
-- [ ] Implementar tirillas (cierre de turno del agenciero).
+- [x] Lista de módulos de la agencia: Planillas + Tirillas (desde la vista de agencia, pestañas).
+- [x] Implementar tirillas (cierre de turno del agenciero) — 3 columnas: clientes del día / conceptos / cierre.
 - [ ] Implementar exportación a Excel/PDF.
 - [x] Auditoría de movimientos (quién/cuándo cargó, editó, confirmó y rechazó). Las tirillas llevarán la misma traza cuando se construyan.
 - [ ] Reglas de seguridad de Firestore por rol (hoy siguen en modo prueba).

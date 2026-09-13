@@ -5,6 +5,7 @@ import PlanillaPublica from './pages/PlanillaPublica'
 import ElegirAgencia from './pages/ElegirAgencia'
 import Agencia from './pages/Agencia'
 import FichaCliente from './pages/FichaCliente'
+import Tirillas from './pages/Tirillas'
 import Admin from './pages/admin/Admin'
 import Usuarios from './pages/admin/Usuarios'
 import Clientes from './pages/admin/Clientes'
@@ -44,6 +45,14 @@ function App() {
             element={
               <RutaProtegida>
                 <FichaCliente />
+              </RutaProtegida>
+            }
+          />
+          <Route
+            path="/agencia/:agenciaId/tirillas"
+            element={
+              <RutaProtegida>
+                <Tirillas />
               </RutaProtegida>
             }
           />

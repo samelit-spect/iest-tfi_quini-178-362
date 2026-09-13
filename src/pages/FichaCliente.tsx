@@ -208,6 +208,7 @@ function FichaCliente() {
           perfilUid={perfil?.uid ?? ''}
           perfilNombre={perfil?.nombre ?? ''}
           esAdmin={perfil?.rol === 'admin'}
+          saldoConfirmado={saldo}
           onEditar={(m) => {
             setEditando(m)
             window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -414,6 +415,7 @@ function ListaPendientes({
   perfilUid,
   perfilNombre,
   esAdmin,
+  saldoConfirmado,
   onEditar,
   onCambio,
 }: {
@@ -421,6 +423,7 @@ function ListaPendientes({
   perfilUid: string
   perfilNombre: string
   esAdmin: boolean
+  saldoConfirmado: number
   onEditar: (m: Movimiento) => void
   onCambio: () => Promise<void>
 }) {
@@ -437,23 +440,24 @@ function ListaPendientes({
     }
   }
 
-  async function confirmar(m: Movimiento) {
-    if (!esAdmin || ocupado) return
-    setOcupado(m.id)
+  async function confirmar(fecha: string, movs: Movimiento[]) {
+    if (ocupado) return
+    setOcupado(fecha)
     try {
-      await confirmarMovimiento(m, perfilUid, perfilNombre)
+      for (const m of movs) await confirmarMovimiento(m, perfilUid, perfilNombre)
       await onCambio()
     } finally {
       setOcupado(null)
     }
   }
 
-  async function rechazar(m: Movimiento) {
-    if (!esAdmin || ocupado) return
-    if (!window.confirm('¿Rechazar este movimiento? No se agregará a la planilla.')) return
-    setOcupado(m.id)
+  async function rechazar(fecha: string, movs: Movimiento[]) {
+    if (ocupado) return
+    const n = movs.length
+    if (!window.confirm(`¿Rechazar ${n} movimiento(s) de esta fecha? No se agregarán a la planilla.`)) return
+    setOcupado(fecha)
     try {
-      await rechazarMovimiento(m, perfilUid, perfilNombre)
+      for (const m of movs) await rechazarMovimiento(m, perfilUid, perfilNombre)
       await onCambio()
     } finally {
       setOcupado(null)
@@ -472,6 +476,89 @@ function ListaPendientes({
 
   const grupos = agruparPorFecha(pendientes)
 
+  const filas = grupos.reduce<{ fecha: string; movimientos: Movimiento[]; creditos: number; debitos: number; neto: number; saldoCorrido: number }[]>(
+    (acc, g) => {
+      const previo = acc.length > 0 ? acc[acc.length - 1].saldoCorrido : saldoConfirmado
+      acc.push({ ...g, saldoCorrido: previo + g.neto })
+      return acc
+    },
+    [],
+  )
+
+  if (esAdmin) {
+    return (
+      <section className="mt-8 animate-fade-up" style={{ animationDelay: '80ms' }}>
+        <div className="mb-3 flex items-center justify-between">
+          <h2 className="text-xl font-extrabold text-stone-900">Pendientes por confirmar</h2>
+          <span className="rounded-full bg-amber-100 px-3 py-1 text-sm font-bold text-amber-700">
+            {pendientes.length}
+          </span>
+        </div>
+        <div className="overflow-x-auto rounded-2xl bg-white shadow-sm ring-1 ring-stone-100">
+          <table className="w-full min-w-[600px]">
+            <thead>
+              <tr className="border-b border-stone-200 bg-stone-50 text-xs font-extrabold uppercase tracking-wide text-stone-500">
+                <th className="px-4 py-3 text-right">Créditos</th>
+                <th className="px-4 py-3 text-right">Débitos</th>
+                <th className="px-4 py-3 text-right text-stone-700">Total</th>
+                <th className="px-4 py-3 text-left">Fecha</th>
+                <th className="px-4 py-3 text-right">Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filas.map((f) => (
+                <tr key={f.fecha} className="border-b border-stone-100 last:border-0">
+                  <td className="px-4 py-3.5 text-right font-extrabold tabular-nums text-emerald-600">
+                    {f.creditos > 0 ? formatoPesos.format(f.creditos) : '—'}
+                  </td>
+                  <td className="px-4 py-3.5 text-right font-extrabold tabular-nums text-stone-800">
+                    {f.debitos > 0 ? formatoPesos.format(f.debitos) : '—'}
+                  </td>
+                  <td
+                    className={`px-4 py-3.5 text-right font-extrabold tabular-nums ${
+                      f.saldoCorrido >= 0 ? 'text-stone-900' : 'text-rose-600'
+                    }`}
+                  >
+                    {formatoPesos.format(f.saldoCorrido)}
+                  </td>
+                  <td className="px-4 py-3.5 text-left font-bold text-stone-700 whitespace-nowrap">
+                    {formatoFecha(f.movimientos[0].fecha)}
+                  </td>
+                  <td className="px-4 py-3.5 text-right whitespace-nowrap">
+                    <span className="mr-2 text-xs font-bold text-stone-400">
+                      {f.movimientos.length} mov.
+                    </span>
+                    <button
+                      type="button"
+                      disabled={ocupado === f.fecha}
+                      onClick={() => void confirmar(f.fecha, f.movimientos)}
+                      className="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-bold text-white shadow-sm shadow-emerald-600/20 transition hover:-translate-y-0.5 hover:bg-emerald-700 disabled:opacity-60"
+                      title="Confirmar movimientos de esta fecha"
+                    >
+                      {ocupado === f.fecha ? '…' : '✓ Confirmar'}
+                    </button>
+                    <button
+                      type="button"
+                      disabled={ocupado === f.fecha}
+                      onClick={() => void rechazar(f.fecha, f.movimientos)}
+                      className="ml-2 rounded-xl border border-rose-200 bg-rose-50 px-4 py-2 text-sm font-bold text-rose-600 transition hover:bg-rose-100 disabled:opacity-60"
+                      title="Rechazar movimientos de esta fecha"
+                    >
+                      ✕
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="mt-2 text-sm font-semibold text-stone-400">
+          El Total se calcula sobre el saldo actual y va sumando los pendientes por fecha.
+        </p>
+      </section>
+    )
+  }
+
   return (
     <section className="mt-8 animate-fade-up" style={{ animationDelay: '80ms' }}>
       <div className="mb-3 flex items-center justify-between">
@@ -481,14 +568,14 @@ function ListaPendientes({
         </span>
       </div>
       <div className="space-y-4">
-        {grupos.map(({ fecha, movimientos, subtotal }) => (
+        {grupos.map(({ fecha, movimientos, neto }) => (
           <div key={fecha} className="rounded-2xl bg-white shadow-sm ring-1 ring-stone-100 animate-fade-up overflow-hidden">
             <div className="flex items-center justify-between border-b border-stone-100 bg-stone-50 px-4 py-2.5">
               <p className="text-sm font-extrabold text-stone-700 uppercase tracking-wide">
                 {formatoFecha(movimientos[0].fecha)}
               </p>
               <p className="text-sm font-bold tabular-nums text-stone-600">
-                Subtotal: {formatoPesos.format(subtotal)}
+                Subtotal: {formatoPesos.format(neto)}
               </p>
             </div>
             <ul>
@@ -521,29 +608,7 @@ function ListaPendientes({
                         {m.tipo === 'credito' ? '+' : '−'}
                         {formatoPesos.format(m.monto)}
                       </p>
-                      {esAdmin && (
-                        <>
-                          <button
-                            type="button"
-                            disabled={ocupado === m.id}
-                            onClick={() => void confirmar(m)}
-                            className="rounded-xl bg-emerald-600 px-3.5 py-2 text-sm font-bold text-white shadow-sm shadow-emerald-600/20 transition hover:-translate-y-0.5 hover:bg-emerald-700 disabled:opacity-60"
-                            title="Confirmar"
-                          >
-                            {ocupado === m.id ? '…' : '✓'}
-                          </button>
-                          <button
-                            type="button"
-                            disabled={ocupado === m.id}
-                            onClick={() => void rechazar(m)}
-                            className="rounded-xl border border-rose-200 bg-rose-50 px-3.5 py-2 text-sm font-bold text-rose-600 transition hover:bg-rose-100 disabled:opacity-60"
-                            title="Rechazar"
-                          >
-                            ✕
-                          </button>
-                        </>
-                      )}
-                      {mio && !esAdmin && (
+                      {mio && (
                         <>
                           <button
                             type="button"
@@ -576,7 +641,13 @@ function ListaPendientes({
   )
 }
 
-function agruparPorFecha(movimientos: Movimiento[]): { fecha: string; movimientos: Movimiento[]; subtotal: number }[] {
+function agruparPorFecha(movimientos: Movimiento[]): {
+  fecha: string
+  movimientos: Movimiento[]
+  creditos: number
+  debitos: number
+  neto: number
+}[] {
   const mapa = new Map<string, Movimiento[]>()
   for (const m of movimientos) {
     const key = aYmd(m.fecha)
@@ -586,11 +657,11 @@ function agruparPorFecha(movimientos: Movimiento[]): { fecha: string; movimiento
   }
   return Array.from(mapa.entries())
     .sort((a, b) => b[0].localeCompare(a[0]))
-    .map(([fecha, movimientos]) => ({
-      fecha,
-      movimientos,
-      subtotal: movimientos.reduce((s, m) => s + (m.tipo === 'credito' ? m.monto : -m.monto), 0),
-    }))
+    .map(([fecha, movimientos]) => {
+      const creditos = movimientos.filter((m) => m.tipo === 'credito').reduce((s, m) => s + m.monto, 0)
+      const debitos = movimientos.filter((m) => m.tipo === 'debito').reduce((s, m) => s + m.monto, 0)
+      return { fecha, movimientos, creditos, debitos, neto: creditos - debitos }
+    })
 }
 
 function ListaConfirmados({ confirmados }: { confirmados: Movimiento[] }) {

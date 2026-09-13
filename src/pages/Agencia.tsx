@@ -117,7 +117,7 @@ function Agencia() {
         </div>
       </header>
 
-      <main className="relative z-10 mx-auto w-full max-w-3xl flex-1 px-5 py-8 sm:px-10">
+      <main className="relative z-10 mx-auto w-full max-w-5xl flex-1 px-5 py-8 sm:px-10">
         <div className="text-center animate-fade-up">
           <p className="mb-2 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-sm font-bold tracking-wide text-emerald-700 uppercase">
             Planillas de la agencia
@@ -150,9 +150,9 @@ function Agencia() {
         </div>
 
         {filtrados === null ? (
-          <div className="mt-5 space-y-3">
+          <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {[0, 1, 2].map((i) => (
-              <div key={i} className="skeleton h-16 rounded-2xl" />
+              <div key={i} className="skeleton h-20 rounded-2xl" />
             ))}
           </div>
         ) : filtrados.length === 0 ? (
@@ -172,13 +172,13 @@ function Agencia() {
             <p className="mt-5 text-center text-sm font-bold text-stone-500">
               {filtrados.length} {filtrados.length === 1 ? 'cliente' : 'clientes'} en la agencia {agenciaId}
             </p>
-            <ul className="mt-3 space-y-2 animate-fade-up">
+            <ul className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 animate-fade-up">
               {filtrados.map((c, i) => (
                 <li key={c.id}>
                   <button
                     type="button"
                     onClick={() => entrarFicha(c.id)}
-                    className="group flex w-full items-center justify-between gap-3 rounded-2xl bg-white p-4 text-left shadow-sm ring-1 ring-stone-100 transition hover:-translate-y-0.5 hover:shadow-md animate-fade-up"
+                    className="group flex h-full w-full items-center justify-between gap-3 rounded-2xl bg-white p-4 text-left shadow-sm ring-1 ring-stone-100 transition hover:-translate-y-0.5 hover:shadow-md animate-fade-up"
                     style={{ animationDelay: `${Math.min(i * 35, 350)}ms` }}
                   >
                     <div className="flex items-center gap-3">

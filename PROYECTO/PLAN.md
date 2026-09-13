@@ -106,9 +106,8 @@ Los movimientos confirmados se pueden recuperar por cliente para mostrar el hist
 - [x] Lista de módulos de la agencia: Planillas + Tirillas (desde la vista de agencia, pestañas).
 - [x] Implementar tirillas (cierre de turno del agenciero) — 3 columnas: clientes del día / conceptos / cierre.
 - [x] Exportación a Excel/PDF (planillas y tirillas) — botones 📥 Excel (CSV) y 🖨️ PDF (impresión limpia).
-- [ ] Implementar exportación a Excel/PDF.
 - [x] Auditoría de movimientos (quién/cuándo cargó, editó, confirmó y rechazó). Las tirillas llevarán la misma traza cuando se construyan.
-- [ ] Reglas de seguridad de Firestore por rol (hoy siguen en modo prueba).
+- [x] Reglas de seguridad de Firestore en fase intermedia (`firestore.rules`): login para escribir y datos internos; lectura pública para planillas y agencias. Endurecer por rol al cierre.
 - [ ] Probar el flujo completo en Netlify con empleados creados desde el panel.
 - [ ] Etapa 2: metodología de desarrollo.
 - [ ] Pendiente de validar: fórmula exacta de total/comisión/diferencia de la tirilla con el dueño al construirla.

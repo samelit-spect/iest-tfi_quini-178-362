@@ -281,3 +281,19 @@ Exportación → reglas de Firestore → prueba con empleados → Etapa 2.
 
 ### Próximos pasos
 Reglas de Firestore → prueba con empleados → Etapa 2.
+
+## 2026-09-13 - Reglas de Firestore en fase intermedia (cierre de la sesión)
+
+### Qué se hizo
+- Creado **`firestore.rules`** en la raíz del repo (no había config; las reglas se gestionaban en la consola).
+- **Decisión tomada con el usuario:** NO se endurecen las reglas ahora para no romper los ajustes que seguiremos haciendo (cada colección/operación nueva requiere tocarlas). Quedan **intermedias**: se exige **login para escribir** y para los datos internos (`usuarios`, `movimientos_pendientes`, `tirillas`); la **lectura pública** de planillas se mantiene abierta porque la vista pública no tiene login (`clientes`, `movimientos_confirmados`, `agencias`).
+- **Al cierre del proyecto:** reglas finas por rol (admin confirma, empleado solo su agencia, público solo lectura de planillas).
+
+### Pendiente de aplicar
+- Las reglas del archivo **deben pegarse en la consola de Firebase → Firestore → Reglas** (o deploy con Firebase CLI). Hoy Firestore sigue en modo prueba (en producción se desactiva solo a los 30 días).
+
+### Próximos pasos (próxima sesión)
+1. Aplicar las reglas intermedias en la consola de Firebase.
+2. Probar el flujo completo en Netlify con empleados creados desde el panel.
+3. Ajustar la fórmula de la diferencia de la tirilla con el dueño y el detalle en la impresión de la planilla.
+4. Etapa 2: metodología de desarrollo.

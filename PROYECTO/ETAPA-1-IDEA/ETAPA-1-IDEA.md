@@ -103,7 +103,7 @@ Desarrollar un sistema web que digitalice las fichas de clientes de las agencias
 | RNF-03 | El acceso debe ser seguro: autenticación y reglas de seguridad por rol en Firebase. |
 | RNF-04 | La interfaz debe seguir buenas prácticas de UX/UI orientadas a personas mayores: tipografía grande y legible, alto contraste, controles amplios y navegación clara. |
 | RNF-05 | El código debe ser mantenible (TypeScript, componentes reutilizables y documentación). |
-| RNF-06 | El sistema debe poder desplegarse de forma gratuita (Firebase Hosting). |
+| RNF-06 | El sistema debe poder desplegarse de forma gratuita (Netlify). |
 
 ## 8. Priorización de características (MoSCoW)
 

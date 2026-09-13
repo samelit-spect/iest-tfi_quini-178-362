@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type FormEvent } from 'react'
+import { Fragment, useEffect, useMemo, useState, type FormEvent } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useAuth } from '../context/auth'
 import { leerCliente } from '../services/clientesService'
@@ -210,6 +210,10 @@ function FichaCliente() {
             pendientes={pendientes}
             perfilUid={perfil?.uid ?? ''}
             perfilNombre={perfil?.nombre ?? ''}
+            onEditar={(m) => {
+              setEditando(m)
+              window.scrollTo({ top: 0, behavior: 'smooth' })
+            }}
             onCambio={recargar}
           />
         ) : (
@@ -554,16 +558,19 @@ function TablaPlanillaAdmin({
   pendientes,
   perfilUid,
   perfilNombre,
+  onEditar,
   onCambio,
 }: {
   confirmados: Movimiento[]
   pendientes: Movimiento[]
   perfilUid: string
   perfilNombre: string
+  onEditar: (m: Movimiento) => void
   onCambio: () => Promise<void>
 }) {
   const [visibles, setVisibles] = useState(DIAS_POR_VISTA)
   const [ocupado, setOcupado] = useState<string | null>(null)
+  const [expandido, setExpandido] = useState<string | null>(null)
 
   const todas = useMemo(() => {
     const grupos = agruparPorFecha([...confirmados, ...pendientes])
@@ -578,7 +585,7 @@ function TablaPlanillaAdmin({
     }, [])
   }, [confirmados, pendientes])
 
-  async function confirmar(fecha: string, movs: Movimiento[]) {
+  async function confirmarDia(fecha: string, movs: Movimiento[]) {
     if (ocupado) return
     setOcupado(fecha)
     try {
@@ -589,13 +596,48 @@ function TablaPlanillaAdmin({
     }
   }
 
-  async function rechazar(fecha: string, movs: Movimiento[]) {
+  async function rechazarDia(fecha: string, movs: Movimiento[]) {
     if (ocupado) return
     const n = movs.length
     if (!window.confirm(`¿Rechazar ${n} movimiento(s) de esta fecha? No se agregarán a la planilla.`)) return
     setOcupado(fecha)
     try {
       for (const m of movs) await rechazarMovimiento(m, perfilUid, perfilNombre)
+      await onCambio()
+    } finally {
+      setOcupado(null)
+    }
+  }
+
+  async function confirmarUno(m: Movimiento) {
+    if (ocupado) return
+    setOcupado(m.id)
+    try {
+      await confirmarMovimiento(m, perfilUid, perfilNombre)
+      await onCambio()
+    } finally {
+      setOcupado(null)
+    }
+  }
+
+  async function rechazarUno(m: Movimiento) {
+    if (ocupado) return
+    if (!window.confirm('¿Rechazar este movimiento? No se agregará a la planilla.')) return
+    setOcupado(m.id)
+    try {
+      await rechazarMovimiento(m, perfilUid, perfilNombre)
+      await onCambio()
+    } finally {
+      setOcupado(null)
+    }
+  }
+
+  async function borrarUno(m: Movimiento) {
+    if (ocupado) return
+    if (!window.confirm(`¿Borrar el pendiente "${m.descripcion}"?`)) return
+    setOcupado(m.id)
+    try {
+      await eliminarMovimientoPendiente(m.id)
       await onCambio()
     } finally {
       setOcupado(null)
@@ -623,7 +665,7 @@ function TablaPlanillaAdmin({
         <div>
           <h2 className="text-xl font-extrabold text-stone-900">Planilla</h2>
           <p className="text-sm font-semibold text-stone-500">
-            Confirmados y pendientes por fecha. El saldo corre hacia abajo.
+            Tocá una fecha para ver sus movimientos. El saldo corre hacia abajo.
           </p>
         </div>
         <span className="rounded-full bg-emerald-100 px-3 py-1 text-sm font-bold text-emerald-700">
@@ -631,9 +673,9 @@ function TablaPlanillaAdmin({
         </span>
       </div>
       <div className="overflow-x-auto rounded-2xl bg-white shadow-sm ring-1 ring-stone-100">
-        <table className="w-full min-w-[600px]">
+        <table className="w-full min-w-[600px] border-separate border-spacing-0">
           <thead>
-            <tr className="border-b border-stone-200 bg-stone-50 text-xs font-extrabold uppercase tracking-wide text-stone-500">
+            <tr className="text-xs font-extrabold uppercase tracking-wide text-stone-500">
               <th className="px-4 py-3 text-right">Créditos</th>
               <th className="px-4 py-3 text-right">Débitos</th>
               <th className="px-4 py-3 text-right text-stone-700">Total</th>
@@ -644,61 +686,167 @@ function TablaPlanillaAdmin({
           <tbody>
             {visiblesFila.map((f) => {
               const pend = f.movimientos.filter((m) => m.estado === 'pendiente')
+              const abierto = expandido === f.fecha
               return (
-                <tr
-                  key={f.fecha}
-                  className={`border-b border-stone-100 last:border-0 ${pend.length > 0 ? 'bg-amber-50/40' : ''}`}
-                >
-                  <td className="px-4 py-3.5 text-right font-extrabold tabular-nums text-emerald-600">
-                    {f.creditos > 0 ? formatoPesos.format(f.creditos) : '—'}
-                  </td>
-                  <td className="px-4 py-3.5 text-right font-extrabold tabular-nums text-stone-800">
-                    {f.debitos > 0 ? formatoPesos.format(f.debitos) : '—'}
-                  </td>
-                  <td
-                    className={`px-4 py-3.5 text-right font-extrabold tabular-nums ${
-                      f.saldoCorrido >= 0 ? 'text-stone-900' : 'text-rose-600'
-                    }`}
+                <Fragment key={f.fecha}>
+                  <tr
+                    className={`border-b border-stone-100 cursor-pointer transition ${
+                      pend.length > 0 ? 'bg-amber-50/40 hover:bg-amber-50' : 'hover:bg-stone-50'
+                    } ${abierto ? 'bg-stone-100/70' : ''}`}
+                    onClick={() => setExpandido(abierto ? null : f.fecha)}
+                    title="Ver movimientos del día"
                   >
-                    {formatoPesos.format(f.saldoCorrido)}
-                  </td>
-                  <td className="px-4 py-3.5 text-left font-bold text-stone-700 whitespace-nowrap">
-                    {formatoFecha(f.movimientos[0].fecha)}
-                    {pend.length > 0 && (
-                      <span className="ml-2 rounded-full bg-amber-100 px-2 py-0.5 align-middle text-xs font-bold text-amber-700">
-                        {pend.length} pend.
-                      </span>
-                    )}
-                  </td>
-                  <td className="px-4 py-3.5 text-right whitespace-nowrap">
-                    {pend.length > 0 ? (
-                      <>
-                        <button
-                          type="button"
-                          disabled={ocupado === f.fecha}
-                          onClick={() => void confirmar(f.fecha, pend)}
-                          className="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-bold text-white shadow-sm shadow-emerald-600/20 transition hover:-translate-y-0.5 hover:bg-emerald-700 disabled:opacity-60"
-                          title="Confirmar movimientos de esta fecha"
+                    <td className="px-4 py-3.5 text-right font-extrabold tabular-nums text-emerald-600">
+                      {f.creditos > 0 ? formatoPesos.format(f.creditos) : '—'}
+                    </td>
+                    <td className="px-4 py-3.5 text-right font-extrabold tabular-nums text-stone-800">
+                      {f.debitos > 0 ? formatoPesos.format(f.debitos) : '—'}
+                    </td>
+                    <td
+                      className={`px-4 py-3.5 text-right font-extrabold tabular-nums ${
+                        f.saldoCorrido >= 0 ? 'text-stone-900' : 'text-rose-600'
+                      }`}
+                    >
+                      {formatoPesos.format(f.saldoCorrido)}
+                    </td>
+                    <td className="px-4 py-3.5 text-left font-bold text-stone-700 whitespace-nowrap">
+                      <span className="inline-flex items-center gap-1.5">
+                        <span
+                          className={`inline-block transition-transform ${abierto ? 'rotate-90' : ''}`}
                         >
-                          {ocupado === f.fecha ? '…' : '✓ Confirmar'}
-                        </button>
-                        <button
-                          type="button"
-                          disabled={ocupado === f.fecha}
-                          onClick={() => void rechazar(f.fecha, pend)}
-                          className="ml-2 rounded-xl border border-rose-200 bg-rose-50 px-4 py-2 text-sm font-bold text-rose-600 transition hover:bg-rose-100 disabled:opacity-60"
-                          title="Rechazar movimientos de esta fecha"
-                        >
-                          ✕
-                        </button>
-                      </>
-                    ) : (
-                      <span className="rounded-full bg-emerald-50 px-3 py-1.5 text-sm font-bold text-emerald-700">
-                        ✓
+                          ▸
+                        </span>
+                        {formatoFecha(f.movimientos[0].fecha)}
+                        {pend.length > 0 && (
+                          <span className="rounded-full bg-amber-100 px-2 py-0.5 align-middle text-xs font-bold text-amber-700">
+                            {pend.length} pend.
+                          </span>
+                        )}
                       </span>
-                    )}
-                  </td>
-                </tr>
+                    </td>
+                    <td className="px-4 py-3.5 text-right whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
+                      {pend.length > 0 ? (
+                        <>
+                          <button
+                            type="button"
+                            disabled={ocupado === f.fecha}
+                            onClick={() => void confirmarDia(f.fecha, pend)}
+                            className="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-bold text-white shadow-sm shadow-emerald-600/20 transition hover:-translate-y-0.5 hover:bg-emerald-700 disabled:opacity-60"
+                            title="Confirmar movimientos de esta fecha"
+                          >
+                            {ocupado === f.fecha ? '…' : '✓ Confirmar'}
+                          </button>
+                          <button
+                            type="button"
+                            disabled={ocupado === f.fecha}
+                            onClick={() => void rechazarDia(f.fecha, pend)}
+                            className="ml-2 rounded-xl border border-rose-200 bg-rose-50 px-4 py-2 text-sm font-bold text-rose-600 transition hover:bg-rose-100 disabled:opacity-60"
+                            title="Rechazar movimientos de esta fecha"
+                          >
+                            ✕
+                          </button>
+                        </>
+                      ) : (
+                        <span className="rounded-full bg-emerald-50 px-3 py-1.5 text-sm font-bold text-emerald-700">
+                          ✓
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                  {abierto && (
+                    <tr className={pend.length > 0 ? 'bg-amber-50/40' : ''}>
+                      <td colSpan={5} className="px-4 pb-3">
+                        <div className="overflow-hidden rounded-xl border border-stone-200 bg-white">
+                          <ul>
+                            {f.movimientos.map((m) => {
+                              const esPendiente = m.estado === 'pendiente'
+                              return (
+                                <li
+                                  key={m.id}
+                                  className="flex flex-wrap items-center justify-between gap-3 border-b border-stone-100 px-4 py-3 last:border-0"
+                                >
+                                  <div className="flex min-w-0 items-center gap-3">
+                                    <span
+                                      className={`grid h-9 w-9 shrink-0 place-items-center rounded-lg text-white text-sm ${
+                                        m.tipo === 'credito' ? 'bg-emerald-500' : 'bg-stone-700'
+                                      }`}
+                                    >
+                                      {m.tipo === 'credito' ? '＋' : '−'}
+                                    </span>
+                                    <div className="min-w-0">
+                                      <p className="truncate text-base font-bold text-stone-800">
+                                        {m.descripcion}
+                                      </p>
+                                      <p className="text-xs font-semibold text-stone-500">
+                                        {esPendiente
+                                          ? `Pendiente · lo cargó ${m.creadoPorNombre}`
+                                          : `Confirmado${m.confirmadoPorNombre ? ` por ${m.confirmadoPorNombre}` : ''}`}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    <p
+                                      className={`text-base font-extrabold tabular-nums ${
+                                        m.tipo === 'credito' ? 'text-emerald-600' : 'text-stone-800'
+                                      }`}
+                                    >
+                                      {m.tipo === 'credito' ? '+' : '−'}
+                                      {formatoPesos.format(m.monto)}
+                                    </p>
+                                    {esPendiente ? (
+                                      <>
+                                        <button
+                                          type="button"
+                                          disabled={ocupado === m.id}
+                                          onClick={() => void confirmarUno(m)}
+                                          className="rounded-xl bg-emerald-600 px-3 py-1.5 text-sm font-bold text-white shadow-sm shadow-emerald-600/20 transition hover:-translate-y-0.5 hover:bg-emerald-700 disabled:opacity-60"
+                                          title="Confirmar este movimiento"
+                                        >
+                                          {ocupado === m.id ? '…' : '✓'}
+                                        </button>
+                                        <button
+                                          type="button"
+                                          disabled={ocupado === m.id}
+                                          onClick={() => void rechazarUno(m)}
+                                          className="rounded-xl border border-rose-200 bg-rose-50 px-3 py-1.5 text-sm font-bold text-rose-600 transition hover:bg-rose-100 disabled:opacity-60"
+                                          title="Rechazar este movimiento"
+                                        >
+                                          ✕
+                                        </button>
+                                        <button
+                                          type="button"
+                                          disabled={ocupado === m.id}
+                                          onClick={() => onEditar(m)}
+                                          className="rounded-xl border border-stone-300 bg-white px-3 py-1.5 text-sm font-bold text-stone-700 transition hover:border-stone-400"
+                                          title="Editar"
+                                        >
+                                          ✏️
+                                        </button>
+                                        <button
+                                          type="button"
+                                          disabled={ocupado === m.id}
+                                          onClick={() => void borrarUno(m)}
+                                          className="rounded-xl border border-rose-200 bg-rose-50 px-3 py-1.5 text-sm font-bold text-rose-600 transition hover:bg-rose-100 disabled:opacity-60"
+                                          title="Borrar"
+                                        >
+                                          🗑️
+                                        </button>
+                                      </>
+                                    ) : (
+                                      <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700">
+                                        ✓ Confirmado
+                                      </span>
+                                    )}
+                                  </div>
+                                </li>
+                              )
+                            })}
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </Fragment>
               )
             })}
           </tbody>

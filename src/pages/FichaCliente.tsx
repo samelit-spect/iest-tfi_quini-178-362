@@ -13,6 +13,7 @@ import {
   rechazarMovimiento,
 } from '../services/movimientosService'
 import { formatoFecha, formatoPesos } from '../utils/format'
+import NavAdmin from '../components/NavAdmin'
 import { useCountUp } from '../hooks/useCountUp'
 import type { Cliente, Movimiento, TipoMovimiento } from '../types'
 
@@ -122,7 +123,7 @@ function FichaCliente() {
 
   return (
     <div className="min-h-svh pb-16">
-      <header className="relative z-10 flex flex-wrap items-center justify-between gap-3 border-b border-stone-200/70 bg-white/70 px-5 py-4 backdrop-blur sm:px-10">
+      <header className="sticky top-0 z-40 flex flex-wrap items-center justify-between gap-3 border-b border-stone-200/70 bg-white/80 px-5 py-3 backdrop-blur sm:px-10">
         <div className="flex items-center gap-2.5">
           <div className="grid h-10 w-10 place-items-center rounded-xl bg-coal-950 text-lg font-extrabold text-white shadow-lg rotate-3">
             FQ
@@ -138,18 +139,22 @@ function FichaCliente() {
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="hidden rounded-full bg-amber-100 px-4 py-2 text-sm font-bold text-amber-800 sm:inline">
-            {perfil?.rol === 'admin' ? '👑' : '🧾'} {perfil?.nombre}
-          </span>
-          <button
-            type="button"
-            onClick={() => void logout()}
-            className="rounded-xl border border-stone-300 bg-white px-4 py-2 text-sm font-bold text-stone-700 transition hover:border-rose-300 hover:text-rose-600"
-          >
-            Salir
-          </button>
-        </div>
+        {perfil?.rol === 'admin' ? (
+          <NavAdmin />
+        ) : (
+          <div className="flex items-center gap-2">
+            <span className="hidden rounded-full bg-amber-100 px-4 py-2 text-sm font-bold text-amber-800 sm:inline">
+              🧾 {perfil?.nombre}
+            </span>
+            <button
+              type="button"
+              onClick={() => void logout()}
+              className="rounded-xl border border-stone-300 bg-white px-4 py-2 text-sm font-bold text-stone-700 transition hover:border-rose-300 hover:text-rose-600"
+            >
+              Salir
+            </button>
+          </div>
+        )}
       </header>
 
       <main className="mx-auto w-full max-w-7xl px-5 sm:px-10">

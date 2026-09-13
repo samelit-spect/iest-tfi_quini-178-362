@@ -4,6 +4,7 @@ import { useAuth } from '../context/auth'
 import { leerAgencia } from '../services/movimientosService'
 import { listarClientesPorAgencia } from '../services/clientesService'
 import { normalizar } from '../utils/normalizar'
+import NavAdmin from '../components/NavAdmin'
 import type { Cliente } from '../types'
 
 type Carga = { estado: 'cargando' } | { estado: 'error' } | { estado: 'ok'; numero: number; nombre: string }
@@ -95,26 +96,22 @@ function Agencia() {
             </p>
           </div>
         </div>
-        <div className="flex flex-wrap items-center gap-2">
-          {perfil?.rol === 'admin' && (
-            <Link
-              to="/admin"
-              className="rounded-xl border border-stone-300 bg-white px-4 py-2 text-sm font-bold text-stone-700 transition hover:border-stone-400"
+        {perfil?.rol === 'admin' ? (
+          <NavAdmin />
+        ) : (
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="hidden rounded-full bg-amber-100 px-4 py-2 text-sm font-bold text-amber-800 sm:inline">
+              🧾 {perfil?.nombre}
+            </span>
+            <button
+              type="button"
+              onClick={() => void logout()}
+              className="rounded-xl border border-stone-300 bg-white px-4 py-2 text-sm font-bold text-stone-700 transition hover:border-rose-300 hover:text-rose-600"
             >
-              🛠️ Panel admin
-            </Link>
-          )}
-          <span className="hidden rounded-full bg-amber-100 px-4 py-2 text-sm font-bold text-amber-800 sm:inline">
-            {perfil?.rol === 'admin' ? '👑' : '🧾'} {perfil?.nombre}
-          </span>
-          <button
-            type="button"
-            onClick={() => void logout()}
-            className="rounded-xl border border-stone-300 bg-white px-4 py-2 text-sm font-bold text-stone-700 transition hover:border-rose-300 hover:text-rose-600"
-          >
-            Salir
-          </button>
-        </div>
+              Salir
+            </button>
+          </div>
+        )}
       </header>
 
       <main className="relative z-10 mx-auto w-full max-w-5xl flex-1 px-5 py-8 sm:px-10">

@@ -1,32 +1,13 @@
-import { useState } from 'react'
-import { Link, Navigate, Outlet, useLocation } from 'react-router-dom'
+import { Link, Navigate, Outlet } from 'react-router-dom'
 import { useAuth } from '../../context/auth'
-
-const TABS = [
-  { to: '/admin/usuarios', label: 'Usuarios', icon: '👥' },
-  { to: '/admin/clientes', label: 'Clientes', icon: '🧾' },
-  { to: '/admin/planillas', label: 'Planillas', icon: '📋' },
-]
+import NavAdmin from '../../components/NavAdmin'
 
 function Admin() {
-  const { perfil, inicioPorRol, logout } = useAuth()
-  const { pathname } = useLocation()
-  const [menuAbierto, setMenuAbierto] = useState(false)
-
-  function cerrar() {
-    setMenuAbierto(false)
-  }
-
-  function salir() {
-    cerrar()
-    void logout()
-  }
+  const { perfil, inicioPorRol } = useAuth()
 
   if (!perfil || perfil.rol !== 'admin') {
     return <Navigate to={inicioPorRol ?? '/'} replace />
   }
-
-  const tabActivo = (to: string) => pathname.startsWith(to)
 
   return (
     <div className="relative flex min-h-svh flex-col">
@@ -45,94 +26,9 @@ function Admin() {
             </div>
           </Link>
 
-          <div className="hidden items-center gap-1.5 md:flex">
-            <nav className="flex items-center gap-1">
-              {TABS.map((t) => (
-                <Link
-                  key={t.to}
-                  to={t.to}
-                  className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-base font-bold transition ${
-                    tabActivo(t.to)
-                      ? 'bg-coal-950 text-white shadow-md shadow-stone-900/20'
-                      : 'text-stone-500 hover:bg-stone-100 hover:text-stone-800'
-                  }`}
-                >
-                  <span>{t.icon}</span>
-                  {t.label}
-                </Link>
-              ))}
-            </nav>
-            <span className="mx-1 h-6 w-px bg-stone-200" aria-hidden="true" />
-            <Link
-              to="/elegir-agencia"
-              className="rounded-xl border border-stone-300 bg-white px-4 py-2.5 text-sm font-bold text-stone-700 transition hover:border-brand-300 hover:text-brand-600"
-            >
-              🏢 Agencias
-            </Link>
-            <button
-              type="button"
-              onClick={salir}
-              className="rounded-xl border border-stone-300 bg-white px-4 py-2.5 text-sm font-bold text-stone-700 transition hover:border-rose-300 hover:text-rose-600"
-            >
-              Salir
-            </button>
-          </div>
-
-          <button
-            type="button"
-            aria-label={menuAbierto ? 'Cerrar menú' : 'Abrir menú'}
-            aria-expanded={menuAbierto}
-            onClick={() => setMenuAbierto((v) => !v)}
-            className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-stone-300 bg-white text-xl font-bold text-stone-700 transition hover:border-stone-400 md:hidden"
-          >
-            {menuAbierto ? '✕' : '☰'}
-          </button>
+          <NavAdmin />
         </div>
       </header>
-
-      {menuAbierto && (
-        <nav className="relative z-30 border-b border-stone-200/70 bg-white/95 px-4 pb-4 backdrop-blur animate-fade-up md:hidden">
-          <div className="mx-auto flex max-w-6xl flex-col gap-1 pt-3">
-            <p className="px-2 pb-1 text-xs font-extrabold uppercase tracking-wider text-stone-400">
-              Navegación
-            </p>
-            {TABS.map((t) => (
-              <Link
-                key={t.to}
-                to={t.to}
-                onClick={cerrar}
-                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-lg font-bold transition ${
-                  tabActivo(t.to)
-                    ? 'bg-coal-950 text-white shadow-md shadow-stone-900/20'
-                    : 'text-stone-600 hover:bg-stone-100 hover:text-stone-900'
-                }`}
-              >
-                <span className="text-xl">{t.icon}</span>
-                {t.label}
-              </Link>
-            ))}
-            <p className="mt-2 px-2 pb-1 text-xs font-extrabold uppercase tracking-wider text-stone-400">
-              Cuenta
-            </p>
-            <Link
-              to="/elegir-agencia"
-              onClick={cerrar}
-              className="flex items-center gap-3 rounded-xl px-4 py-3 text-lg font-bold text-stone-600 transition hover:bg-stone-100 hover:text-stone-900"
-            >
-              <span className="text-xl">🏢</span>
-              Agencias
-            </Link>
-            <button
-              type="button"
-              onClick={() => void logout()}
-              className="flex items-center gap-3 rounded-xl px-4 py-3 text-lg font-bold text-rose-600 transition hover:bg-rose-50"
-            >
-              <span className="text-xl">🚪</span>
-              Salir
-            </button>
-          </div>
-        </nav>
-      )}
 
       <main className="relative z-10 mx-auto w-full max-w-5xl flex-1 px-5 pb-16 sm:px-10">
         <Outlet />

@@ -11,10 +11,12 @@ import Clientes from './pages/admin/Clientes'
 import Planillas from './pages/admin/Planillas'
 import { AuthProvider } from './context/authContext'
 import { RutaProtegida } from './components/RutaProtegida'
+import VigilanteSesion from './components/VigilanteSesion'
 
 function App() {
   return (
     <AuthProvider>
+      <VigilanteSesion />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />

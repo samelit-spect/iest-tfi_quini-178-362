@@ -194,3 +194,25 @@
 - **Decisiones visuales:** el rojo queda solo como acento de marca / acciones destructivas (Deshabilitar, Rechazar, Salir). Paleta de administración neutral (blanco/crema/negro) con verdes y celestes por agencia.
 - **Verificado:** lint y build OK. Pendiente de probar en Netlify y crear el primer empleado desde el panel.
 - Agregado `.campo` en `index.css` (inputs grandes).
+
+## 2026-09-13 - Sesiones de usuario y administración en escritorio
+
+### Qué se hizo
+- **Vista "Planillas de la agencia" en escritorio:** grilla de clientes en columnas (`sm:grid-cols-2`, `lg:grid-cols-3`) con `max-w-5xl` (móvil sigue apilado).
+- **Navegación del admin unificada** en `src/components/NavAdmin.tsx` (tabs Usuarios/Clientes/Planillas + Agencias + Salir, hamburguesa móvil / menú estático en escritorio). Ahora aparece en el panel, en la vista de agencia y en la planilla individual del cliente (header sticky).
+- **Gestión de sesión:**
+  - Firebase Auth con **persistencia por pestaña** (`browserSessionPersistence`): sobrevive a recargar, se cierra al cerrar pestaña/navegador.
+  - **VigilanteSesion** (`src/components/VigilanteSesion.tsx`): 30 min de inactividad → aviso 60 s antes con botón "Seguir conectado"; si no hay actividad, cierra la sesión sola.
+
+### Decisiones de funciones adicionales (punto 5 del repaso)
+- Se definieron las funciones adicionales del proyecto (actualizadas en `PLAN.md` §7 y en la Etapa 1 con RF-12/13/14):
+  1. **Cierre de turno (TIRILLAS)** — nuevo módulo contable: por fecha y turno (mañana/tarde), con créditos y débitos del día (automáticos desde movimientos confirmados), conceptos de cierre (premios, caja, diferencia del día anterior arrastrada y "otros" variados) y al pie total de ventas + comisión del agenciero (% fijo configurable) + diferencia. Solo resumen: no toca saldos de clientes. El agenciero carga, el admin corrige/audita.
+  2. **Dashboard del admin**: pendientes, saldos por agencia y movimientos del día.
+  3. **Auditoría**: quién/cuándo en cada movimiento y tirilla.
+  4. **Exportación** a Excel/PDF.
+- Notificaciones al cliente quedaron como "Could Have".
+- Pendiente de validar con el dueño: fórmula exacta de total/comisión/diferencia al construir el módulo de tirillas.
+- **RNF-06 actualizado:** el despliegue es Netlify (no Firebase Hosting como decía la Etapa 1); regenerado `ETAPA-1-IDEA.docx`.
+
+### Próximos pasos según plan
+1. Implementar el dashboard del admin. 2. Implementar tirillas. 3. Exportación. 4. Auditoría. 5. Reglas de Firestore por rol. 6. Probar flujo completo con empleados. 7. Etapa 2 (metodología).

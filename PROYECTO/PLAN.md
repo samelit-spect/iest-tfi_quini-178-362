@@ -27,6 +27,10 @@ Digitalizar las fichas en papel de las agencias de quiniela: el empleado carga c
 9. **Corrección de errores:** si un movimiento confirmado está mal (p. ej. se puso 2000 y eran 1800), NO se toca el original: el empleado carga un **nuevo movimiento** con descripción tipo *"Corrección: ..."* que pasa por el mismo flujo de confirmación.
 10. **Vista pública del cliente:** buscar por apellido y nombre, sin distinguir mayúsculas/minúsculas, solo lectura.
 11. **Accesibilidad:** la mayoría de los usuarios son personas mayores → textos grandes y legibles, alto contraste, controles y botones amplios, navegación simple (aplica a todo el sistema).
+12. **Tirilla (cierre de turno):** por fecha y turno (mañana/tarde), por agencia. La parte superior toma los créditos y débitos del día (nombre del cliente + importe) de los **movimientos confirmados**; debajo van los conceptos del cierre (premios, caja, diferencia del día anterior y "otros" variados —limpieza, etc.—, varios por tirilla). Al pie: **total de ventas + comisión del agenciero + diferencia** (lo que falta para cuadrar). Es solo resumen: **no modifica los saldos** de los clientes.
+13. **Comisión del agenciero:** porcentaje fijo que define el administrador (se calcula solo sobre el total de ventas de la tirilla).
+14. **Diferencia del día anterior:** se arrastra automáticamente desde el cierre previo de la agencia en la nueva tirilla.
+15. **Quién la controla:** el agenciero carga su cierre de turno; el administrador lo ve, lo corrige y audita el histórico por agencia.
 
 ## 4. Recorrido del usuario (flujo navegable)
 
@@ -76,9 +80,13 @@ Los movimientos confirmados se pueden recuperar por cliente para mostrar el hist
 - **Despliegue:** Netlify (build `npm run build`, publish `dist`, reglas SPA en `netlify.toml`). URL: https://gleeful-beignet-736b8f.netlify.app/
 - Compatible con la Etapa 3 (diseño) que vendrá.
 
-## 7. Funciones adicionales (pendientes de definir)
+## 7. Funciones adicionales (decididas el 2026-09-13)
 
-- El usuario mencionó que la gestión de planillas es "una de las funciones" del proyecto: quedan por definir otras funciones en próximas sesiones.
+- **Cierre de turno (tirillas)**: digitaliza la tirilla del agenciero (ver reglas 12–15).
+- **Dashboard del admin**: pendientes por confirmar, saldos por agencia y movimientos del día.
+- **Auditoría**: quién y cuándo creó/corrigió/confirmó cada movimiento y tirilla.
+- **Exportación**: planillas, tirillas y reportes a Excel/PDF.
+- Notificaciones al cliente quedaron en "Could Have" (pendientes de decidir).
 
 ## 8. Estado del entorno (2026-09-12)
 
@@ -91,7 +99,14 @@ Los movimientos confirmados se pueden recuperar por cliente para mostrar el hist
 
 ## 9. Próximos pasos
 
-- [ ] Login real (AuthContext) y redirección por rol.
-- [ ] Panel de administración (usuarios, confirmaciones de movimientos).
+- [x] Login real (AuthContext) y redirección por rol.
+- [x] Panel de administración (usuarios, planillas, confirmaciones).
+- [x] Definir funciones adicionales del proyecto (tirillas, dashboard, auditoría, exportación).
+- [ ] Implementar dashboard del admin (saldos, pendientes, movimientos del día).
+- [ ] Implementar tirillas (cierre de turno del agenciero).
+- [ ] Implementar exportación a Excel/PDF.
+- [ ] Completar auditoría (quién/cuándo en cada movimiento y tirilla).
+- [ ] Reglas de seguridad de Firestore por rol (hoy siguen en modo prueba).
+- [ ] Probar el flujo completo en Netlify con empleados creados desde el panel.
 - [ ] Etapa 2: metodología de desarrollo.
-- [ ] Definir funciones adicionales del proyecto.
+- [ ] Pendiente de validar: fórmula exacta de total/comisión/diferencia de la tirilla con el dueño al construirla.

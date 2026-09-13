@@ -70,6 +70,10 @@ Desarrollar un sistema web que digitalice las fichas de clientes de las agencias
 - Autenticación y roles: administrador y empleado (usuarios creados por el admin, sin registro público).
 - Dos agencias con sus respectivos empleados.
 - Historial de movimientos y saldo actual por cliente.
+- Cierre de turno del agenciero (tirilla): resumen por fecha y turno (mañana/tarde) con los créditos y débitos del día, premios, caja, diferencia arrastrada y conceptos variados ("otros" como limpieza); debajo, total de ventas, comisión del agenciero y la diferencia que falta para cuadrar. No modifica los saldos de los clientes.
+- Dashboard del administrador: resumen de pendientes por confirmar, saldos por agencia y movimientos del día.
+- Auditoría de quién y cuándo cargó, corrigió, confirmó o rechazó cada movimiento y cada tirilla.
+- Exportación de planillas, tirillas y reportes a Excel o PDF.
 
 ### Fuera del alcance (primera versión)
 - Aplicación móvil nativa (el sistema es web responsive, funciona bien en el celular).
@@ -91,8 +95,11 @@ Desarrollar un sistema web que digitalice las fichas de clientes de las agencias
 | RF-07 | La búsqueda de la planilla del cliente debe funcionar por apellido y nombre, ignorando mayúsculas y minúsculas. |
 | RF-08 | Cada empleado debe estar atado a su agencia: al iniciar sesión entra directo a ella y no puede ver operar la otra. El administrador, en cambio, debe poder elegir la agencia al ingresar. |
 | RF-09 | El sistema debe permitir al administrador crear, modificar y deshabilitar usuarios (admin y empleados) desde un panel. |
-| RF-10 | El sistema debe mostrar al administrador un resumen de movimientos pendientes de confirmar y reportes de saldos. |
+| RF-10 | El sistema debe mostrar al administrador un dashboard con el resumen de movimientos pendientes de confirmar, saldos por agencia y movimientos del día. |
 | RF-11 | El sistema debe permitir cargar un movimiento de "corrección" (con su descripción) para arreglar errores, que pasa por el mismo flujo de confirmación y nunca modifica el movimiento original. |
+| RF-12 | El sistema debe permitir al agenciero cargar el cierre de turno (**tirilla**) con la fecha, el turno (mañana/tarde), los créditos y débitos del día, premios, caja, diferencia del día anterior y conceptos varios ("otros", y pueden ser varios), y calcular el total de ventas, la comisión del agenciero y la diferencia que falta para cuadrar. El administrador debe poder verlas, corregirlas y auditar el histórico por agencia. |
+| RF-13 | El sistema debe registrar auditoría: quién y cuándo creó, modificó o confirmó cada movimiento y cada tirilla. |
+| RF-14 | El sistema debe permitir exportar planillas, tirillas y reportes de saldos a Excel o PDF. |
 
 ## 7. Requerimientos no funcionales
 
@@ -119,11 +126,13 @@ Desarrollar un sistema web que digitalice las fichas de clientes de las agencias
 - Búsqueda sin distinguir mayúsculas de minúsculas.
 - Dos agencias con sus empleados.
 - Panel de administración con pendientes de confirmar y reportes.
+- Cierre de turno (tirillas) del agenciero.
+- Exportación de planillas y reportes a Excel/PDF.
+- Auditoría (quién y cuándo cargó/corrigió cada movimiento y tirilla).
+- Dashboard/resumen general del administrador.
 
 ### Could Have (deseables)
-- Registro de auditoría (quién y cuándo cargó cada movimiento).
 - Notificaciones al cliente.
-- Exportación de planillas y reportes.
 
 ### Won't Have (excluidos esta versión)
 - Aplicación móvil nativa.

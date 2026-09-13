@@ -4,11 +4,13 @@ import { useAuth } from '../context/auth'
 import { leerCliente } from '../services/clientesService'
 import {
   actualizarMovimientoPendiente,
+  confirmarMovimiento,
   crearMovimientoPendiente,
   eliminarMovimientoPendiente,
   leerAgencia,
   leerMovimientosConfirmados,
   listarPendientesPorCliente,
+  rechazarMovimiento,
 } from '../services/movimientosService'
 import { formatoFecha, formatoPesos } from '../utils/format'
 import { useCountUp } from '../hooks/useCountUp'
@@ -129,7 +131,11 @@ function FichaCliente() {
             <p className="text-base font-extrabold text-stone-900">
               Agencia {carga.agencia?.numero ?? agenciaId} · Planilla
             </p>
-            <p className="text-sm font-semibold text-stone-500">Sumás y restás · queda en pendiente</p>
+            <p className="text-sm font-semibold text-stone-500">
+              {perfil?.rol === 'admin'
+                ? 'Sumás, restás y confirmás en la misma vista'
+                : 'Sumás y restás · queda en pendiente'}
+            </p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -200,6 +206,8 @@ function FichaCliente() {
         <ListaPendientes
           pendientes={pendientes}
           perfilUid={perfil?.uid ?? ''}
+          perfilNombre={perfil?.nombre ?? ''}
+          esAdmin={perfil?.rol === 'admin'}
           onEditar={(m) => {
             setEditando(m)
             window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -404,11 +412,15 @@ function FormMovimiento({
 function ListaPendientes({
   pendientes,
   perfilUid,
+  perfilNombre,
+  esAdmin,
   onEditar,
   onCambio,
 }: {
   pendientes: Movimiento[]
   perfilUid: string
+  perfilNombre: string
+  esAdmin: boolean
   onEditar: (m: Movimiento) => void
   onCambio: () => Promise<void>
 }) {
@@ -425,6 +437,29 @@ function ListaPendientes({
     }
   }
 
+  async function confirmar(m: Movimiento) {
+    if (!esAdmin || ocupado) return
+    setOcupado(m.id)
+    try {
+      await confirmarMovimiento(m, perfilUid, perfilNombre)
+      await onCambio()
+    } finally {
+      setOcupado(null)
+    }
+  }
+
+  async function rechazar(m: Movimiento) {
+    if (!esAdmin || ocupado) return
+    if (!window.confirm('¿Rechazar este movimiento? No se agregará a la planilla.')) return
+    setOcupado(m.id)
+    try {
+      await rechazarMovimiento(m, perfilUid, perfilNombre)
+      await onCambio()
+    } finally {
+      setOcupado(null)
+    }
+  }
+
   if (pendientes.length === 0) {
     return (
       <section className="mt-8 rounded-3xl border-2 border-dashed border-stone-300 bg-white px-6 py-8 text-center animate-fade-up">
@@ -435,6 +470,8 @@ function ListaPendientes({
     )
   }
 
+  const grupos = agruparPorFecha(pendientes)
+
   return (
     <section className="mt-8 animate-fade-up" style={{ animationDelay: '80ms' }}>
       <div className="mb-3 flex items-center justify-between">
@@ -443,64 +480,117 @@ function ListaPendientes({
           {pendientes.length}
         </span>
       </div>
-      <ul className="space-y-2">
-        {pendientes.map((m) => {
-          const mio = m.creadoPor === perfilUid
-          return (
-            <li
-              key={m.id}
-              className="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-amber-100 animate-fade-up"
-            >
-              <div className="flex min-w-0 items-center gap-3">
-                <span
-                  className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl text-white ${
-                    m.tipo === 'credito' ? 'bg-emerald-500' : 'bg-stone-700'
-                  }`}
-                >
-                  {m.tipo === 'credito' ? '＋' : '−'}
-                </span>
-                <div className="min-w-0">
-                  <p className="truncate text-base font-extrabold text-stone-800">{m.descripcion}</p>
-                  <p className="text-sm font-semibold text-stone-500">
-                    {formatoFecha(m.fecha)} · {mio ? 'lo cargaste vos' : `lo cargó ${m.creadoPorNombre}`}
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <p
-                  className={`text-lg font-extrabold tabular-nums ${m.tipo === 'credito' ? 'text-emerald-600' : 'text-stone-800'}`}
-                >
-                  {m.tipo === 'credito' ? '+' : '−'}
-                  {formatoPesos.format(m.monto)}
-                </p>
-                {mio && (
-                  <>
-                    <button
-                      type="button"
-                      onClick={() => onEditar(m)}
-                      className="rounded-xl border border-stone-300 bg-white px-3.5 py-2 text-sm font-bold text-stone-700 transition hover:border-stone-400"
-                      title="Editar"
-                    >
-                      ✏️ Editar
-                    </button>
-                    <button
-                      type="button"
-                      disabled={ocupado === m.id}
-                      onClick={() => void borrar(m)}
-                      className="rounded-xl border border-rose-200 bg-rose-50 px-3.5 py-2 text-sm font-bold text-rose-600 transition hover:bg-rose-100 disabled:opacity-60"
-                      title="Borrar"
-                    >
-                      🗑️
-                    </button>
-                  </>
-                )}
-              </div>
-            </li>
-          )
-        })}
-      </ul>
+      <div className="space-y-4">
+        {grupos.map(({ fecha, movimientos, subtotal }) => (
+          <div key={fecha} className="rounded-2xl bg-white shadow-sm ring-1 ring-stone-100 animate-fade-up overflow-hidden">
+            <div className="flex items-center justify-between border-b border-stone-100 bg-stone-50 px-4 py-2.5">
+              <p className="text-sm font-extrabold text-stone-700 uppercase tracking-wide">
+                {formatoFecha(movimientos[0].fecha)}
+              </p>
+              <p className="text-sm font-bold tabular-nums text-stone-600">
+                Subtotal: {formatoPesos.format(subtotal)}
+              </p>
+            </div>
+            <ul>
+              {movimientos.map((m) => {
+                const mio = m.creadoPor === perfilUid
+                return (
+                  <li
+                    key={m.id}
+                    className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 border-b border-stone-100 last:border-0"
+                  >
+                    <div className="flex min-w-0 items-center gap-3">
+                      <span
+                        className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg text-white text-sm ${
+                          m.tipo === 'credito' ? 'bg-emerald-500' : 'bg-stone-700'
+                        }`}
+                      >
+                        {m.tipo === 'credito' ? '＋' : '−'}
+                      </span>
+                      <div className="min-w-0">
+                        <p className="truncate text-base font-bold text-stone-800">{m.descripcion}</p>
+                        <p className="text-xs font-semibold text-stone-500">
+                          {mio ? 'Vos lo cargaste' : `Lo cargó ${m.creadoPorNombre}`}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <p
+                        className={`text-base font-extrabold tabular-nums ${m.tipo === 'credito' ? 'text-emerald-600' : 'text-stone-800'}`}
+                      >
+                        {m.tipo === 'credito' ? '+' : '−'}
+                        {formatoPesos.format(m.monto)}
+                      </p>
+                      {esAdmin && (
+                        <>
+                          <button
+                            type="button"
+                            disabled={ocupado === m.id}
+                            onClick={() => void confirmar(m)}
+                            className="rounded-xl bg-emerald-600 px-3.5 py-2 text-sm font-bold text-white shadow-sm shadow-emerald-600/20 transition hover:-translate-y-0.5 hover:bg-emerald-700 disabled:opacity-60"
+                            title="Confirmar"
+                          >
+                            {ocupado === m.id ? '…' : '✓'}
+                          </button>
+                          <button
+                            type="button"
+                            disabled={ocupado === m.id}
+                            onClick={() => void rechazar(m)}
+                            className="rounded-xl border border-rose-200 bg-rose-50 px-3.5 py-2 text-sm font-bold text-rose-600 transition hover:bg-rose-100 disabled:opacity-60"
+                            title="Rechazar"
+                          >
+                            ✕
+                          </button>
+                        </>
+                      )}
+                      {mio && !esAdmin && (
+                        <>
+                          <button
+                            type="button"
+                            onClick={() => onEditar(m)}
+                            className="rounded-xl border border-stone-300 bg-white px-3.5 py-2 text-sm font-bold text-stone-700 transition hover:border-stone-400"
+                            title="Editar"
+                          >
+                            ✏️
+                          </button>
+                          <button
+                            type="button"
+                            disabled={ocupado === m.id}
+                            onClick={() => void borrar(m)}
+                            className="rounded-xl border border-rose-200 bg-rose-50 px-3.5 py-2 text-sm font-bold text-rose-600 transition hover:bg-rose-100 disabled:opacity-60"
+                            title="Borrar"
+                          >
+                            🗑️
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
+        ))}
+      </div>
     </section>
   )
+}
+
+function agruparPorFecha(movimientos: Movimiento[]): { fecha: string; movimientos: Movimiento[]; subtotal: number }[] {
+  const mapa = new Map<string, Movimiento[]>()
+  for (const m of movimientos) {
+    const key = aYmd(m.fecha)
+    const arr = mapa.get(key)
+    if (arr) arr.push(m)
+    else mapa.set(key, [m])
+  }
+  return Array.from(mapa.entries())
+    .sort((a, b) => b[0].localeCompare(a[0]))
+    .map(([fecha, movimientos]) => ({
+      fecha,
+      movimientos,
+      subtotal: movimientos.reduce((s, m) => s + (m.tipo === 'credito' ? m.monto : -m.monto), 0),
+    }))
 }
 
 function ListaConfirmados({ confirmados }: { confirmados: Movimiento[] }) {

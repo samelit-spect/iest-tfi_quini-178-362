@@ -4,7 +4,7 @@ import { useAuth } from '../../context/auth'
 const TABS = [
   { to: '/admin/usuarios', label: 'Usuarios', icon: '👥' },
   { to: '/admin/clientes', label: 'Clientes', icon: '🧾' },
-  { to: '/admin/confirmaciones', label: 'Confirmaciones', icon: '✅' },
+  { to: '/admin/planillas', label: 'Planillas', icon: '📋' },
 ]
 
 function Admin() {

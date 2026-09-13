@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useState, type FormEvent } from 'react'
+import { Fragment, useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useAuth } from '../context/auth'
 import { leerCliente } from '../services/clientesService'
@@ -259,12 +259,12 @@ function FormMovimiento({
   const [error, setError] = useState('')
   const [mensaje, setMensaje] = useState<string | null>(null)
   const [enviando, setEnviando] = useState(false)
+  const inputMontoRef = useRef<HTMLInputElement>(null)
 
   async function enviar(e: FormEvent) {
     e.preventDefault()
     if (enviando || !clienteId || !agenciaId) return
     const montoNum = Number(monto)
-    if (!descripcion.trim()) return setError('Escribí una descripción del movimiento.')
     if (!monto || !Number.isFinite(montoNum) || montoNum <= 0) return setError('El monto debe ser mayor a $0.')
     if (!fecha) return setError('Elegí la fecha del movimiento.')
     setError('')
@@ -290,8 +290,13 @@ function FormMovimiento({
           creadoPorNombre: perfilNombre || 'Personal',
         })
         setMensaje('Listo. Quedó en pendientes hasta que el dueño lo confirme.')
+        setTipo('credito')
+        setMonto('')
+        setDescripcion('')
+        setFecha(hoyYmd())
       }
       await onCambio()
+      inputMontoRef.current?.focus()
     } catch {
       setError('No se pudo guardar. Intentalo de nuevo.')
     } finally {
@@ -344,6 +349,7 @@ function FormMovimiento({
             </span>
             <input
               id="monto"
+              ref={inputMontoRef}
               type="number"
               inputMode="numeric"
               min="1"
@@ -358,7 +364,7 @@ function FormMovimiento({
 
         <div className="flex flex-col gap-1.5">
           <label htmlFor="descripcion" className="text-sm font-bold text-stone-700">
-            Descripción
+            Descripción <span className="font-semibold text-stone-400">(opcional)</span>
           </label>
           <input
             id="descripcion"

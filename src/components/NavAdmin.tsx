@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/auth'
 
 const TABS = [
+  { to: '/admin/dashboard', label: 'Inicio', icon: '📊' },
   { to: '/admin/usuarios', label: 'Usuarios', icon: '👥' },
   { to: '/admin/clientes', label: 'Clientes', icon: '🧾' },
   { to: '/admin/planillas', label: 'Planillas', icon: '📋' },

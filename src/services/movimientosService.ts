@@ -108,3 +108,19 @@ export async function actualizarMovimientoPendiente(
 export async function eliminarMovimientoPendiente(id: string) {
   await deleteDoc(doc(db, 'movimientos_pendientes', id))
 }
+
+export async function listarPendientesPorAgencia(agenciaId: string): Promise<Movimiento[]> {
+  const q = query(
+    collection(db, 'movimientos_pendientes'),
+    where('agenciaId', '==', agenciaId),
+    where('estado', '==', 'pendiente'),
+  )
+  const snap = await getDocs(q)
+  return mapear(snap.docs).sort(ordenarPorFechaDesc)
+}
+
+export async function leerMovimientosConfirmadosPorAgencia(agenciaId: string): Promise<Movimiento[]> {
+  const q = query(collection(db, 'movimientos_confirmados'), where('agenciaId', '==', agenciaId))
+  const snap = await getDocs(q)
+  return mapear(snap.docs).sort(ordenarPorFechaDesc)
+}

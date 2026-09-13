@@ -9,6 +9,7 @@ import Admin from './pages/admin/Admin'
 import Usuarios from './pages/admin/Usuarios'
 import Clientes from './pages/admin/Clientes'
 import Planillas from './pages/admin/Planillas'
+import Dashboard from './pages/admin/Dashboard'
 import { AuthProvider } from './context/authContext'
 import { RutaProtegida } from './components/RutaProtegida'
 import VigilanteSesion from './components/VigilanteSesion'
@@ -54,7 +55,8 @@ function App() {
               </RutaProtegida>
             }
           >
-            <Route index element={<Navigate to="/admin/usuarios" replace />} />
+            <Route index element={<Navigate to="/admin/dashboard" replace />} />
+            <Route path="dashboard" element={<Dashboard />} />
             <Route path="usuarios" element={<Usuarios />} />
             <Route path="clientes" element={<Clientes />} />
             <Route path="planillas" element={<Planillas />} />

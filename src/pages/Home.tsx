@@ -4,6 +4,7 @@ import type { Cliente } from '../types'
 import { buscarClientes } from '../services/clientesService'
 import { normalizar } from '../utils/normalizar'
 import { useAuth } from '../context/auth'
+import { PiePublico } from '../components/PiePublico'
 
 function Home() {
   const { estado, inicioPorRol } = useAuth()
@@ -58,12 +59,14 @@ function Home() {
 
       <header className="relative z-10 flex items-center justify-between px-5 py-5 sm:px-10">
         <div className="flex items-center gap-2.5">
-          <div className="grid h-10 w-10 place-items-center rounded-xl bg-brand-600 text-lg font-extrabold text-white shadow-lg shadow-brand-600/30 rotate-3 animate-scale-in">
-            FQ
-          </div>
+          <img
+            src="/marca/isotipo-quini.svg"
+            alt="Isotipo de Quini 178/362"
+            className="h-10 w-10 rounded-xl shadow-lg shadow-brand-600/30 animate-scale-in"
+          />
           <div className="leading-tight">
-            <p className="text-base font-extrabold text-stone-900">Fichas de Quiniela</p>
-            <p className="text-sm font-semibold text-stone-500">Agencias 178 · 362</p>
+            <p className="text-base font-extrabold text-stone-900">Quini 178/362</p>
+            <p className="text-sm font-semibold text-stone-500">Fichas digitalizadas</p>
           </div>
         </div>
         {estado === 'logueado' && inicioPorRol ? (
@@ -211,6 +214,8 @@ function Home() {
           ))}
         </div>
       </main>
+
+      <PiePublico />
     </div>
   )
 }

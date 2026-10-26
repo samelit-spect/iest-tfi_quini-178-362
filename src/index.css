@@ -1,18 +1,35 @@
 @import 'tailwindcss';
 
+@font-face {
+  font-family: 'Nunito';
+  src: url('/fonts/Nunito[wght].ttf') format('truetype-variations');
+  font-weight: 200 1000;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Bitter';
+  src: url('/fonts/Bitter[wght].ttf') format('truetype-variations');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   --font-sans: 'Nunito', ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --color-brand-50: #fff1f2;
-  --color-brand-100: #ffe1e2;
-  --color-brand-200: #ffc4c7;
-  --color-brand-300: #ff9ba1;
-  --color-brand-400: #ff636b;
-  --color-brand-500: #f43f4b;
-  --color-brand-600: #e12631;
-  --color-brand-700: #bd1a26;
-  --color-brand-800: #9c1a24;
-  --color-brand-900: #811c24;
-  --color-brand-950: #470a0f;
+  --font-titulo: 'Bitter', Georgia, 'Times New Roman', serif;
+  --color-brand-50: #eef7fa;
+  --color-brand-100: #d6edf3;
+  --color-brand-200: #aedbe6;
+  --color-brand-300: #7cc3d4;
+  --color-brand-400: #4aa5ba;
+  --color-brand-500: #1f7a8c;
+  --color-brand-600: #0f3d56;
+  --color-brand-700: #0c3146;
+  --color-brand-800: #092538;
+  --color-brand-900: #071d2b;
+  --color-brand-950: #04121c;
   --color-cream-50: #faf9f7;
   --color-cream-100: #f4f0eb;
   --color-cream-200: #e8e0d6;

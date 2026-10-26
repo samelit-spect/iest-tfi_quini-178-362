@@ -17,12 +17,14 @@ function Admin() {
       <header className="sticky top-0 z-40 border-b border-stone-200/70 bg-white/80 px-4 py-3 backdrop-blur sm:px-8">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3">
           <Link to="/elegir-agencia" className="flex min-w-0 items-center gap-2.5">
-            <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-coal-950 text-lg font-extrabold text-white shadow-lg rotate-3">
-              FQ
-            </div>
+            <img
+              src="/marca/isotipo-quini.svg"
+              alt="Isotipo de Quini 178/362"
+              className="h-10 w-10 shrink-0 rounded-xl shadow-lg"
+            />
             <div className="min-w-0 leading-tight">
               <p className="truncate text-base font-extrabold text-stone-900">Panel de administración</p>
-              <p className="truncate text-sm font-semibold text-stone-500">Fichas de Quiniela · {perfil.nombre}</p>
+              <p className="truncate text-sm font-semibold text-stone-500">Quini 178/362 · {perfil.nombre}</p>
             </div>
           </Link>
 

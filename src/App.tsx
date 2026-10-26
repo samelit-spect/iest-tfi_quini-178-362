@@ -1,6 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes, Link } from 'react-router-dom'
 import Home from './pages/Home'
 import Login from './pages/Login'
+import ComoHicimos from './pages/ComoHicimos'
 import PlanillaPublica from './pages/PlanillaPublica'
 import ElegirAgencia from './pages/ElegirAgencia'
 import Agencia from './pages/Agencia'
@@ -24,6 +25,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/planilla/:clienteId" element={<PlanillaPublica />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/como-hicimos" element={<ComoHicimos />} />
           <Route
             path="/elegir-agencia"
             element={

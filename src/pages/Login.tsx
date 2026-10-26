@@ -60,9 +60,11 @@ function Login() {
 
       <div className="relative z-10 w-full max-w-md rounded-3xl bg-white p-8 shadow-2xl shadow-stone-900/10 ring-1 ring-stone-100 animate-scale-in sm:p-10">
         <div className="mb-6 flex flex-col items-center gap-3 text-center">
-          <div className="grid h-14 w-14 place-items-center rounded-2xl bg-brand-600 text-xl font-extrabold text-white shadow-lg shadow-brand-600/30 rotate-3">
-            FQ
-          </div>
+          <img
+            src="/marca/isotipo-quini.svg"
+            alt="Isotipo de Quini 178/362"
+            className="h-14 w-14 rounded-2xl shadow-lg shadow-brand-600/30"
+          />
           <div>
             <h1 className="text-2xl font-extrabold text-stone-900">Iniciar sesión</h1>
             <p className="mt-1 text-base text-stone-500">

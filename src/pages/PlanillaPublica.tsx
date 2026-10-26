@@ -5,6 +5,7 @@ import { leerCliente } from '../services/clientesService'
 import { leerAgencia, leerMovimientosConfirmados } from '../services/movimientosService'
 import { formatoFecha, formatoPesos } from '../utils/format'
 import { useCountUp } from '../hooks/useCountUp'
+import { PiePublico } from '../components/PiePublico'
 
 type Carga =
   | { estado: 'cargando' }
@@ -232,9 +233,10 @@ function Contenido({
         )}
 
         <p className="mt-6 text-center text-sm text-stone-500 animate-fade-up">
-          Fichas de Quiniela · Agencias 178 y 362 · Los movimientos confirmados
-          no pueden modificarse.
+          Quini 178/362 · Agencias 178 y 362 · Los movimientos confirmados no
+          pueden modificarse.
         </p>
+        <PiePublico />
       </div>
     </div>
   )

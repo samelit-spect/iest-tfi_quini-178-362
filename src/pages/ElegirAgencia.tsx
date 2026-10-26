@@ -46,11 +46,13 @@ function ElegirAgencia() {
 
       <header className="relative z-10 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <div className="grid h-10 w-10 place-items-center rounded-xl bg-coal-950 text-lg font-extrabold text-white shadow-lg rotate-3">
-            FQ
-          </div>
+          <img
+            src="/marca/isotipo-quini.svg"
+            alt="Isotipo de Quini 178/362"
+            className="h-10 w-10 rounded-xl shadow-lg"
+          />
           <div className="leading-tight">
-            <p className="text-base font-extrabold text-stone-900">Fichas de Quiniela</p>
+            <p className="text-base font-extrabold text-stone-900">Quini 178/362</p>
             <p className="text-sm font-semibold text-stone-500">Panel del administrador</p>
           </div>
         </div>

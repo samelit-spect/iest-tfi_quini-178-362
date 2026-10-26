@@ -1,5 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="14" fill="#e12631" />
-  <circle cx="32" cy="32" r="20" fill="#ffffff" />
-  <text x="32" y="40" font-family="Arial, sans-serif" font-size="22" font-weight="bold" text-anchor="middle" fill="#e12631">FQ</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Isotipo Quini">
+  <title>Isotipo Quini</title>
+  <defs>
+    <linearGradient id="azulQuini" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1f7a8c"/>
+      <stop offset="1" stop-color="#0f3d56"/>
+    </linearGradient>
+  </defs>
+  <rect x="3" y="3" width="58" height="58" rx="16" fill="url(#azulQuini)"/>
+  <circle cx="32" cy="32" r="20" fill="#faf9f7"/>
+  <text x="32" y="41" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#0f3d56">6</text>
 </svg>

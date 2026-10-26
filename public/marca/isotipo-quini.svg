@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="Isotipo Quini">
+  <title>Isotipo Quini</title>
+  <desc>Ficha digital azul con una bola de quiniela blanca y el número 6.</desc>
+  <defs>
+    <linearGradient id="azulQuini" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1f7a8c"/>
+      <stop offset="1" stop-color="#0f3d56"/>
+    </linearGradient>
+    <radialGradient id="bola" cx="0.34" cy="0.30" r="0.82">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.5" stop-color="#faf9f7"/>
+      <stop offset="1" stop-color="#e7ded4"/>
+    </radialGradient>
+  </defs>
+  <rect x="6" y="6" width="148" height="148" rx="40" fill="url(#azulQuini)"/>
+  <g transform="translate(80 80)">
+    <circle r="54" fill="url(#bola)"/>
+    <ellipse cx="-15" cy="-22" rx="15" ry="7" fill="#ffffff" opacity="0.55"
+             transform="rotate(-28)"/>
+  </g>
+  <text x="80" y="98" text-anchor="middle"
+        font-family="Nunito, 'Segoe UI', Arial, sans-serif"
+        font-size="52" font-weight="800" fill="#0f3d56">6</text>
+</svg>

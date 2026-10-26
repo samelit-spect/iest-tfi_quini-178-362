@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Logo de Quini 178/362">
+  <title>Quini 178/362</title>
+  <desc>Ficha digital azul con una bola de quiniela blanca (número 6), el nombre Quini y las etiquetas 178 y 362.</desc>
+
+  <defs>
+    <linearGradient id="azulQuini" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1f7a8c"/>
+      <stop offset="1" stop-color="#0f3d56"/>
+    </linearGradient>
+    <linearGradient id="brillo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="bola" cx="0.34" cy="0.30" r="0.82">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.5" stop-color="#faf9f7"/>
+      <stop offset="1" stop-color="#e7ded4"/>
+    </radialGradient>
+  </defs>
+
+  <rect x="16" y="16" width="480" height="480" rx="116" fill="url(#azulQuini)"/>
+  <rect x="16" y="16" width="480" height="230" rx="116" fill="url(#brillo)"/>
+
+  <g transform="translate(256 190)">
+    <circle r="104" fill="url(#bola)"/>
+    <circle r="104" fill="none" stroke="#171412" stroke-opacity="0.14" stroke-width="6"/>
+    <ellipse cx="-29" cy="-42" rx="30" ry="13" fill="#ffffff" opacity="0.55"
+             transform="rotate(-28)"/>
+    <circle cx="39" cy="-46" r="5" fill="#ffffff" opacity="0.6"/>
+  </g>
+  <text x="256" y="222" text-anchor="middle"
+        font-family="Nunito, 'Segoe UI', Arial, sans-serif"
+        font-size="92" font-weight="800" fill="#0f3d56">6</text>
+
+  <text x="256" y="372" text-anchor="middle"
+        font-family="Bitter, Georgia, 'Times New Roman', serif"
+        font-size="84" font-weight="700" fill="#faf9f7" letter-spacing="1">Quini</text>
+
+  <g font-family="Nunito, 'Segoe UI', Arial, sans-serif" font-size="34" font-weight="700">
+    <rect x="104" y="416" width="112" height="48" rx="24" fill="#0d9488"/>
+    <text x="160" y="446" text-anchor="middle" fill="#faf9f7">178</text>
+    <rect x="296" y="416" width="112" height="48" rx="24" fill="#0ea5e9"/>
+    <text x="352" y="446" text-anchor="middle" fill="#faf9f7">362</text>
+  </g>
+</svg>

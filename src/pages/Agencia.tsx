@@ -84,9 +84,11 @@ function Agencia() {
 
       <header className="relative z-10 flex flex-wrap items-center justify-between gap-3 border-b border-stone-200/70 bg-white/70 px-5 py-4 backdrop-blur sm:px-10">
         <div className="flex items-center gap-2.5">
-          <div className="grid h-10 w-10 place-items-center rounded-xl bg-coal-950 text-lg font-extrabold text-white shadow-lg rotate-3">
-            FQ
-          </div>
+          <img
+            src="/marca/isotipo-quini.svg"
+            alt="Isotipo de Quini 178/362"
+            className="h-10 w-10 shrink-0 rounded-xl shadow-lg"
+          />
           <div className="leading-tight">
             <p className="text-base font-extrabold text-stone-900">
               Agencia {agenciaId} {carga.estado === 'ok' && `· ${carga.nombre}`}

@@ -3,16 +3,15 @@
 ## Árbol de carpetas
 
 ```text
-quini-178-362/
+iest-tfi_quini-178-362/
 ├── index.html               # Página base donde se monta React
 ├── netlify.toml             # Configuración de build y rutas SPA
 ├── firestore.rules          # Reglas de seguridad de la base
 ├── package.json             # Dependencias y comandos
 ├── public/
 │   ├── marca/               # Logo, isotipo, favicon, banner y paleta
-│   ├── media/               # Imágenes y piezas generadas con IA
-│   ├── fonts/               # Nunito y Bitter autoalojadas (OFL)
-│   └── img/                 # Banner para compartir
+│   ├── media/               # Imágenes y piezas finales publicadas
+│   └── fonts/               # Nunito y Bitter autoalojadas (OFL)
 └── src/
     ├── main.tsx             # Punto de entrada
     ├── App.tsx              # Definición de rutas de la aplicación

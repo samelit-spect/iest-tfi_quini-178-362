@@ -17,8 +17,11 @@
   El remote local ya apunta a la URL nueva. El deploy anterior de Netlify devuelve
   404; falta crear el sitio nuevo.
 - 2026-10-26: Se actualizaron `README.md`, `ENLACES.md` y `docs/GUIA-COMMITS.md` con
-  el nombre y la URL nuevos. La guía propone 5 commits por tarea, empezando por la
+  el nombre y la URL nuevos. La guía propone 6 commits por tarea, empezando por la
   actualización de identidad del repositorio.
+- 2026-10-26: Se alineó la estructura con el TP4: `public/media/`, `multimedia/video/`
+  y `multimedia/graficos/` quedaron visibles con README, y se retiró el banner
+  duplicado de `public/img/`.
 
 ## Pendientes inmediatos
 - Ejecutar los 5 commits de `docs/GUIA-COMMITS.md` y pushear a

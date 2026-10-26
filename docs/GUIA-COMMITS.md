@@ -1,6 +1,6 @@
 # Guía para commitear y subir por separado
 
-Esta guía registra el orden usado para **5 commits por tarea** y para
+Esta guía registra el orden usado para **6 commits por tarea** y para
 publicar el repo `iest-tfi_quini-178-362`. Sirve como evidencia del TP4:
 cada commit tiene un alcance claro y se puede explicar en el informe.
 
@@ -27,7 +27,7 @@ commitear. Backup de seguridad:
 C:\Users\Usuario\AppData\Local\Temp\opencode\backup-tp4-20261026-150210
 ```
 
-## 1. Los 5 commits
+## 1. Los 6 commits
 
 ### Commit 1 — identidad del repositorio
 
@@ -83,15 +83,27 @@ git commit -m "chore: retirar material heredado de PROYECTO"
 
 Solo registra las eliminaciones de la carpeta vieja.
 
+### Commit 6 — alinear la estructura de carpetas del TP4
+
+```bash
+git rm --ignore-unmatch public/img/banner-compartir.png
+git add public/media multimedia/video multimedia/graficos docs/04-ARQUITECTURA.md README.md docs/GUIA-COMMITS.md
+git status --short
+git commit -m "chore: alinear estructura de carpetas del TP4"
+```
+
+Deja `public/media/`, `multimedia/video/` y `multimedia/graficos/` visibles
+en el repo, y retira el banner duplicado que no se usaba.
+
 ### Verificar
 
 ```bash
-git log --oneline -7
+git log --oneline -8
 git show --stat --oneline HEAD
 git status --short
 ```
 
-Deberían verse los 5 commits nuevos arriba de los 33 de la app.
+Deberían verse los 6 commits nuevos arriba de los 33 de la app.
 
 ## 2. Commits futuros
 
@@ -205,6 +217,7 @@ Nunca alcanza con borrar el archivo en un commit nuevo.
 ## 7. Historia esperada
 
 ```text
+chore: alinear estructura de carpetas del TP4
 chore: retirar material heredado de PROYECTO
 feat: integrar app de fichas con identidad azul/teal y transparencia IA
 chore: configurar entorno, build, lint y tests

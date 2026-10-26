@@ -34,7 +34,8 @@ iest-tfi_quini-178-362/
 ├── src/                  # app React
 ├── tests/                # tests básicos
 ├── public/marca/         # logo, isotipo, favicon, banner y paleta
-└── multimedia/           # planes, imágenes, fichas IA y recursos
+├── public/media/         # piezas finales publicadas
+└── multimedia/           # imágenes, video, gráficos, guiones y fichas IA
 ```
 
 ## Puesta en marcha

@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/auth'
+import { useDocumentTitle } from '../hooks/useDocumentTitle'
 
 const MENSAJES: Record<string, string> = {
   'auth/invalid-email': 'El correo no es válido.',
@@ -13,6 +14,7 @@ const MENSAJES: Record<string, string> = {
 }
 
 function Login() {
+  useDocumentTitle('Iniciar sesión · Quini 178/362')
   const { login } = useAuth()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')

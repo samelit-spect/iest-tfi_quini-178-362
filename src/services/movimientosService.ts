@@ -88,8 +88,17 @@ export async function rechazarMovimiento(m: Movimiento, adminUid: string, adminN
   })
 }
 
-export async function listarPendientesPorCliente(clienteId: string): Promise<Movimiento[]> {
-  const q = query(collection(db, 'movimientos_pendientes'), where('clienteId', '==', clienteId))
+export async function listarPendientesPorCliente(
+  clienteId: string,
+  agenciaId?: string,
+): Promise<Movimiento[]> {
+  const q = agenciaId
+    ? query(
+        collection(db, 'movimientos_pendientes'),
+        where('clienteId', '==', clienteId),
+        where('agenciaId', '==', agenciaId),
+      )
+    : query(collection(db, 'movimientos_pendientes'), where('clienteId', '==', clienteId))
   const snap = await getDocs(q)
   return mapear(snap.docs)
     .filter((m) => m.estado === 'pendiente')

@@ -51,7 +51,7 @@ function FichaCliente() {
       leerCliente(clienteId),
       leerAgencia(agenciaId),
       leerMovimientosConfirmados(clienteId),
-      listarPendientesPorCliente(clienteId),
+      listarPendientesPorCliente(clienteId, agenciaId),
     ])
       .then(([c, a, confirmados, pendientes]) => {
         if (!activo) return
@@ -115,7 +115,7 @@ function FichaCliente() {
       leerCliente(clienteId),
       leerAgencia(agenciaId),
       leerMovimientosConfirmados(clienteId),
-      listarPendientesPorCliente(clienteId),
+      listarPendientesPorCliente(clienteId, agenciaId),
     ])
     if (!c) return
     setCarga({ estado: 'ok', cliente: c, agencia: a, confirmados: conf, pendientes: pend })

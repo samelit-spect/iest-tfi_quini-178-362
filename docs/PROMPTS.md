@@ -1,23 +1,19 @@
 # PROMPTS.md
 
-## Prompts clave
-(Registrar aquí los pedidos importantes)
+## Prompts clave utilizados
+
+| Momento | Prompt utilizado (resumido) | Uso |
+|---------|-----------------------------|-----|
+| Especificación SDD | "Actúa como agente SDD. Genera `spec.md` para [funcionalidad] con objetivo, alcance, criterios de aceptación verificables y fuera de alcance." | Para crear las specs de las 3 funcionalidades. |
+| Clarificación | "Revisá ambigüedades, preguntas y supuestos antes de pasar a `plan.md`. Solo preguntá lo necesario para decidir." | Usado con `/clarificar`. |
+| Planificación y tareas | "Generá `plan.md` con enfoque por capas (componentes, servicios, hooks, tipos) y `tasks.md` con tareas pequeñas, verificables y en orden." | Para armar plan + tareas por funcionalidad. |
+| Verificación | "Verificá contra `spec.md` y criterios de aceptación. Listá lo cumplido, lo faltante y sugerencias sin modificar código aún." | Usado con `/verificar`. |
+| Imágenes con IA (Ideogram) | "Fotografía fotorrealista. SUJETO + ACCIÓN + ENTORNO (Tinogasta, local comercial) + LUZ natural de tarde + CÁMARA 50mm + ESTILO documental/fotorrealista + PALETA azul #0F3D56 / cian #1F7A8C + RESTRICCIONES: sin texto, sin logos, sin marcas reales, manos con 5 dedos, personas ficticias." | Para las imágenes generadas con Ideogram (8 imágenes con 2 prompts distintos). |
 
 ## Errores cometidos por la IA (mínimo 3)
-| Caso | Qué hizo mal | Detección humana | Corrección humana |
-|------|---------------|-------------------|-------------------|
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
 
-## Ejemplos de prompts documentados
-- Prompt para imágenes fotorrealistas con estructura SUJETO+ACCIÓN+ENTORNO+LUZ+CÁMARA+ESTILO+MARCA+RESTRICCIONES
-- Prompt para spot 45-90s con guion técnico
-
-## Errores cometidos por la IA (mínimo 3) - Conforme a Actividad 2
-
-| Caso | Qué hizo mal | Detección humana | Corrección humana |
-|------|---------------|-------------------|-------------------|
-| 1 | Propuso permitir editar movimiento ya confirmado | Revisé reglas de negocio (movimientos confirmados deben ser inmutables) | Bloquear edición/eliminación de `movimientos_confirmados`. Forzar corrección con un NUEVO movimiento que siga el flujo pendiente -> confirmación. |
-| 2 | Sugirió usar un solo campo `estado` sin separar colecciones | Revisé PLAN.md y consigna TP3/TP4 (separación obligatoria) | Mantener dos colecciones separadas: `movimientos_pendientes` y `movimientos_confirmados`. Al confirmar se mueve de una a otra con auditoría. |
-| 3 | Propuso modificar saldos al guardar la tirilla | Revisé regla 12: "Es solo resumen: no modifica los saldos de los clientes." | La tirilla SOLO lee movimientos CONFIRMADOS del día. NO actualiza clientes ni saldos. Solo guarda resumen con auditoría. |
+| Caso | Contexto | Qué hizo mal | Detección humana | Corrección humana |
+|------|----------|---------------|-------------------|---------------------|
+| 1 | Movimiento confirmado | Propuso permitir editar movimiento ya confirmado | Revisé reglas de negocio (movimientos confirmados deben ser inmutables) | Bloquear edición/eliminación de `movimientos_confirmados`. Forzar corrección con un NUEVO movimiento que siga el flujo `pendiente -> confirmado` con auditoría. |
+| 2 | Separación de colecciones | Sugirió usar un solo campo `estado` sin separar colecciones | Revisé `plan.md` y las consignas del TP3/TP4 (separación obligatoria) | Mantener dos colecciones separadas: `movimientos_pendientes` y `movimientos_confirmados`. Al confirmar se traslada con trazabilidad y auditoría. |
+| 3 | Tirilla de cierre de turno | Propuso modificar saldos al guardar tirilla | Revisé regla 12: "Es solo resumen: no modifica los saldos of los clientes." | La tirilla SOLO lee movimientos CONFIRMADOS del día. NO update clientes ni saldos. Únicamente guarda el resumen with fecha, usuario y totales. |

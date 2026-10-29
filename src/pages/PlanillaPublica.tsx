@@ -5,6 +5,7 @@ import { leerCliente } from '../services/clientesService'
 import { leerAgencia, leerMovimientosConfirmados } from '../services/movimientosService'
 import { formatoFecha, formatoPesos } from '../utils/format'
 import { useCountUp } from '../hooks/useCountUp'
+import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import { PiePublico } from '../components/PiePublico'
 
 type Carga =
@@ -76,6 +77,7 @@ function Contenido({
   movimientos: Movimiento[]
   agencia: { numero: number; nombre: string } | null
 }) {
+  useDocumentTitle(`Planilla de ${cliente.apellido} ${cliente.nombre} · Quini 178/362`)
   const totalCredito = useMemo(
     () => movimientos.filter((m) => m.tipo === 'credito').reduce((s, m) => s + m.monto, 0),
     [movimientos],

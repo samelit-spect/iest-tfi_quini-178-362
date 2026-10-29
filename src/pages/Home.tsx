@@ -5,8 +5,10 @@ import { buscarClientes } from '../services/clientesService'
 import { normalizar } from '../utils/normalizar'
 import { useAuth } from '../context/auth'
 import { PiePublico } from '../components/PiePublico'
+import { useDocumentTitle } from '../hooks/useDocumentTitle'
 
 function Home() {
+  useDocumentTitle('Quini 178/362 · Tu planilla de la agencia, sin papel')
   const { estado, inicioPorRol } = useAuth()
   const [termino, setTermino] = useState('')
   const [sugerencias, setSugerencias] = useState<Cliente[] | null>(null)

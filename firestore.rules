@@ -1,39 +1,108 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // FASE INTERMEDIA (desarrollo): se exige login para escribir y para la
-    // información interna. Solo la lectura pública de planillas queda abierta.
-    // Al cierre del proyecto: reglas finas por rol (admin confirma, empleado
-    // solo su agencia, público solo lectura de planillas).
+    // ————————————————————————————————————————————————————————————————
+    // Reglas por rol para Quini 178/362
+    // Público: solo lectura de la planilla (clientes, agencias y confirmados).
+    // Empleado: solo su agencia y solo sus movimientos pendientes.
+    // Admin: lee y escribe todo, confirma y rechaza.
+    // Los movimientos confirmados son inmutables.
+    // ————————————————————————————————————————————————————————————————
+
     function autenticado() {
       return request.auth != null;
     }
 
+    function perfil() {
+      return get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data;
+    }
+
+    function esAdmin() {
+      return autenticado() && perfil().activo == true && perfil().rol == 'admin';
+    }
+
+    function esEmpleadoActivo() {
+      return autenticado() && perfil().activo == true && perfil().rol == 'empleado';
+    }
+
+    function miAgencia() {
+      return perfil().agenciaId;
+    }
+
+    function esStaffDe(agenciaId) {
+      return esAdmin() || (esEmpleadoActivo() && miAgencia() == agenciaId);
+    }
+
     match /usuarios/{uid} {
-      allow read, write: if autenticado();
+      // Cada usuario puede leer su propio perfil; el admin lee todos.
+      allow read: if (autenticado() && request.auth.uid == uid) || esAdmin();
+      allow create, update, delete: if esAdmin();
     }
 
     match /agencias/{agenciaId} {
       allow read: if true;
-      allow write: if autenticado();
+      allow write: if esAdmin();
     }
 
     match /clientes/{clienteId} {
+      // La búsqueda pública necesita leer clientes para mostrar la planilla.
       allow read: if true;
-      allow write: if autenticado();
+      allow create: if esStaffDe(request.resource.data.agenciaId);
+      allow update: if esStaffDe(resource.data.agenciaId)
+        && esStaffDe(request.resource.data.agenciaId);
+      allow delete: if esAdmin()
+        || (esEmpleadoActivo() && miAgencia() == resource.data.agenciaId);
     }
 
     match /movimientos_pendientes/{id} {
-      allow read, write: if autenticado();
+      allow read: if esStaffDe(resource.data.agenciaId);
+
+      allow create: if (esAdmin()
+          || (esEmpleadoActivo() && request.resource.data.agenciaId == miAgencia()))
+        && request.resource.data.creadoPor == request.auth.uid
+        && request.resource.data.estado == 'pendiente';
+
+      // El empleado solo edita sus propios pendientes y no puede cambiar
+      // cliente, agencia, creador ni estado. El admin puede editar cualquiera.
+      allow update: if esAdmin()
+        || (esEmpleadoActivo()
+            && resource.data.estado == 'pendiente'
+            && resource.data.creadoPor == request.auth.uid
+            && request.resource.data.estado == 'pendiente'
+            && request.resource.data.clienteId == resource.data.clienteId
+            && request.resource.data.agenciaId == resource.data.agenciaId
+            && request.resource.data.creadoPor == resource.data.creadoPor);
+
+      allow delete: if esAdmin()
+        || (esEmpleadoActivo()
+            && resource.data.estado == 'pendiente'
+            && resource.data.creadoPor == request.auth.uid);
     }
 
     match /movimientos_confirmados/{id} {
+      // Lectura pública: es la planilla que consulta el cliente.
       allow read: if true;
-      allow write: if autenticado();
+      // Solo el admin confirma y el documento nace ya confirmado.
+      allow create: if esAdmin()
+        && request.resource.data.estado == 'confirmado'
+        && request.resource.data.confirmadoPor == request.auth.uid;
+      // Inmutables: no se editan ni se borran.
+      allow update, delete: if false;
     }
 
     match /tirillas/{id} {
-      allow read, write: if autenticado();
+      allow read: if esStaffDe(resource.data.agenciaId);
+
+      allow create: if esAdmin()
+        || (esEmpleadoActivo()
+            && request.resource.data.agenciaId == miAgencia()
+            && request.resource.data.creadoPor == request.auth.uid);
+
+      allow update: if esAdmin()
+        || (esEmpleadoActivo() && resource.data.agenciaId == miAgencia()
+            && request.resource.data.agenciaId == resource.data.agenciaId);
+
+      allow delete: if esAdmin();
     }
   }
 }

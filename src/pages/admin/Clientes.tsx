@@ -3,9 +3,14 @@ import type { Cliente } from '../../types'
 import {
   actualizarCliente,
   crearCliente,
+  eliminarCliente,
   listarClientes,
 } from '../../services/clientesService'
-import { listarAgencias } from '../../services/movimientosService'
+import {
+  leerMovimientosConfirmados,
+  listarAgencias,
+  listarPendientesPorCliente,
+} from '../../services/movimientosService'
 import { normalizar } from '../../utils/normalizar'
 
 type Agencia = { id: string; numero: number; nombre: string }
@@ -58,6 +63,33 @@ function Clientes() {
       await cargar()
     } catch {
       avisar('err', 'No se pudo guardar el cliente. Intentalo de nuevo.')
+    }
+  }
+
+  async function borrar(c: Cliente) {
+    if (
+      !window.confirm(
+        `¿Eliminar a ${c.apellido} ${c.nombre}? Esta acción no se puede deshacer.`,
+      )
+    )
+      return
+    try {
+      const [pendientes, confirmados] = await Promise.all([
+        listarPendientesPorCliente(c.id, c.agenciaId),
+        leerMovimientosConfirmados(c.id),
+      ])
+      if (pendientes.length > 0 || confirmados.length > 0) {
+        avisar(
+          'err',
+          'No se puede eliminar: el cliente tiene movimientos registrados. Conservá el historial.',
+        )
+        return
+      }
+      await eliminarCliente(c.id)
+      avisar('ok', `Cliente ${c.apellido} ${c.nombre} eliminado.`)
+      await cargar()
+    } catch {
+      avisar('err', 'No se pudo eliminar el cliente. Intentalo de nuevo.')
     }
   }
 
@@ -163,13 +195,22 @@ function Clientes() {
                   <p className="text-base font-semibold text-stone-500">{nombreAgencia(c.agenciaId)}</p>
                 </div>
               </div>
-              <button
-                type="button"
-                onClick={() => setModal({ modo: 'editar', cliente: c })}
-                className="rounded-xl border border-stone-300 bg-white px-4 py-2 text-sm font-bold text-stone-700 transition hover:border-stone-400"
-              >
-                Editar
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setModal({ modo: 'editar', cliente: c })}
+                  className="rounded-xl border border-stone-300 bg-white px-4 py-2 text-sm font-bold text-stone-700 transition hover:border-stone-400"
+                >
+                  Editar
+                </button>
+                <button
+                  type="button"
+                  onClick={() => void borrar(c)}
+                  className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-2 text-sm font-bold text-rose-600 transition hover:bg-rose-100"
+                >
+                  Eliminar
+                </button>
+              </div>
             </li>
           ))}
         </ul>

@@ -1,6 +1,7 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -66,4 +67,8 @@ export async function actualizarCliente(
     agenciaId: datos.agenciaId,
     busqueda: normalizar(`${datos.apellido} ${datos.nombre}`),
   })
+}
+
+export async function eliminarCliente(id: string) {
+  await deleteDoc(doc(db, 'clientes', id))
 }

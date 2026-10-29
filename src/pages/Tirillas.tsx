@@ -15,6 +15,7 @@ import {
 } from '../services/tirillasService'
 import { formatoPesos } from '../utils/format'
 import { exportarTirillaCSV } from '../utils/exportar'
+import { calcularComision, calcularDiferenciaTirilla, totalOtros } from '../utils/tirilla'
 import NavAdmin from '../components/NavAdmin'
 import type { ConceptoOtro, Movimiento, TurnoTirilla } from '../types'
 
@@ -131,20 +132,22 @@ function Tirillas() {
     [movimientosDelDia],
   )
   const comisionCalc = useMemo(
-    () => Math.round((Number(ventas) || 0) * comisionPorcentaje / 100),
+    () => calcularComision(Number(ventas), comisionPorcentaje),
     [ventas, comisionPorcentaje],
   )
-  const otrosTotal = useMemo(
-    () => otros.reduce((s, o) => s + (Number(o.importe) || 0), 0),
-    [otros],
+  const otrosTotal = useMemo(() => totalOtros(otros), [otros])
+  const diferenciaCalc = useMemo(
+    () =>
+      calcularDiferenciaTirilla({
+        ventas: Number(ventas),
+        premios: Number(premios),
+        caja: Number(caja),
+        diferenciaAnterior: Number(diferenciaAnterior),
+        comision: comisionCalc,
+        otrosTotal,
+      }),
+    [ventas, premios, caja, diferenciaAnterior, comisionCalc, otrosTotal],
   )
-  const diferenciaCalc = useMemo(() => {
-    const v = Number(ventas) || 0
-    const p = Number(premios) || 0
-    const c = Number(caja) || 0
-    const da = Number(diferenciaAnterior) || 0
-    return v - p - c + da - comisionCalc - otrosTotal
-  }, [ventas, premios, caja, diferenciaAnterior, comisionCalc, otrosTotal])
 
   async function guardar() {
     if (!agenciaId || guardando) return

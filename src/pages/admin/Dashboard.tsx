@@ -23,7 +23,7 @@ interface AgenciaResumen {
 
 function Dashboard() {
   const { perfil } = useAuth()
-  const hoy = new Date().toISOString().slice(0, 10)
+  const [hoy] = useState(() => new Date().toISOString().slice(0, 10))
   const [datos, setDatos] = useState<AgenciaResumen[]>([])
   const [cargando, setCargando] = useState(true)
 

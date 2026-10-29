@@ -5,7 +5,7 @@ para dos agencias de quiniela, desarrollado con IA y Spec-Driven Development
 (SDD).
 
 - **Repositorio:** <https://github.com/samelit-spect/iest-tfi_quini-178-362>
-- **Sitio publicado:** pendiente de nuevo deploy
+- **Sitio publicado:** <https://iest-tfi-quini-178-362.netlify.app>
 - **Video promocional:** pendiente
 
 ## Qué resuelve

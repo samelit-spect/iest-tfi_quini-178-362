@@ -85,11 +85,11 @@ function Usuarios() {
       avisar('err', 'No podés deshabilitar tu propia cuenta.')
       return
     }
-    const accion = u.activo ? 'deshabilitar' : 'habilitar'
+    const accion = u.activo ? 'quitarle el acceso' : 'darle acceso'
     if (!window.confirm(`¿Seguro que querés ${accion} a ${u.nombre}?`)) return
     try {
       await actualizarUsuario(u.uid, { activo: !u.activo })
-      avisar('ok', `${u.nombre} fue ${u.activo ? 'deshabilitado' : 'habilitado'}.`)
+      avisar('ok', `A ${u.nombre} se le ${u.activo ? 'quitó' : 'dio'} acceso.`)
       await cargar()
     } catch {
       avisar('err', 'No se pudo actualizar el estado.')
@@ -102,7 +102,8 @@ function Usuarios() {
         <div>
           <h1 className="text-xl font-extrabold text-stone-900">Usuarios del sistema</h1>
           <p className="mt-0.5 text-base text-stone-500">
-            Creá las cuentas del personal y controlá quienes ingresan.
+            Creá las cuentas del personal y controlá quienes ingresan. Para quitar
+            el acceso, deshabilitá la cuenta.
           </p>
         </div>
         <button
@@ -195,7 +196,7 @@ function Usuarios() {
                         : 'border border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
                     }`}
                   >
-                    {u.activo ? 'Deshabilitar' : 'Habilitar'}
+                    {u.activo ? 'Quitar acceso' : 'Dar acceso'}
                   </button>
                 </div>
               </li>

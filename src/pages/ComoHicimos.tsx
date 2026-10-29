@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { LeyendaIA } from '../components/LeyendaIA'
 import { PiePublico } from '../components/PiePublico'
+import { useDocumentTitle } from '../hooks/useDocumentTitle'
 
 const PIEZAS = [
   'Imágenes fotorrealistas del local, los servicios y los mockups',
@@ -10,6 +11,7 @@ const PIEZAS = [
 ]
 
 function ComoHicimos() {
+  useDocumentTitle('Cómo hicimos este sitio · Quini 178/362')
   return (
     <div className="relative flex min-h-svh flex-col overflow-hidden">
       <div className="bg-dots pointer-events-none absolute inset-0 opacity-50" />

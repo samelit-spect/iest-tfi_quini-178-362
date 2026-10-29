@@ -4,7 +4,7 @@
 |--------|--------|
 | Repositorio GitHub (público) | <https://github.com/samelit-spect/iest-tfi_quini-178-362> |
 | Sitio publicado (URL pública) | <https://iest-tfi-quini-178-362.netlify.app> |
-| Video promocional YouTube (público/no listado) | Pendiente |
+| Video promocional YouTube (público/no listado) | <https://youtu.be/LKNPjyKvsok> |
 | Video demo | Pendiente |
 | Informe PDF | Pendiente en `bitacora/perez-sami_quini-178-362-tfi/` |
 

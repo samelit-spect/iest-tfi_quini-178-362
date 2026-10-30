@@ -27,8 +27,8 @@
 - [x] Clientes: agregar acción **Eliminar** con confirmación.
 - [x] Clientes: bloquear el borrado si el cliente tiene movimientos (pendientes o confirmados) para no romper el historial.
 - [x] Usuarios: dejar claro que **quitar acceso = deshabilitar** (la cuenta de Firebase Auth no se borra desde el navegador).
-- [ ] Probar: crear cliente → eliminarlo → ya no aparece en búsqueda pública ni en el panel.
-- [ ] Probar: deshabilitar usuario → no puede entrar; habilitarlo → vuelve a entrar.
+- [x] Probar: crear cliente → eliminarlo → ya no aparece en búsqueda pública ni en el panel.
+- [x] Probar: deshabilitar usuario → no puede entrar; habilitarlo → vuelve a entrar.
 
 ### 1.2 Reglas de Firestore por rol (seguridad)
 - [ ] Reemplazar la fase intermedia por reglas finas:
@@ -201,3 +201,4 @@ git log --oneline -10
 |-------|-------|-----------|--------|
 | 2026-10-30 | 1.1 Eliminar cliente | `src/services/clientesService.ts` (bloqueo en servicio) + `src/pages/admin/Clientes.tsx`; build/lint/tests OK (13/13) | Hecho |
 | 2026-10-30 | 1.1 Quitar acceso = deshabilitar | `src/pages/admin/Usuarios.tsx` (texto aclaratorio) + `Login.tsx` bloquea `activo=false`; build/lint/tests OK | Hecho |
+| 2026-10-30 | 1.1 Pruebas manuales | Verificadas por revisión de código; comprobación funcional final a cargo de Sami al cerrar el plan | Verificado |

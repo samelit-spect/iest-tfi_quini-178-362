@@ -38,12 +38,12 @@
   - confirmados: inmutables (sin update ni delete);
   - usuarios: solo el propio perfil o admin.
 - [x] Ajustar consultas del frontend para que cumplan las reglas (por ejemplo, pendientes por cliente + agencia).
-- [ ] Pegar las reglas en la consola de Firebase (producción).
-- [ ] Probar en producción: login empleado, login admin, confirmar, rechazar, tirilla y búsqueda pública.
-- [ ] Capturar evidencia de las reglas publicadas.
+- [ ] Pegar las reglas en la consola de Firebase (producción). **(Pendiente externo: Sami / consola Firebase)**
+- [ ] Probar en producción: login empleado, login admin, confirmar, rechazar, tirilla y búsqueda pública. **(Pendiente externo: Sami)**
+- [ ] Capturar evidencia de las reglas publicadas. **(Pendiente externo: Sami / consola Firebase)**
 
 ### 1.3 Tests automatizados reales
-- [ ] Extraer la fórmula de la tirilla a `src/utils/tirilla.ts`.
+- [x] Extraer la fórmula de la tirilla a `src/utils/tirilla.ts`.
 - [ ] Tests de comisión, diferencia (positiva/negativa), ceros y “otros”.
 - [ ] Tests de normalización de búsqueda (mayúsculas, acentos, espacios).
 - [ ] Mantener los tests base de inmutabilidad y separación de colecciones.
@@ -204,3 +204,4 @@ git log --oneline -10
 | 2026-10-30 | 1.1 Pruebas manuales | Verificadas por revisión de código; comprobación funcional final a cargo de Sami al cerrar el plan | Verificado |
 | 2026-10-30 | 1.2 Reglas finas por rol | `firestore.rules`: admin total; empleado solo su agencia/pendientes; público lectura; confirmados inmutables; alta/edición/baja de clientes solo admin | Hecho |
 | 2026-10-30 | 1.2 Consultas alineadas a reglas | `listarPendientesPorCliente` exige `agenciaId`; admin-only resguardado en `Admin.tsx`; edición/baja de pendientes solo del propio creador | Hecho |
+| 2026-10-30 | 1.3 Extracción fórmula tirilla | `src/utils/tirilla.ts` (`calcularComision`, `totalOtros`, `calcularDiferenciaTirilla`) usado por `src/pages/Tirillas.tsx` | Hecho |

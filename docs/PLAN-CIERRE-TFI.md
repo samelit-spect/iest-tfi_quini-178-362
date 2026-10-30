@@ -37,7 +37,7 @@
   - público: lee planillas confirmadas y busca clientes;
   - confirmados: inmutables (sin update ni delete);
   - usuarios: solo el propio perfil o admin.
-- [ ] Ajustar consultas del frontend para que cumplan las reglas (por ejemplo, pendientes por cliente + agencia).
+- [x] Ajustar consultas del frontend para que cumplan las reglas (por ejemplo, pendientes por cliente + agencia).
 - [ ] Pegar las reglas en la consola de Firebase (producción).
 - [ ] Probar en producción: login empleado, login admin, confirmar, rechazar, tirilla y búsqueda pública.
 - [ ] Capturar evidencia de las reglas publicadas.
@@ -203,3 +203,4 @@ git log --oneline -10
 | 2026-10-30 | 1.1 Quitar acceso = deshabilitar | `src/pages/admin/Usuarios.tsx` (texto aclaratorio) + `Login.tsx` bloquea `activo=false`; build/lint/tests OK | Hecho |
 | 2026-10-30 | 1.1 Pruebas manuales | Verificadas por revisión de código; comprobación funcional final a cargo de Sami al cerrar el plan | Verificado |
 | 2026-10-30 | 1.2 Reglas finas por rol | `firestore.rules`: admin total; empleado solo su agencia/pendientes; público lectura; confirmados inmutables; alta/edición/baja de clientes solo admin | Hecho |
+| 2026-10-30 | 1.2 Consultas alineadas a reglas | `listarPendientesPorCliente` exige `agenciaId`; admin-only resguardado en `Admin.tsx`; edición/baja de pendientes solo del propio creador | Hecho |

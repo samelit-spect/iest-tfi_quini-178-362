@@ -77,7 +77,10 @@ function Contenido({
   movimientos: Movimiento[]
   agencia: { numero: number; nombre: string } | null
 }) {
-  useDocumentTitle(`Planilla de ${cliente.apellido} ${cliente.nombre} · Quini 178/362`)
+  useDocumentTitle(
+    `Planilla de ${cliente.apellido} ${cliente.nombre} · Quini 178/362`,
+    `Consultá los movimientos confirmados de la ficha de ${cliente.apellido} ${cliente.nombre} en Quini 178/362.`,
+  )
   const totalCredito = useMemo(
     () => movimientos.filter((m) => m.tipo === 'credito').reduce((s, m) => s + m.monto, 0),
     [movimientos],

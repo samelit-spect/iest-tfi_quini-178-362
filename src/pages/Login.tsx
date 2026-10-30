@@ -14,7 +14,10 @@ const MENSAJES: Record<string, string> = {
 }
 
 function Login() {
-  useDocumentTitle('Iniciar sesión · Quini 178/362')
+  useDocumentTitle(
+    'Iniciar sesión · Quini 178/362',
+    'Acceso del personal de las agencias 178 y 362 al panel de Quini 178/362.',
+  )
   const { login } = useAuth()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')

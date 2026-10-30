@@ -8,7 +8,10 @@ import { PiePublico } from '../components/PiePublico'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 
 function Home() {
-  useDocumentTitle('Quini 178/362 · Tu planilla de la agencia, sin papel')
+  useDocumentTitle(
+    'Quini 178/362 · Tu planilla de la agencia, sin papel',
+    'Consultá los créditos y débitos de tu ficha en Quini 178/362. Buscá tu planilla por apellido y nombre, sin registrarte.',
+  )
   const { estado, inicioPorRol } = useAuth()
   const [termino, setTermino] = useState('')
   const [sugerencias, setSugerencias] = useState<Cliente[] | null>(null)

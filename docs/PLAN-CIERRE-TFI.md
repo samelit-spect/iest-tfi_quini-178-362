@@ -50,7 +50,7 @@
 - [x] `npm test` en verde.
 
 ### 1.4 Rendimiento, SEO y accesibilidad
-- [ ] Títulos y descripciones únicos por página pública (Home, planilla, login, cómo hicimos).
+- [x] Títulos y descripciones únicos por página pública (Home, planilla, login, cómo hicimos).
 - [ ] Revisar un solo `<h1>` por página y `alt` descriptivos.
 - [ ] Correr Lighthouse en celular y escritorio; capturas ≥ 80 en las 4 categorías.
 - [ ] Si Rendimiento queda bajo: dividir el bundle o cargar Firebase de forma diferida.
@@ -209,3 +209,4 @@ git log --oneline -10
 | 2026-10-30 | 1.3 Tests de normalización | `tests/normalizar.test.ts`: mayúsculas, tildes, eñe y espacios (5 tests) | Hecho |
 | 2026-10-30 | 1.3 Tests base | `tests/basico.test.ts`: inmutabilidad conceptual y separación de colecciones (2 tests) | Hecho |
 | 2026-10-30 | 1.3 Suite en verde | `npm test`: 3 archivos, 13/13 tests OK | Hecho |
+| 2026-10-30 | 1.4 Títulos y descripciones | `useDocumentTitle(titulo, descripcion)` actualiza `<title>` y `meta description`; aplicado en Home, planilla pública, login, cómo hicimos y galería | Hecho |

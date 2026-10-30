@@ -11,7 +11,10 @@ const PIEZAS = [
 ]
 
 function Galeria() {
-  useDocumentTitle('Galería multimedia · Quini 178/362')
+  useDocumentTitle(
+    'Galería multimedia · Quini 178/362',
+    'Galería de imágenes generadas con IA para el Trabajo Final Integrador de Quini 178/362.',
+  )
 
   return (
     <div className="relative flex min-h-svh flex-col overflow-hidden">

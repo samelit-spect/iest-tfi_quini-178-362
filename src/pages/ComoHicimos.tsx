@@ -11,7 +11,10 @@ const PIEZAS = [
 ]
 
 function ComoHicimos() {
-  useDocumentTitle('Cómo hicimos este sitio · Quini 178/362')
+  useDocumentTitle(
+    'Cómo hicimos este sitio · Quini 178/362',
+    'Conocé cómo se construyó Quini 178/362 con inteligencia artificial y Spec-Driven Development, paso a paso.',
+  )
   return (
     <div className="relative flex min-h-svh flex-col overflow-hidden">
       <div className="bg-dots pointer-events-none absolute inset-0 opacity-50" />

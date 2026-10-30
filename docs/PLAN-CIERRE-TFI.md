@@ -44,7 +44,7 @@
 
 ### 1.3 Tests automatizados reales
 - [x] Extraer la fórmula de la tirilla a `src/utils/tirilla.ts`.
-- [ ] Tests de comisión, diferencia (positiva/negativa), ceros y “otros”.
+- [x] Tests de comisión, diferencia (positiva/negativa), ceros y “otros”.
 - [ ] Tests de normalización de búsqueda (mayúsculas, acentos, espacios).
 - [ ] Mantener los tests base de inmutabilidad y separación de colecciones.
 - [ ] `npm test` en verde.
@@ -205,3 +205,4 @@ git log --oneline -10
 | 2026-10-30 | 1.2 Reglas finas por rol | `firestore.rules`: admin total; empleado solo su agencia/pendientes; público lectura; confirmados inmutables; alta/edición/baja de clientes solo admin | Hecho |
 | 2026-10-30 | 1.2 Consultas alineadas a reglas | `listarPendientesPorCliente` exige `agenciaId`; admin-only resguardado en `Admin.tsx`; edición/baja de pendientes solo del propio creador | Hecho |
 | 2026-10-30 | 1.3 Extracción fórmula tirilla | `src/utils/tirilla.ts` (`calcularComision`, `totalOtros`, `calcularDiferenciaTirilla`) usado por `src/pages/Tirillas.tsx` | Hecho |
+| 2026-10-30 | 1.3 Tests de tirilla | `tests/tirilla.test.ts`: comisión con redondeo, otros conceptos, diferencia positiva/negativa, arrastre y valores inválidos (6 tests) | Hecho |

@@ -51,7 +51,7 @@
 
 ### 1.4 Rendimiento, SEO y accesibilidad
 - [x] Títulos y descripciones únicos por página pública (Home, planilla, login, cómo hicimos).
-- [ ] Revisar un solo `<h1>` por página y `alt` descriptivos.
+- [x] Revisar un solo `<h1>` por página y `alt` descriptivos.
 - [ ] Correr Lighthouse en celular y escritorio; capturas ≥ 80 en las 4 categorías.
 - [ ] Si Rendimiento queda bajo: dividir el bundle o cargar Firebase de forma diferida.
 - [ ] Verificar que no haya textos de relleno (“lorem ipsum”, “pendiente”, “a completar”) en el sitio.
@@ -210,3 +210,4 @@ git log --oneline -10
 | 2026-10-30 | 1.3 Tests base | `tests/basico.test.ts`: inmutabilidad conceptual y separación de colecciones (2 tests) | Hecho |
 | 2026-10-30 | 1.3 Suite en verde | `npm test`: 3 archivos, 13/13 tests OK | Hecho |
 | 2026-10-30 | 1.4 Títulos y descripciones | `useDocumentTitle(titulo, descripcion)` actualiza `<title>` y `meta description`; aplicado en Home, planilla pública, login, cómo hicimos y galería | Hecho |
+| 2026-10-30 | 1.4 Jerarquía y alt | Revisión de todas las páginas: un `<h1>` por estado renderizado y `alt` descriptivo en todas las imágenes | Hecho |

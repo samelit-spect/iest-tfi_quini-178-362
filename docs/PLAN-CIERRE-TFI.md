@@ -46,7 +46,7 @@
 - [x] Extraer la fórmula de la tirilla a `src/utils/tirilla.ts`.
 - [x] Tests de comisión, diferencia (positiva/negativa), ceros y “otros”.
 - [x] Tests de normalización de búsqueda (mayúsculas, acentos, espacios).
-- [ ] Mantener los tests base de inmutabilidad y separación de colecciones.
+- [x] Mantener los tests base de inmutabilidad y separación de colecciones.
 - [ ] `npm test` en verde.
 
 ### 1.4 Rendimiento, SEO y accesibilidad
@@ -207,3 +207,4 @@ git log --oneline -10
 | 2026-10-30 | 1.3 Extracción fórmula tirilla | `src/utils/tirilla.ts` (`calcularComision`, `totalOtros`, `calcularDiferenciaTirilla`) usado por `src/pages/Tirillas.tsx` | Hecho |
 | 2026-10-30 | 1.3 Tests de tirilla | `tests/tirilla.test.ts`: comisión con redondeo, otros conceptos, diferencia positiva/negativa, arrastre y valores inválidos (6 tests) | Hecho |
 | 2026-10-30 | 1.3 Tests de normalización | `tests/normalizar.test.ts`: mayúsculas, tildes, eñe y espacios (5 tests) | Hecho |
+| 2026-10-30 | 1.3 Tests base | `tests/basico.test.ts`: inmutabilidad conceptual y separación de colecciones (2 tests) | Hecho |

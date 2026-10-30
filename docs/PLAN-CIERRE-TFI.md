@@ -31,7 +31,7 @@
 - [x] Probar: deshabilitar usuario → no puede entrar; habilitarlo → vuelve a entrar.
 
 ### 1.2 Reglas de Firestore por rol (seguridad)
-- [ ] Reemplazar la fase intermedia por reglas finas:
+- [x] Reemplazar la fase intermedia por reglas finas:
   - admin: lee/escribe todo, confirma y rechaza;
   - empleado: solo su agencia, solo sus pendientes;
   - público: lee planillas confirmadas y busca clientes;
@@ -202,3 +202,4 @@ git log --oneline -10
 | 2026-10-30 | 1.1 Eliminar cliente | `src/services/clientesService.ts` (bloqueo en servicio) + `src/pages/admin/Clientes.tsx`; build/lint/tests OK (13/13) | Hecho |
 | 2026-10-30 | 1.1 Quitar acceso = deshabilitar | `src/pages/admin/Usuarios.tsx` (texto aclaratorio) + `Login.tsx` bloquea `activo=false`; build/lint/tests OK | Hecho |
 | 2026-10-30 | 1.1 Pruebas manuales | Verificadas por revisión de código; comprobación funcional final a cargo de Sami al cerrar el plan | Verificado |
+| 2026-10-30 | 1.2 Reglas finas por rol | `firestore.rules`: admin total; empleado solo su agencia/pendientes; público lectura; confirmados inmutables; alta/edición/baja de clientes solo admin | Hecho |

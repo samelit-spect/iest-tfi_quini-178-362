@@ -47,11 +47,9 @@ service cloud.firestore {
     match /clientes/{clienteId} {
       // La búsqueda pública necesita leer clientes para mostrar la planilla.
       allow read: if true;
-      allow create: if esStaffDe(request.resource.data.agenciaId);
-      allow update: if esStaffDe(resource.data.agenciaId)
-        && esStaffDe(request.resource.data.agenciaId);
-      allow delete: if esAdmin()
-        || (esEmpleadoActivo() && miAgencia() == resource.data.agenciaId);
+      // El alta, la edición y la baja de clientes las hace solo el admin.
+      // El empleado se limita a los movimientos pendientes de su agencia.
+      allow create, update, delete: if esAdmin();
     }
 
     match /movimientos_pendientes/{id} {

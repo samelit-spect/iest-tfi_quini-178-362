@@ -69,6 +69,21 @@ export async function actualizarCliente(
   })
 }
 
-export async function eliminarCliente(id: string) {
+export async function eliminarCliente(id: string, agenciaId: string) {
+  const [pendientes, confirmados] = await Promise.all([
+    getDocs(
+      query(
+        collection(db, 'movimientos_pendientes'),
+        where('clienteId', '==', id),
+        where('agenciaId', '==', agenciaId),
+      ),
+    ),
+    getDocs(query(collection(db, 'movimientos_confirmados'), where('clienteId', '==', id))),
+  ])
+
+  if (!pendientes.empty || !confirmados.empty) {
+    throw new Error('CLIENTE_CON_MOVIMIENTOS')
+  }
+
   await deleteDoc(doc(db, 'clientes', id))
 }

@@ -6,11 +6,7 @@ import {
   eliminarCliente,
   listarClientes,
 } from '../../services/clientesService'
-import {
-  leerMovimientosConfirmados,
-  listarAgencias,
-  listarPendientesPorCliente,
-} from '../../services/movimientosService'
+import { listarAgencias } from '../../services/movimientosService'
 import { normalizar } from '../../utils/normalizar'
 
 type Agencia = { id: string; numero: number; nombre: string }
@@ -74,21 +70,17 @@ function Clientes() {
     )
       return
     try {
-      const [pendientes, confirmados] = await Promise.all([
-        listarPendientesPorCliente(c.id, c.agenciaId),
-        leerMovimientosConfirmados(c.id),
-      ])
-      if (pendientes.length > 0 || confirmados.length > 0) {
+      await eliminarCliente(c.id, c.agenciaId)
+      avisar('ok', `Cliente ${c.apellido} ${c.nombre} eliminado.`)
+      await cargar()
+    } catch (err) {
+      if ((err as Error).message === 'CLIENTE_CON_MOVIMIENTOS') {
         avisar(
           'err',
           'No se puede eliminar: el cliente tiene movimientos registrados. Conservá el historial.',
         )
         return
       }
-      await eliminarCliente(c.id)
-      avisar('ok', `Cliente ${c.apellido} ${c.nombre} eliminado.`)
-      await cargar()
-    } catch {
       avisar('err', 'No se pudo eliminar el cliente. Intentalo de nuevo.')
     }
   }

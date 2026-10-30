@@ -24,8 +24,8 @@
 ## 1. Producto / app
 
 ### 1.1 Altas y bajas de clientes y usuarios
-- [ ] Clientes: agregar acción **Eliminar** con confirmación.
-- [ ] Clientes: bloquear el borrado si el cliente tiene movimientos (pendientes o confirmados) para no romper el historial.
+- [x] Clientes: agregar acción **Eliminar** con confirmación.
+- [x] Clientes: bloquear el borrado si el cliente tiene movimientos (pendientes o confirmados) para no romper el historial.
 - [ ] Usuarios: dejar claro que **quitar acceso = deshabilitar** (la cuenta de Firebase Auth no se borra desde el navegador).
 - [ ] Probar: crear cliente → eliminarlo → ya no aparece en búsqueda pública ni en el panel.
 - [ ] Probar: deshabilitar usuario → no puede entrar; habilitarlo → vuelve a entrar.
@@ -199,4 +199,4 @@ git log --oneline -10
 
 | Fecha | Punto | Evidencia | Estado |
 |-------|-------|-----------|--------|
-| | | | |
+| 2026-10-30 | 1.1 Eliminar cliente | `src/services/clientesService.ts` (bloqueo en servicio) + `src/pages/admin/Clientes.tsx`; build/lint/tests OK (13/13) | Hecho |

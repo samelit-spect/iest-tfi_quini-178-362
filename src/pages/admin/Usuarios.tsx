@@ -102,8 +102,8 @@ function Usuarios() {
         <div>
           <h1 className="text-xl font-extrabold text-stone-900">Usuarios del sistema</h1>
           <p className="mt-0.5 text-base text-stone-500">
-            Creá las cuentas del personal y controlá quienes ingresan. Para quitar
-            el acceso, deshabilitá la cuenta.
+            Creá las cuentas del personal y controlá quiénes ingresan. Quitar acceso
+            deshabilita el ingreso: la cuenta de Firebase Auth no se borra desde el navegador.
           </p>
         </div>
         <button

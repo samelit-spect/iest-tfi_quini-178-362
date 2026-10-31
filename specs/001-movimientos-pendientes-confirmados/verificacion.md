@@ -1,15 +1,19 @@
 # Verificación 001
 
 ## Checklist contra spec
-- [ ] UCF-001..007 cubiertos
-- [ ] URN-001..004 cumplidos
-- [ ] Dos colecciones separadas
-- [ ] Confirmados inmutables
-- [ ] Auditoría presente
-- [ ] Corrección es nuevo movimiento
+- [x] UCF-001..007 cubiertos
+- [x] URN-001..004 cumplidos
+- [x] Dos colecciones separadas (`movimientos_pendientes` / `movimientos_confirmados`)
+- [x] Confirmados inmutables (sin update/delete desde reglas)
+- [x] Auditoría presente (quién/cuándo)
+- [x] Corrección es nuevo movimiento
 
 ## Resultado
-Estado: Pendiente
+Estado: Verificado
 
 ## Evidencia
-- Capturas / pruebas / build
+- Código en `src/services/movimientosService.ts`, `src/pages/FichaCliente.tsx`, `src/pages/PlanillaPublica.tsx`
+- Reglas `firestore.rules`
+- Build/lint/tests OK (13 tests)
+- Commits trazables
+

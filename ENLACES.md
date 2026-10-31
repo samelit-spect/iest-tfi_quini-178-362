@@ -20,6 +20,6 @@
 
 - **Sitio actual:** <https://iest-tfi-quini-178-362.netlify.app>
 - **Plataforma:** Netlify
-- **Deploy inicial:** 26-10-2026
-- **Deploy ID:** `6adf9bb2e4dc46d290f81707`
+- **Deploy inicial:** 26-10-2026 (`6adf9bb2e4dc46d290f81707`)
+- **Último deploy:** 31-10-2026 (`6ae58514cabf5acda184e5b9`)
 - **URL anterior:** `https://gleeful-beignet-736b8f.netlify.app/` (404, descartada)

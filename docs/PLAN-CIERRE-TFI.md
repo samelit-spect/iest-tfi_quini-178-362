@@ -57,11 +57,11 @@
 - [x] Verificar que no haya textos de relleno (“lorem ipsum”, “a completar”, “TODO”) en el sitio.
 
 ### 1.5 Repositorio y deploy
-- [ ] Revisar `git status`; no subir `.env`, `dist/` ni `node_modules/`.
-- [ ] Commit por tarea con mensaje claro.
-- [ ] Push a `main`.
-- [ ] Verificar que Netlify tomó el último deploy y que la URL pública abre.
-- [ ] Actualizar `ENLACES.md` con la URL final.
+- [x] Revisar `git status`; no subir `.env`, `dist/` ni `node_modules/`.
+- [x] Commit por tarea con mensaje claro.
+- [x] Push a `main`.
+- [x] Verificar que Netlify tomó el último deploy y que la URL pública abre.
+- [x] Actualizar `ENLACES.md` con la URL final.
 
 ---
 
@@ -216,3 +216,5 @@ git log --oneline -10
 | 2026-10-30 | 1.4 Optimización de carga | `src/App.tsx` (rutas con `lazy` + `Suspense`), `vite.config.ts` (chunks separados de Firebase), `src/context/authContext.tsx` (Auth se carga al interactuar o en rutas con sesión), fuentes `woff2` y `preconnect` en `index.html` | Hecho |
 | 2026-10-30 | 1.4 SEO / robots | `public/robots.txt` válido; se corrigió el 92 de SEO y quedó en 100 | Hecho |
 | 2026-10-30 | 1.4 Sin textos de relleno | Búsqueda de `lorem ipsum`, `a completar`, `TODO`, `FIXME` en `src/`: sin coincidencias | Hecho |
+| 2026-10-31 | 1.5 Commits y push | `8139654` (perf/Lighthouse) y `ce9ac0c` (specs 001 y 002); `git push origin main` OK | Hecho |
+| 2026-10-31 | 1.5 Deploy Netlify | Deploy `6ae58514cabf5acda184e5b9`; la URL pública responde 200 y sirve `robots.txt` | Hecho |

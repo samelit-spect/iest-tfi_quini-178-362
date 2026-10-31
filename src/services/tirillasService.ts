@@ -1,5 +1,5 @@
 import { addDoc, collection, doc, getDocs, query, updateDoc, where } from 'firebase/firestore'
-import { db } from './firebase'
+import { db } from './firestore'
 import type { ConceptoOtro, Tirilla, TurnoTirilla } from '../types'
 
 interface DatosTirilla {

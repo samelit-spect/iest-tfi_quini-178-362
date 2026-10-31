@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import type { Cliente } from '../types'
-import { buscarClientes } from '../services/clientesService'
 import { normalizar } from '../utils/normalizar'
 import { useAuth } from '../context/auth'
 import { PiePublico } from '../components/PiePublico'
@@ -31,6 +30,7 @@ function Home() {
       }
       setCargando(true)
       try {
+        const { buscarClientes } = await import('../services/clientesService')
         const res = await buscarClientes(t)
         setSugerencias(res)
       } finally {

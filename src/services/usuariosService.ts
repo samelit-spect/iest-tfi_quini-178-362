@@ -1,5 +1,5 @@
 import { collection, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore'
-import { db } from './firebase'
+import { db } from './firestore'
 import type { Rol, Usuario } from '../types'
 
 export async function leerPerfilUsuario(uid: string): Promise<Usuario | null> {

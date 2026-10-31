@@ -11,7 +11,7 @@ import {
   updateDoc,
   where,
 } from 'firebase/firestore'
-import { db } from './firebase'
+import { db } from './firestore'
 import type { Cliente } from '../types'
 import { normalizar } from '../utils/normalizar'
 

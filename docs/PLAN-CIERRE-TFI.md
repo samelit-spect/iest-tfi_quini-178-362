@@ -52,9 +52,9 @@
 ### 1.4 Rendimiento, SEO y accesibilidad
 - [x] Títulos y descripciones únicos por página pública (Home, planilla, login, cómo hicimos).
 - [x] Revisar un solo `<h1>` por página y `alt` descriptivos.
-- [ ] Correr Lighthouse en celular y escritorio; capturas ≥ 80 en las 4 categorías.
-- [ ] Si Rendimiento queda bajo: dividir el bundle o cargar Firebase de forma diferida.
-- [ ] Verificar que no haya textos de relleno (“lorem ipsum”, “pendiente”, “a completar”) en el sitio.
+- [x] Correr Lighthouse en celular y escritorio; capturas ≥ 80 en las 4 categorías.
+- [x] Si Rendimiento queda bajo: dividir el bundle o cargar Firebase de forma diferida.
+- [x] Verificar que no haya textos de relleno (“lorem ipsum”, “a completar”, “TODO”) en el sitio.
 
 ### 1.5 Repositorio y deploy
 - [ ] Revisar `git status`; no subir `.env`, `dist/` ni `node_modules/`.
@@ -211,3 +211,8 @@ git log --oneline -10
 | 2026-10-30 | 1.3 Suite en verde | `npm test`: 3 archivos, 13/13 tests OK | Hecho |
 | 2026-10-30 | 1.4 Títulos y descripciones | `useDocumentTitle(titulo, descripcion)` actualiza `<title>` y `meta description`; aplicado en Home, planilla pública, login, cómo hicimos y galería | Hecho |
 | 2026-10-30 | 1.4 Jerarquía y alt | Revisión de todas las páginas: un `<h1>` por estado renderizado y `alt` descriptivo en todas las imágenes | Hecho |
+| 2026-10-30 | 1.4 Lighthouse móvil | `docs/lighthouse/mobile.report.json` / `.html`: Rendimiento 97, Accesibilidad 100, Buenas prácticas 100, SEO 100 | Hecho |
+| 2026-10-30 | 1.4 Lighthouse escritorio | `docs/lighthouse/desktop.report.json` / `.html`: 100 en las 4 categorías | Hecho |
+| 2026-10-30 | 1.4 Optimización de carga | `src/App.tsx` (rutas con `lazy` + `Suspense`), `vite.config.ts` (chunks separados de Firebase), `src/context/authContext.tsx` (Auth se carga al interactuar o en rutas con sesión), fuentes `woff2` y `preconnect` en `index.html` | Hecho |
+| 2026-10-30 | 1.4 SEO / robots | `public/robots.txt` válido; se corrigió el 92 de SEO y quedó en 100 | Hecho |
+| 2026-10-30 | 1.4 Sin textos de relleno | Búsqueda de `lorem ipsum`, `a completar`, `TODO`, `FIXME` en `src/`: sin coincidencias | Hecho |

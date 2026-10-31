@@ -10,7 +10,7 @@ import {
   updateDoc,
   where,
 } from 'firebase/firestore'
-import { db } from './firebase'
+import { db } from './firestore'
 import type { Movimiento, TipoMovimiento } from '../types'
 
 function ordenarPorFechaDesc(a: Movimiento, b: Movimiento) {

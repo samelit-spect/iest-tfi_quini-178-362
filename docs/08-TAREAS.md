@@ -39,7 +39,7 @@ cada sesión.
 - [ ] Pegar las reglas en la consola de Firebase (probar en producción)
 - [ ] Probar el flujo completo en Netlify con empleados reales
 - [ ] Ajustar la fórmula de la diferencia de la tirilla con el dueño
-- [ ] Endurecer reglas finas por rol (admin confirma, empleado su agencia)
+- [x] Endurecer reglas finas por rol (admin confirma, empleado su agencia)
 - [ ] Documentación final de la Etapa 8
 
 ## Trabajo práctico n.º 3 (entrega 09-10-2026)
@@ -55,3 +55,15 @@ Bitácora del emprendimiento **Quini 178/362**:
 - [ ] Elaborar el informe escrito (apartados a–f)
 - [ ] Incluir captura de evidencia de la carpeta subida
 - [ ] Exportar el informe a PDF (copia digital + impresa)
+
+## Cierre TFI (octubre 2026)
+
+- [x] Reglas finas de Firestore por rol (admin, empleado, público).
+- [x] Tests automatizados reales: fórmula de tirilla, normalización, inmutabilidad y colecciones (13/13).
+- [x] SEO, `robots.txt`, títulos y descripciones por página.
+- [x] Lighthouse: móvil 97/100/100/100 y escritorio 100/100/100/100.
+- [x] Deploy actualizado en Netlify y URL pública verificada.
+- [x] Specs 001, 002 y 003 con implementación, tareas y verificación.
+- [ ] Video demo de 2 a 3 minutos con voz propia.
+- [ ] Informe PDF final con anexos y bibliografía.
+- [ ] Declaración de IA firmada y carga de la carpeta en la Bitácora Digital.

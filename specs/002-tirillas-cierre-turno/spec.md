@@ -13,7 +13,7 @@ Digitalizar cierre de turno por fecha/turno/agencia. Resumen, no modifica saldos
 - URN-010: THE SISTEMA SHALL NO modificar saldos de clientes al guardar tirilla.
 
 ## Criterios
-- [ ] Solo lee confirmados
-- [ ] No toca movimientos_pendientes/confirmados
-- [ ] Diferencia arrastrada correcta
-- [ ] Auditoría
+- [x] Solo lee confirmados
+- [x] No toca movimientos_pendientes/confirmados
+- [x] Diferencia arrastrada correcta
+- [x] Auditoría

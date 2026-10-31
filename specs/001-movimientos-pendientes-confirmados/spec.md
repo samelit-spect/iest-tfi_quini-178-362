@@ -24,9 +24,9 @@ Ver `docs/CONSTITUCION.md`. Respeta identidad, español, seguridad, inmutabilida
 - URN-004: THE SISTEMA SHALL ser accesible (textos grandes, alto contraste).
 
 ## Criterios de aceptación
-- [ ] Se crea en pendientes al cargar
-- [ ] Editable/eliminable solo mientras pendiente y por contexto correcto
-- [ ] Confirmación mueve a confirmados e inmutable
-- [ ] Rechazo elimina con auditoría
-- [ ] Corrección es un nuevo movimiento
-- [ ] Vista pública lee solo confirmados
+- [x] Se crea en pendientes al cargar
+- [x] Editable/eliminable solo mientras pendiente y por contexto correcto
+- [x] Confirmación mueve a confirmados e inmutable
+- [x] Rechazo elimina con auditoría
+- [x] Corrección es un nuevo movimiento
+- [x] Vista pública lee solo confirmados

@@ -10,5 +10,5 @@ Vista general para admin con pendientes por confirmar, movimientos del día, res
 - URN-020: Solo rol admin debe acceder.
 
 ## Criterios
-- [ ] Datos correctos
-- [ ] Acceso restringido
+- [x] Datos correctos
+- [x] Acceso restringido

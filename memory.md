@@ -23,13 +23,23 @@
   y `multimedia/graficos/` quedaron visibles con README, y se retiró el banner
   duplicado de `public/img/`.
 
+- 2026-10-31: Se cerraron las secciones 1.1 a 1.5 del plan. Rutas con `lazy`,
+  Firebase en chunks separados y Auth diferido hasta interacción o ruta con sesión.
+  Lighthouse final: móvil 97/100/100/100 y escritorio 100/100/100/100. Se agregó
+  `public/robots.txt` y se separaron los reportes en `docs/lighthouse/`.
+- 2026-10-31: Commits `8139654`, `ce9ac0c`, `2801010` y `2a68c12` pusheados a `main`.
+  Netlify actualizado con deploy manual (`6ae58514cabf5acda184e5b9`).
+- 2026-10-31: Specs 001, 002 y 003 completadas con `implementacion.md`, `cambio.md`,
+  `tasks.md` y `verificacion.md`. Los 3 errores de IA quedaron documentados en
+  `docs/PROMPTS.md` y `docs/SESION-ERRORES-IA.md`.
+- 2026-10-31: Las imágenes fuente de Ideogram (`img provision/`) quedan fuera del repo;
+  las 4 finales están versionadas en `multimedia/imagenes/` y `public/media/`.
+
 ## Pendientes inmediatos
-- Ejecutar los 5 commits de `docs/GUIA-COMMITS.md` y pushear a
-  `https://github.com/samelit-spect/iest-tfi_quini-178-362`.
-- Crear el sitio nuevo en Netlify, cargar `VITE_FIREBASE_*` y registrar la URL.
-- 8 imágenes finales con paleta azul/teal, 3 iteraciones en al menos 2 piezas y fichas
-  en `multimedia/FICHAS-IA.md`. Documentar el error del primer prompt (agencia de adobe)
-  y la evolución al segundo prompt (local comercial).
-- Videos, infografía y gráficos con datos reales.
-- Consolidar `docs/PROMPTS.md` / `docs/SESION-ERRORES-IA.md` y sumar el error de las imágenes.
-- Informe PDF en `bitacora/perez-sami_quini-178-362-tfi/`.
+- Pegar las reglas de Firestore en la consola de producción y probar los flujos con
+  usuarios reales (Sami).
+- Video demo de 2 a 3 minutos con voz propia y ficha `VIDEO-002`.
+- Completar imágenes/fichas restantes, antes/después, infografía y 3 gráficos con datos reales.
+- Firmar `docs/DECLARACION-IA.md` y documentar una corrección por sesgo.
+- Informe PDF en `bitacora/perez-sami_quini-178-362-tfi/` y carga en la Bitácora Digital.
+- Ensayar la defensa oral y la demo en vivo.

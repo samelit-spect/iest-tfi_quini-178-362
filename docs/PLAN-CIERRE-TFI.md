@@ -67,14 +67,14 @@
 
 ## 2. SDD / documentación
 
-- [ ] `specs/001-movimientos-pendientes-confirmados/tasks.md`: marcar tareas y agregar evidencia (commit/test).
-- [ ] `specs/001.../verificacion.md`: completar checklist, resultado y evidencia.
-- [ ] `specs/002-tirillas-cierre-turno/tasks.md` y `verificacion.md`: ídem.
-- [ ] `specs/003-dashboard-administrador/tasks.md` y `verificacion.md`: ídem.
-- [ ] Verificar que cada spec tenga: constitución, spec EARS, clarificación, plan, tareas, implementación, validación y cambio.
-- [ ] Revisar `docs/PROMPTS.md` y `docs/SESION-ERRORES-IA.md`: 3 errores completos (problema, detección, corrección).
-- [ ] Actualizar `docs/08-TAREAS.md` con lo que realmente quedó cerrado.
-- [ ] Actualizar `memory.md` con las decisiones de cierre.
+- [x] `specs/001-movimientos-pendientes-confirmados/tasks.md`: marcar tareas y agregar evidencia (commit/test).
+- [x] `specs/001.../verificacion.md`: completar checklist, resultado y evidencia.
+- [x] `specs/002-tirillas-cierre-turno/tasks.md` y `verificacion.md`: ídem.
+- [x] `specs/003-dashboard-administrador/tasks.md` y `verificacion.md`: ídem.
+- [x] Verificar que cada spec tenga: constitución, spec EARS, clarificación, plan, tareas, implementación, validación y cambio.
+- [x] Revisar `docs/PROMPTS.md` y `docs/SESION-ERRORES-IA.md`: 3 errores completos (problema, detección, corrección).
+- [x] Actualizar `docs/08-TAREAS.md` con lo que realmente quedó cerrado.
+- [x] Actualizar `memory.md` con las decisiones de cierre.
 
 ---
 
@@ -218,3 +218,6 @@ git log --oneline -10
 | 2026-10-30 | 1.4 Sin textos de relleno | Búsqueda de `lorem ipsum`, `a completar`, `TODO`, `FIXME` en `src/`: sin coincidencias | Hecho |
 | 2026-10-31 | 1.5 Commits y push | `8139654` (perf/Lighthouse) y `ce9ac0c` (specs 001 y 002); `git push origin main` OK | Hecho |
 | 2026-10-31 | 1.5 Deploy Netlify | Deploy `6ae58514cabf5acda184e5b9`; la URL pública responde 200 y sirve `robots.txt` | Hecho |
+| 2026-10-31 | 2. Specs 001, 002 y 003 | `tasks.md` y `verificacion.md` completos; se agregaron `implementacion.md` y `cambio.md` en las tres specs | Hecho |
+| 2026-10-31 | 2. Errores de IA | `docs/PROMPTS.md` y `docs/SESION-ERRORES-IA.md` con 3 casos completos (problema, detección, corrección) | Hecho |
+| 2026-10-31 | 2. Estado y memoria | `docs/08-TAREAS.md` y `memory.md` actualizados con el cierre real y los pendientes externos | Hecho |
